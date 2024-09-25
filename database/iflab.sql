@@ -6,7 +6,7 @@ USE iflab;
 
 CREATE TABLE IF NOT EXISTS institutos (
 	-- PK
-    ID_inst INT NOT NULL,
+    ID_inst INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_inst),
     
     -- values
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS institutos (
 
 CREATE TABLE IF NOT EXISTS users (
 	-- PK
-    ID_user INT NOT NULL,
+    ID_user INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_user),
     
     -- values
@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
     Email VARCHAR(256) NOT NULL,
     Senha VARCHAR(64) NOT NULL,
     Cargo INT CHECK (Cargo IN (1, 2, 3)),
+    imagem LONGTEXT,
     
     -- FK
     ID_inst INT NOT NULL,
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS labs (
 	-- PK
-    ID_lab INT NOT NULL,
+    ID_lab INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_lab),
     
     -- Values
@@ -45,7 +46,7 @@ CREATE TABLE IF NOT EXISTS labs (
 
 CREATE TABLE IF NOT EXISTS Elementos (
 	-- PK
-    ID_elem INT NOT NULL,
+    ID_elem INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_elem),
     
     -- values
@@ -65,7 +66,7 @@ CREATE TABLE IF NOT EXISTS Elementos (
 
 CREATE TABLE IF NOT EXISTS Equipamentos(
 	-- PK
-    ID_equip INT NOT NULL,
+    ID_equip INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_equip),
     
     -- values
@@ -80,7 +81,7 @@ CREATE TABLE IF NOT EXISTS Equipamentos(
 
 CREATE TABLE IF NOT EXISTS Horarios (
 	-- PK
-    ID_hor INT NOT NULL,
+    ID_hor INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_hor),
     
     -- values
@@ -97,7 +98,7 @@ CREATE TABLE IF NOT EXISTS Horarios (
 
 CREATE TABLE IF NOT EXISTS Reserva_equipamento (
 	-- PK
-    ID_resequip INT NOT NULL,
+    ID_resequip INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_resequip),
     
     -- FK
@@ -109,7 +110,7 @@ CREATE TABLE IF NOT EXISTS Reserva_equipamento (
 
 CREATE TABLE IF NOT EXISTS Reserva_elemento (
 	-- PK
-    ID_reslem INT NOT NULL,
+    ID_reslem INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (ID_reslem),
     
     -- FK
