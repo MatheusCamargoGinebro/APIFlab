@@ -71,7 +71,7 @@ CREATE TABLE
         PRIMARY KEY (ID_lab),
         -- Values
         Sala varchar(16),
-        AdminLevel INT CHECK (AdminLevel IN (1, 2)),
+        AdminLevel INT CHECK (AdminLevel IN (1, 2)) NOT NULL,
         -- 1 = Membro
         -- 2 = Responsável
         -- FK
