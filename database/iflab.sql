@@ -96,8 +96,8 @@ CREATE TABLE
         PRIMARY KEY (ID_hor),
         -- values
         Tipo INT CHECK (Tipo IN (1, 2)),
-        Inicio DATE NOT NULL,
-        Fim DATE NOT NULL,
+        Inicio TIMESTAMP NOT NULL,
+        Fim TIMESTAMP NOT NULL,
         -- FK
         ID_lab INT NOT NULL,
         FOREIGN KEY (ID_lab) REFERENCES laboratorios (ID_lab),
@@ -131,6 +131,8 @@ CREATE TABLE
         -- PK
         ID_reslem INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_reslem),
+        -- values
+        Quantidade DECIMAL(10, 3) NOT NULL,
         -- FK
         ID_elem INT NOT NULL,
         FOREIGN KEY (ID_elem) REFERENCES Elementos (ID_elem),
@@ -147,7 +149,10 @@ CREATE TABLE
         -- values
         Nome VARCHAR(128) NOT NULL,
         Descricao TEXT NOT NULL,
-        Quantidade INT NOT NULL,
+        QuantidadeTotal INT,
+        QuantidadeDisponivel INT,
+        Qualidade INT CHECK (Qualidade IN (0, 1, 2, 3, 4, 5)),
+        Imagem LONGTEXT,
         -- FK
         ID_lab INT NOT NULL,
         FOREIGN KEY (ID_lab) REFERENCES laboratorios (ID_lab)
@@ -158,9 +163,107 @@ CREATE TABLE
         -- PK
         ID_resequip INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_resequip),
+        -- values
+        Quantidade INT NOT NULL,
         -- FK
         ID_equip INT NOT NULL,
         FOREIGN KEY (ID_equip) REFERENCES Equipamentos (ID_equip),
         ID_hor INT NOT NULL,
         FOREIGN KEY (ID_hor) REFERENCES Horarios (ID_hor)
     );
+
+-- INSERTS de para futuros testes com a API:
+INSERT INTO
+    campus (Nome, Telefone, Email)
+VALUES
+    (
+        'Campus 1',
+        '123456789',
+        'campus1@camp1.ifsp.edu.br'
+    );
+
+INSERT INTO
+    endereco (
+        numero,
+        rua,
+        bairro,
+        cidade,
+        Estado,
+        CEP,
+        ID_campus
+    )
+VALUES
+    (
+        123,
+        'Rua 1',
+        'Bairro 1',
+        'Cidade 1',
+        'SP',
+        '12345-678',
+        1
+    );
+
+INSERT INTO
+    users (Nome, Email, Senha, ID_campus)
+VALUES
+    ('User 1', 'prof1@ifsp.edu.br', '123456', 1),
+    ('User 2', 'prof2@ifsp.edu.br', '123456', 1),
+    ('User 3', 'prof3@ifsp.edu.br', '123456', 1),
+    ('User 4', 'prof4@ifsp.edu.br', '123456', 1);
+
+INSERT INTO
+    adminusuarioCampus (ID_Responsavel, ID_campus)
+VALUES
+    (1, 1);
+
+INSERT INTO
+    laboratorios (Sala, ID_campus)
+VALUES
+    ('Sala A101', 1);
+
+INSERT INTO
+    adminusuarioLab (ID_Responsavel, ID_lab)
+VALUES
+    (1, 1),
+    (2, 1);
+
+INSERT INTO
+    Elementos (Nome, Quantidade, Peso_molecular, numero_cas, numero_ec, estado_fisico, ID_lab)
+VALUES
+    ('Elemento 1', 100.0, 100.0, '123456-78-9', '123456-78-9', 1, 1),
+    ('Elemento 2', 100.0, 100.0, '123456-78-9', '123456-78-9', 2, 1),
+    ('Elemento 3', 100.0, 100.0, '123456-78-9', '123456-78-9', 3, 1),
+    ('Elemento 4', 100.0, 100.0, '123456-78-9', '123456-78-9', 1, 1);
+
+INSERT INTO
+    Equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, ID_lab)
+VALUES
+    ('Equipamento 1', 'Descrição 1', 10, 10, 5, 1),
+    ('Equipamento 2', 'Descrição 2', 10, 10, 5, 1),
+    ('Equipamento 3', 'Descrição 3', 10, 10, 5, 1),
+    ('Equipamento 4', 'Descrição 4', 10, 10, 5, 1);
+
+
+INSERT INTO
+    Horarios (Tipo, Inicio, Fim, ID_lab, ID_usuario)
+VALUES
+    (1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 1),
+    (2, '2021-06-01 14:00:00', '2021-06-01 18:00:00', 1, 2),
+    (1, '2021-06-02 08:00:00', '2021-06-02 12:00:00', 1, 3),
+    (2, '2021-06-02 14:00:00', '2021-06-02 18:00:00', 1, 4);
+
+INSERT INTO
+    Reserva_elemento (Quantidade, ID_elem, ID_hor)
+VALUES
+    (10.0, 1, 1),
+    (10.0, 2, 2),
+    (10.0, 3, 3),
+    (10.0, 4, 4);
+
+INSERT INTO
+    Reserva_equipamento (Quantidade, ID_equip, ID_hor)
+VALUES
+    (1, 1, 1),
+    (1, 2, 2),
+    (1, 3, 3),
+    (1, 4, 4);
