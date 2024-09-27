@@ -54,7 +54,7 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS adminusuarioCampus (
         -- PK
-        ID_relation INT NOT NULL,
+        ID_relation INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_relation),
         -- FK
         ID_Responsavel INT NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE
 CREATE TABLE
     IF NOT EXISTS adminusuarioLab (
         -- PK
-        ID_relation INT NOT NULL,
+        ID_relation INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_relation),
         -- FK
         ID_Responsavel INT NOT NULL,
@@ -172,6 +172,30 @@ CREATE TABLE
         FOREIGN KEY (ID_hor) REFERENCES Horarios (ID_hor)
     );
 
+-- ========================================= Codigos de inserção de dados com triggers ========================================= --
+-- Toda vez que uma reserva é feita, subtrai-se a quantidade reservada da quantidade disponível:
+-- Elemento:
+DELIMITER $$
+CREATE TRIGGER decrementa_elemento AFTER INSERT ON Reserva_elemento
+FOR EACH ROW
+BEGIN
+    UPDATE Elementos
+    SET Quantidade = Quantidade - NEW.Quantidade
+    WHERE ID_elem = NEW.ID_elem;
+END;
+
+-- Equipamento:
+DELIMITER $$
+CREATE TRIGGER decrementa_equipamento AFTER INSERT ON Reserva_equipamento
+FOR EACH ROW
+BEGIN
+    UPDATE Equipamentos
+    SET QuantidadeDisponivel = QuantidadeDisponivel - NEW.Quantidade
+    WHERE ID_equip = NEW.ID_equip;
+END;
+
+
+
 -- INSERTS de para futuros testes com a API:
 INSERT INTO
     campus (Nome, Telefone, Email)
@@ -204,7 +228,7 @@ VALUES
     );
 
 INSERT INTO
-    users (Nome, Email, Senha, ID_campus)
+    usuarios (Nome, Email, Senha, ID_campus)
 VALUES
     ('User 1', 'prof1@ifsp.edu.br', '123456', 1),
     ('User 2', 'prof2@ifsp.edu.br', '123456', 1),
@@ -231,9 +255,9 @@ INSERT INTO
     Elementos (Nome, Quantidade, Peso_molecular, numero_cas, numero_ec, estado_fisico, ID_lab)
 VALUES
     ('Elemento 1', 100.0, 100.0, '123456-78-9', '123456-78-9', 1, 1),
-    ('Elemento 2', 100.0, 100.0, '123456-78-9', '123456-78-9', 2, 1),
-    ('Elemento 3', 100.0, 100.0, '123456-78-9', '123456-78-9', 3, 1),
-    ('Elemento 4', 100.0, 100.0, '123456-78-9', '123456-78-9', 1, 1);
+    ('Elemento 2', 100.0, 100.0, '223456-78-9', '223456-78-9', 2, 1),
+    ('Elemento 3', 100.0, 100.0, '323456-78-9', '323456-78-9', 3, 1),
+    ('Elemento 4', 100.0, 100.0, '423456-78-9', '423456-78-9', 1, 1);
 
 INSERT INTO
     Equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, ID_lab)
