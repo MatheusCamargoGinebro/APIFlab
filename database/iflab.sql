@@ -71,6 +71,9 @@ CREATE TABLE
         PRIMARY KEY (ID_lab),
         -- Values
         Sala varchar(16),
+        AdminLevel INT CHECK (AdminLevel IN (1, 2)),
+        -- 1 = Membro
+        -- 2 = Responsável
         -- FK
         ID_campus INT NOT NULL,
         FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
