@@ -1,13 +1,12 @@
 const express = require("express");
-
 const router = express.Router();
-
-const AccountControllers = require("../controllers/AccountControllers");
-
 module.exports = router;
 
+const userControllers = require("../controllers/user_controllers");
+const userMiddlewares = require("../middlewares/user_middlewares");
+
 router.get("/", (__req, res) => {
-  res.send("Hello, World!");
+    res.send("string");
 });
 
 // Rotas:
@@ -53,3 +52,30 @@ router.get("/", (__req, res) => {
     - Deletar elemento
     - Listar reservas do elemento
 */
+
+// Rotas de usuário:
+router.post(
+    "/user/register",
+    userMiddlewares.user_name,
+    userMiddlewares.user_email,
+    userMiddlewares.user_password,
+    userMiddlewares.user_tipo,
+    userMiddlewares.user_id_campus,
+    userControllers.userRegister
+);
+
+router.post("/user/login", (req, res) => {
+    res.send("Login Route!");
+});
+
+router.put("/user/edit", (req, res) => {
+    res.send("Edit Route!");
+});
+
+router.delete("/user/delete", (req, res) => {
+    res.send("Delete Route!");
+});
+
+router.get("/user/reservations", (req, res) => {
+    res.send("List reservations Route!");
+});

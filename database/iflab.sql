@@ -44,8 +44,13 @@ CREATE TABLE
         -- values
         Nome VARCHAR(128) NOT NULL,
         Email VARCHAR(256) NOT NULL,
-        Senha VARCHAR(64) NOT NULL,
+        Senha VARCHAR(60) NOT NULL,
+        Salt VARCHAR(60) NOT NULL,
         profilePic LONGTEXT,
+        Tipo INT CHECK (Tipo IN (1, 2, 3)),
+        -- 1 = Aluno
+        -- 2 = Professor
+        -- 3 = Outro
         -- FK
         ID_campus INT NOT NULL,
         FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
@@ -71,9 +76,6 @@ CREATE TABLE
         PRIMARY KEY (ID_lab),
         -- Values
         Sala varchar(16),
-        AdminLevel INT CHECK (AdminLevel IN (1, 2)) NOT NULL,
-        -- 1 = Membro
-        -- 2 = Responsável
         -- FK
         ID_campus INT NOT NULL,
         FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
@@ -84,6 +86,11 @@ CREATE TABLE
         -- PK
         ID_relation INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_relation),
+        -- values
+        AdminLevel INT CHECK (AdminLevel IN (1, 2)) NOT NULL,
+        -- 1 = Membro
+        -- 2 = Responsável
+        -- FK
         -- FK
         ID_Responsavel INT NOT NULL,
         FOREIGN KEY (ID_Responsavel) REFERENCES usuarios (ID_usuario),
@@ -176,43 +183,39 @@ CREATE TABLE
     );
 
 -- ========================================= Codigos de inserção de dados com triggers ========================================= --
--- Toda vez que uma reserva é feita, subtrai-se a quantidade reservada da quantidade disponível:
--- Elemento:
 DELIMITER $$
-CREATE TRIGGER decrementa_elemento AFTER INSERT ON Reserva_elemento
-FOR EACH ROW
-BEGIN
-    UPDATE Elementos
-    SET Quantidade = Quantidade - NEW.Quantidade
-    WHERE ID_elem = NEW.ID_elem;
+CREATE TRIGGER decrementa_elemento AFTER INSERT ON Reserva_elemento FOR EACH ROW BEGIN
+UPDATE Elementos
+SET
+    Quantidade = Quantidade - NEW.Quantidade
+WHERE
+    ID_elem = NEW.ID_elem;
+
 END;
 
--- Equipamento:
 DELIMITER $$
-CREATE TRIGGER decrementa_equipamento AFTER INSERT ON Reserva_equipamento
-FOR EACH ROW
-BEGIN
-    UPDATE Equipamentos
-    SET QuantidadeDisponivel = QuantidadeDisponivel - NEW.Quantidade
-    WHERE ID_equip = NEW.ID_equip;
+CREATE TRIGGER decrementa_equipamento AFTER INSERT ON Reserva_equipamento FOR EACH ROW BEGIN
+UPDATE Equipamentos
+SET
+    QuantidadeDisponivel = QuantidadeDisponivel - NEW.Quantidade
+WHERE
+    ID_equip = NEW.ID_equip;
+
 END;
-
-
 
 -- INSERTS de para futuros testes com a API:
 INSERT INTO
     campus (Nome, Telefone, Email)
 VALUES
-    (
-        'Campus 1',
-        '123456789',
-        'campus1@camp1.ifsp.edu.br'
-    );
+    ('Campus 1', '123456789', 'camp@camp1.com.br'),
+    ('Campus 2', '987654321', 'camp@camp2.com.br'),
+    ('Campus 3', '123456789', 'camp@camp3.com.br');
 
 INSERT INTO
     endereco (
         numero,
         rua,
+        complemento,
         bairro,
         cidade,
         Estado,
@@ -223,74 +226,397 @@ VALUES
     (
         123,
         'Rua 1',
+        'Complemento 1',
         'Bairro 1',
         'Cidade 1',
         'SP',
         '12345-678',
         1
+    ),
+    (
+        456,
+        'Rua 2',
+        'Complemento 2',
+        'Bairro 2',
+        'Cidade 2',
+        'SP',
+        '12345-678',
+        2
+    ),
+    (
+        789,
+        'Rua 3',
+        'Complemento 3',
+        'Bairro 3',
+        'Cidade 3',
+        'SP',
+        '12345-678',
+        3
     );
 
 INSERT INTO
-    usuarios (Nome, Email, Senha, ID_campus)
+    usuarios (
+        Nome,
+        Email,
+        Senha,
+        Salt,
+        profilePic,
+        Tipo,
+        ID_campus
+    )
 VALUES
-    ('User 1', 'prof1@ifsp.edu.br', '123456', 1),
-    ('User 2', 'prof2@ifsp.edu.br', '123456', 1),
-    ('User 3', 'prof3@ifsp.edu.br', '123456', 1),
-    ('User 4', 'prof4@ifsp.edu.br', '123456', 1);
+    (
+        'Usuario 1',
+        'user.1@ifsp.edu.br',
+        '123456',
+        '123456',
+        'profilePic1',
+        2,
+        1
+    ),
+    (
+        'Usuario 2',
+        'user.2@aluno.ifsp.edu.br',
+        '123456',
+        '123456',
+        'profilePic2',
+        1,
+        2
+    ),
+    (
+        'Usuario 3',
+        'user.3@ifsp.edu.br',
+        '123456',
+        '123456',
+        'profilePic3',
+        3,
+        3
+    ),
+    (
+        'Usuario 4',
+        'user.4@ifsp.edu.br',
+        '123456',
+        '123456',
+        'profilePic4',
+        2,
+        1
+    );
 
 INSERT INTO
     adminusuarioCampus (ID_Responsavel, ID_campus)
 VALUES
-    (1, 1);
+    (1, 1),
+    (3, 2),
+    (4, 3);
 
 INSERT INTO
     laboratorios (Sala, ID_campus)
 VALUES
-    ('Sala A101', 1);
+    ('Sala 1', 1),
+    ('Sala 2', 2),
+    ('Sala 3', 3);
 
 INSERT INTO
-    adminusuarioLab (ID_Responsavel, ID_lab)
+    adminusuarioLab (AdminLevel, ID_Responsavel, ID_lab)
 VALUES
-    (1, 1),
-    (2, 1);
+    (2, 1, 1),
+    (1, 3, 2),
+    (2, 4, 3);
 
 INSERT INTO
-    Elementos (Nome, Quantidade, Peso_molecular, numero_cas, numero_ec, estado_fisico, ID_lab)
+    Elementos (
+        Nome,
+        Quantidade,
+        Peso_molecular,
+        numero_cas,
+        numero_ec,
+        estado_fisico,
+        imagem,
+        ID_lab
+    )
 VALUES
-    ('Elemento 1', 100.0, 100.0, '123456-78-9', '123456-78-9', 1, 1),
-    ('Elemento 2', 100.0, 100.0, '223456-78-9', '223456-78-9', 2, 1),
-    ('Elemento 3', 100.0, 100.0, '323456-78-9', '323456-78-9', 3, 1),
-    ('Elemento 4', 100.0, 100.0, '423456-78-9', '423456-78-9', 1, 1);
+    (
+        'Elemento 1',
+        100,
+        1.0,
+        '123-45-671',
+        '123-45-671',
+        1,
+        'imagem1',
+        1
+    ),
+    (
+        'Elemento 2',
+        200,
+        2.0,
+        '123-45-672',
+        '123-45-672',
+        2,
+        'imagem2',
+        2
+    ),
+    (
+        'Elemento 3',
+        300,
+        3.0,
+        '123-45-673',
+        '123-45-673',
+        3,
+        'imagem3',
+        3
+    ),
+    (
+        'Elemento 4',
+        400,
+        4.0,
+        '123-45-674',
+        '123-45-674',
+        1,
+        'imagem4',
+        1
+    ),
+    (
+        'Elemento 5',
+        500,
+        5.0,
+        '123-45-675',
+        '123-45-675',
+        2,
+        'imagem5',
+        2
+    ),
+    (
+        'Elemento 6',
+        600,
+        6.0,
+        '123-45-676',
+        '123-45-676',
+        3,
+        'imagem6',
+        3
+    ),
+    (
+        'Elemento 7',
+        700,
+        7.0,
+        '123-45-677',
+        '123-45-677',
+        1,
+        'imagem7',
+        1
+    ),
+    (
+        'Elemento 8',
+        800,
+        8.0,
+        '123-45-678',
+        '123-45-678',
+        2,
+        'imagem8',
+        2
+    ),
+    (
+        'Elemento 9',
+        900,
+        9.0,
+        '123-45-679',
+        '123-45-679',
+        3,
+        'imagem9',
+        3
+    );
 
 INSERT INTO
-    Equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, ID_lab)
+    Equipamentos (
+        Nome,
+        Descricao,
+        QuantidadeTotal,
+        QuantidadeDisponivel,
+        Qualidade,
+        Imagem,
+        ID_lab
+    )
 VALUES
-    ('Equipamento 1', 'Descrição 1', 10, 10, 5, 1),
-    ('Equipamento 2', 'Descrição 2', 10, 10, 5, 1),
-    ('Equipamento 3', 'Descrição 3', 10, 10, 5, 1),
-    ('Equipamento 4', 'Descrição 4', 10, 10, 5, 1);
-
+    (
+        'Equipamento 1',
+        'Descricao 1',
+        10,
+        10,
+        1,
+        'imagem1',
+        1
+    ),
+    (
+        'Equipamento 2',
+        'Descricao 2',
+        20,
+        20,
+        2,
+        'imagem2',
+        2
+    ),
+    (
+        'Equipamento 3',
+        'Descricao 3',
+        30,
+        30,
+        3,
+        'imagem3',
+        3
+    ),
+    (
+        'Equipamento 4',
+        'Descricao 4',
+        40,
+        40,
+        4,
+        'imagem4',
+        1
+    ),
+    (
+        'Equipamento 5',
+        'Descricao 5',
+        50,
+        50,
+        5,
+        'imagem5',
+        2
+    ),
+    (
+        'Equipamento 6',
+        'Descricao 6',
+        60,
+        60,
+        1,
+        'imagem6',
+        3
+    ),
+    (
+        'Equipamento 7',
+        'Descricao 7',
+        70,
+        70,
+        2,
+        'imagem7',
+        1
+    ),
+    (
+        'Equipamento 8',
+        'Descricao 8',
+        80,
+        80,
+        3,
+        'imagem8',
+        2
+    ),
+    (
+        'Equipamento 9',
+        'Descricao 9',
+        90,
+        90,
+        4,
+        'imagem9',
+        3
+    );
 
 INSERT INTO
     Horarios (Tipo, Inicio, Fim, ID_lab, ID_usuario)
 VALUES
-    (1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 1),
-    (2, '2021-06-01 14:00:00', '2021-06-01 18:00:00', 1, 2),
-    (1, '2021-06-02 08:00:00', '2021-06-02 12:00:00', 1, 3),
-    (2, '2021-06-02 14:00:00', '2021-06-02 18:00:00', 1, 4);
+    (
+        1,
+        '2021-01-01 08:00:00',
+        '2021-01-01 12:00:00',
+        1,
+        1
+    ),
+    (
+        2,
+        '2021-01-01 13:00:00',
+        '2021-01-01 17:00:00',
+        2,
+        2
+    ),
+    (
+        1,
+        '2021-01-01 08:00:00',
+        '2021-01-01 12:00:00',
+        3,
+        3
+    ),
+    (
+        2,
+        '2021-01-01 13:00:00',
+        '2021-01-01 17:00:00',
+        1,
+        4
+    ),
+    (
+        1,
+        '2021-01-01 08:00:00',
+        '2021-01-01 12:00:00',
+        2,
+        1
+    ),
+    (
+        2,
+        '2021-01-01 13:00:00',
+        '2021-01-01 17:00:00',
+        3,
+        2
+    ),
+    (
+        1,
+        '2021-01-01 08:00:00',
+        '2021-01-01 12:00:00',
+        1,
+        3
+    ),
+    (
+        2,
+        '2021-01-01 13:00:00',
+        '2021-01-01 17:00:00',
+        2,
+        4
+    ),
+    (
+        1,
+        '2021-01-01 08:00:00',
+        '2021-01-01 12:00:00',
+        3,
+        1
+    ),
+    (
+        2,
+        '2021-01-01 13:00:00',
+        '2021-01-01 17:00:00',
+        1,
+        2
+    );
 
 INSERT INTO
     Reserva_elemento (Quantidade, ID_elem, ID_hor)
 VALUES
-    (10.0, 1, 1),
-    (10.0, 2, 2),
-    (10.0, 3, 3),
-    (10.0, 4, 4);
+    (10, 1, 1),
+    (20, 2, 2),
+    (30, 3, 3),
+    (40, 4, 4),
+    (50, 5, 5),
+    (60, 6, 6),
+    (70, 7, 7),
+    (80, 8, 8),
+    (90, 9, 9),
+    (100, 1, 10);
 
 INSERT INTO
     Reserva_equipamento (Quantidade, ID_equip, ID_hor)
 VALUES
-    (1, 1, 1),
-    (1, 2, 2),
-    (1, 3, 3),
-    (1, 4, 4);
+    (10, 1, 1),
+    (20, 2, 2),
+    (30, 3, 3),
+    (40, 4, 4),
+    (50, 5, 5),
+    (60, 6, 6),
+    (70, 7, 7),
+    (80, 8, 8),
+    (90, 9, 9),
+    (100, 1, 10);
