@@ -1,3 +1,4 @@
+const { get } = require("../services/router");
 const connection = require("../utils/connection");
 
 const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
@@ -67,6 +68,24 @@ const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
     return checkdata;
 };
 
+const getInfo = async (email) => {
+    const query =
+        "SELECT ID_usuario, Salt, Senha FROM usuarios WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    return result[0];
+};
+
+const loginUser = async (email, senha) => {
+    const query =
+        "SELECT Nome, Email FROM usuarios WHERE Email = ? AND Senha = ?;";
+    const [result] = await connection.execute(query, [email, senha]);
+
+    console.log(result[0]);
+};
+
 module.exports = {
     registerUser,
+    getInfo,
+    loginUser,
 };

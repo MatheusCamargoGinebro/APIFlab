@@ -1,3 +1,7 @@
+const JWT = require("jsonwebtoken");
+
+const blackList = [];
+
 const user_name = (request, response, next) => {
     if (
         request.body.nome === undefined ||
@@ -215,10 +219,57 @@ const user_id_campus = (request, response, next) => {
     next();
 };
 
+const CheckToken = async (request, response, next) => {
+    const token = request.headers["x-access-token"];
+
+    if (!token || token === undefined || token === null || token === "") {
+        return response
+            .status(401)
+            .send({ message: "Token não fornecido", error_at: "6" });
+    }
+
+    JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err || blackList.includes(token)) {
+            return response
+                .status(401)
+                .send({ message: "Token inválido", error_at: "6" });
+        }
+
+        request.userID = decoded.userID;
+        next();
+    });
+};
+
+const addTokenToBlackList = (request, response, next) => {
+    if (blackList.includes(request.headers["x-access-token"])) {
+        return response
+            .status(401)
+            .send({ message: "Token já está na blacklist", error_at: "6" });
+    } else {
+        blackList.push(request.headers["x-access-token"]);
+    }
+
+    // Limpando tokens já expirados da blacklist:
+    blackList.forEach((token, index) => {
+        JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                console.log("Token expirado: ", token);
+                blackList.splice(index, 1);
+            }
+        });
+    });
+
+    console.log(blackList);
+
+    next();
+};
+
 module.exports = {
     user_name,
     user_email,
     user_password,
     user_tipo,
     user_id_campus,
+    CheckToken,
+    addTokenToBlackList,
 };

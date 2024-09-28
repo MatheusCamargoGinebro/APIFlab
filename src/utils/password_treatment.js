@@ -11,7 +11,12 @@ const hashPasswordGenerator = async (password, salt) => {
     return hashedPassword;
 };
 
+const comparePasswords = async (password, salt, hashedPassword) => {
+    const result = await bcryptjs.compare(password + salt, hashedPassword);
+    return result;
+};
 module.exports = {
     saltGenerator,
     hashPasswordGenerator,
+    comparePasswords,
 };

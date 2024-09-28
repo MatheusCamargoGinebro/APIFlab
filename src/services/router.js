@@ -5,8 +5,10 @@ module.exports = router;
 const userControllers = require("../controllers/user_controllers");
 const userMiddlewares = require("../middlewares/user_middlewares");
 
-router.get("/", (__req, res) => {
-    res.send("string");
+router.get("/", userMiddlewares.CheckToken, (__req, res) => {
+    console.log("Chegou aqui!");
+    console.log(__req.userID);
+    res.send("Hello World!");
 });
 
 // Rotas:
@@ -64,8 +66,15 @@ router.post(
     userControllers.userRegister
 );
 
-router.post("/user/login", (req, res) => {
-    res.send("Login Route!");
+router.post(
+    "/user/login",
+    userMiddlewares.user_email,
+    userMiddlewares.user_password,
+    userControllers.userLogin
+);
+
+router.post("/user/logout", userMiddlewares.addTokenToBlackList, (req, res) => {
+    res.send("Logout Route!");
 });
 
 router.put("/user/edit", (req, res) => {
