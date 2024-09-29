@@ -620,3 +620,16 @@ VALUES
     (80, 8, 8),
     (90, 9, 9),
     (100, 1, 10);
+
+
+-- =========================================== Email Confirmation Code ===========================================
+
+CREATE TABLE
+    IF NOT EXISTS email_codes (
+        -- PK
+        ID_email INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (ID_email),
+        -- values
+        Email VARCHAR(256) NOT NULL,
+        Checkcode VARCHAR(60) NOT NULL
+    );

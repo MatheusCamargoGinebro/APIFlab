@@ -219,6 +219,40 @@ const user_id_campus = (request, response, next) => {
     next();
 };
 
+const user_mail_code = (request, response, next) => {
+    const code = request.body.code;
+
+    if (!code || code === undefined || code === null || code === "") {
+        return response.status(400).send({
+            message: "Código de confirmação é obrigatório",
+            error_at: "6",
+        });
+    }
+
+    if (typeof code !== "string") {
+        return response.status(400).send({
+            message: "Código de confirmação deve ser uma string",
+            error_at: "6",
+        });
+    }
+
+    if (code.length !== 5) {
+        return response.status(400).send({
+            message: "Código de confirmação deve ter 5 caracteres",
+            error_at: "6",
+        });
+    }
+
+    if (!/^[0-9]*$/.test(code)) {
+        return response.status(400).send({
+            message: "Código de confirmação deve conter apenas números",
+            error_at: "6",
+        });
+    }
+
+    next();
+};
+
 const CheckToken = async (request, response, next) => {
     const token = request.headers["x-access-token"];
 
@@ -251,15 +285,12 @@ const addTokenToBlackList = (request, response, next) => {
 
     // Limpando tokens já expirados da blacklist:
     blackList.forEach((token, index) => {
-        JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        JWT.verify(token, process.env.JWT_SECRET, (err, __decoded) => {
             if (err) {
-                console.log("Token expirado: ", token);
                 blackList.splice(index, 1);
             }
         });
     });
-
-    console.log(blackList);
 
     next();
 };
@@ -272,4 +303,5 @@ module.exports = {
     user_id_campus,
     CheckToken,
     addTokenToBlackList,
+    user_mail_code,
 };

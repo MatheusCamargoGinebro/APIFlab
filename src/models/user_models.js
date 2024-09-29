@@ -1,5 +1,37 @@
-const { get } = require("../services/router");
 const connection = require("../utils/connection");
+
+const saveMailCode = async (email, code) => {
+    const query = "INSERT INTO email_codes (Email, Checkcode) VALUES (?, ?);";
+    const result = await connection.execute(query, [email, code]);
+
+    if (result.affectedRows > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const getMailCode = async (email) => {
+    const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    if (result.length > 0) {
+        return { code: result[0].Checkcode, status: true };
+    } else {
+        return { code: null, status: false };
+    }
+};
+
+const deleteMailCode = async (email) => {
+    const query = "DELETE FROM email_codes WHERE Email = ?;";
+    const result = await connection.execute(query, [email]);
+
+    if (result.affectedRows > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
 
 const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
     const checkdata = {
@@ -88,4 +120,7 @@ module.exports = {
     registerUser,
     getInfo,
     loginUser,
+    saveMailCode,
+    getMailCode,
+    deleteMailCode,
 };

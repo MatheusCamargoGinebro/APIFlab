@@ -5,11 +5,11 @@ module.exports = router;
 const userControllers = require("../controllers/user_controllers");
 const userMiddlewares = require("../middlewares/user_middlewares");
 
-router.get("/", userMiddlewares.CheckToken, (__req, res) => {
+/* router.get("/", userMiddlewares.CheckToken, (__req, res) => {
     console.log("Chegou aqui!");
     console.log(__req.userID);
     res.send("Hello World!");
-});
+}); */
 
 // Rotas:
 /*
@@ -56,6 +56,7 @@ router.get("/", userMiddlewares.CheckToken, (__req, res) => {
 */
 
 // Rotas de usuário:
+
 router.post(
     "/user/register",
     userMiddlewares.user_name,
@@ -63,7 +64,14 @@ router.post(
     userMiddlewares.user_password,
     userMiddlewares.user_tipo,
     userMiddlewares.user_id_campus,
+    userMiddlewares.user_mail_code,
     userControllers.userRegister
+);
+
+router.post(
+    "/user/register/mailcheck",
+    userMiddlewares.user_email,
+    userControllers.mailCheck
 );
 
 router.post(
@@ -73,13 +81,15 @@ router.post(
     userControllers.userLogin
 );
 
-router.post("/user/logout", userMiddlewares.addTokenToBlackList, (req, res) => {
-    res.send("Logout Route!");
-});
+router.post(
+    "/user/logout",
+    userMiddlewares.addTokenToBlackList,
+    (__req, res) => {
+        res.status(200).send({ message: "Logout realizado com sucesso!" });
+    }
+);
 
-router.put("/user/edit", (req, res) => {
-    res.send("Edit Route!");
-});
+router.put("/user/edit", userMiddlewares.CheckToken, userControllers.userEdit);
 
 router.delete("/user/delete", (req, res) => {
     res.send("Delete Route!");
