@@ -280,9 +280,6 @@ const CheckToken = async (request, response, next) => {
                 .status(401)
                 .send({ message: "Token inválido", error_at: "6" });
         }
-
-        request.userID = decoded.userID;
-        next();
     });
 
     const result = await userModels.checkBlacklist(token);

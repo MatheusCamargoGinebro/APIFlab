@@ -181,13 +181,15 @@ const userLogout = async (req, res) => {
 
     const status = await userModels.addTokenToBlackList(token);
 
-    if (status === true) {
+    console.log(status);
+
+    if (status.status === true) {
         return res.status(200).json({
-            message: "Logout realizado com sucesso!",
+            message: "Logout efetuado com sucesso!",
         });
     } else {
         return res.status(500).json({
-            message: "Erro ao realizar logout",
+            message: "Erro ao efetuar logout",
         });
     }
 };

@@ -130,13 +130,24 @@ const checkBlacklist = async (token) => {
 };
 
 const addTokenToBlackList = async (token) => {
+    // Verifica se o token já está na blacklist
+    const check = await checkBlacklist(token);
+
+    if (check === true) {
+        return { status: false, message: "Token já está na blacklist" };
+    }
+
+    // Adiciona o token à blacklist
     const query = "INSERT INTO blacklist (Token) VALUES (?);";
     const [result] = await connection.execute(query, [token]);
 
     if (result.affectedRows > 0) {
-        return true;
+        return { status: true, message: "Token adicionado à blacklist" };
     } else {
-        return false;
+        return {
+            status: false,
+            message: "Erro ao adicionar token à blacklist",
+        };
     }
 };
 
