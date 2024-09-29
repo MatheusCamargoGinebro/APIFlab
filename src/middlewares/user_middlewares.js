@@ -1,6 +1,5 @@
 const JWT = require("jsonwebtoken");
-
-const blackList = [];
+const userModels = require("../models/user_models");
 
 const user_name = (request, response, next) => {
     if (
@@ -253,6 +252,19 @@ const user_mail_code = (request, response, next) => {
     next();
 };
 
+const checkMailList = async (request, response, next) => {
+    const result = await userModels.checkEmail(request.body.email);
+
+    if (result === true) {
+        return response.status(400).send({
+            message: "Email já cadastrado",
+            error_at: "2",
+        });
+    }
+
+    next();
+};
+
 const CheckToken = async (request, response, next) => {
     const token = request.headers["x-access-token"];
 
@@ -263,7 +275,7 @@ const CheckToken = async (request, response, next) => {
     }
 
     JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err || blackList.includes(token)) {
+        if (err) {
             return response
                 .status(401)
                 .send({ message: "Token inválido", error_at: "6" });
@@ -272,25 +284,14 @@ const CheckToken = async (request, response, next) => {
         request.userID = decoded.userID;
         next();
     });
-};
 
-const addTokenToBlackList = (request, response, next) => {
-    if (blackList.includes(request.headers["x-access-token"])) {
+    const result = await userModels.checkBlacklist(token);
+
+    if (result === true) {
         return response
             .status(401)
-            .send({ message: "Token já está na blacklist", error_at: "6" });
-    } else {
-        blackList.push(request.headers["x-access-token"]);
+            .send({ message: "Token inválido", error_at: "6" });
     }
-
-    // Limpando tokens já expirados da blacklist:
-    blackList.forEach((token, index) => {
-        JWT.verify(token, process.env.JWT_SECRET, (err, __decoded) => {
-            if (err) {
-                blackList.splice(index, 1);
-            }
-        });
-    });
 
     next();
 };
@@ -298,10 +299,10 @@ const addTokenToBlackList = (request, response, next) => {
 module.exports = {
     user_name,
     user_email,
+    checkMailList,
     user_password,
     user_tipo,
     user_id_campus,
     CheckToken,
-    addTokenToBlackList,
     user_mail_code,
 };

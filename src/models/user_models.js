@@ -2,12 +2,15 @@ const connection = require("../utils/connection");
 
 const saveMailCode = async (email, code) => {
     const query = "INSERT INTO email_codes (Email, Checkcode) VALUES (?, ?);";
-    const result = await connection.execute(query, [email, code]);
+    const [result] = await connection.execute(query, [email, code]);
 
     if (result.affectedRows > 0) {
-        return true;
+        return { status: true, message: "Código de confirmação salvo" };
     } else {
-        return false;
+        return {
+            status: false,
+            message: "Erro ao salvar código de confirmação",
+        };
     }
 };
 
@@ -23,10 +26,58 @@ const getMailCode = async (email) => {
 };
 
 const deleteMailCode = async (email) => {
+    // Verifica se o código de confirmação existe:
+    const mailCode = await getMailCode(email);
+
+    if (mailCode.status === false) {
+        return {
+            status: false,
+            message: "Código de confirmação não encontrado",
+        };
+    }
+
+    // Deleta o código de confirmação:
     const query = "DELETE FROM email_codes WHERE Email = ?;";
-    const result = await connection.execute(query, [email]);
+    const [result] = await connection.execute(query, [email]);
 
     if (result.affectedRows > 0) {
+        return { status: true, message: "Código de confirmação deletado" };
+    } else {
+        return {
+            status: false,
+            message: "Erro ao deletar código de confirmação",
+        };
+    }
+};
+
+const checkUsername = async (nome) => {
+    const query = "SELECT * FROM usuarios WHERE Nome = ?;";
+
+    const [result] = await connection.execute(query, [nome]);
+
+    if (result.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const checkEmail = async (email) => {
+    const query = "SELECT * FROM usuarios WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    if (result.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const checkCampus = async (ID_campus) => {
+    const query = "SELECT * FROM campus WHERE ID_campus = ?;";
+    const [result] = await connection.execute(query, [ID_campus]);
+
+    if (result.length > 0) {
         return true;
     } else {
         return false;
@@ -34,70 +85,23 @@ const deleteMailCode = async (email) => {
 };
 
 const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
-    const checkdata = {
-        email: false,
-        nome: false,
-        id_campus: false,
-        saved: false,
-        message: "No data to check!",
-    };
+    // Salvando no banco de dados (todos os dados já foram verificados)
+    const query =
+        "INSERT INTO usuarios (Nome, Email, Senha, Tipo, Salt, ID_campus) VALUES (?, ?, ?, ?, ?, ?);";
+    const [result] = await connection.execute(query, [
+        nome,
+        email,
+        senha,
+        tipo,
+        salt,
+        ID_campus,
+    ]);
 
-    // Verificando se o email já está cadastrado:
-    const queryEmail = "SELECT * FROM usuarios WHERE Email = ?;";
-    const [emailResult] = await connection.execute(queryEmail, [email]);
-
-    if (emailResult.length > 0) {
-        checkdata.email = false;
-        checkdata.message = "Email já cadastrado!";
+    if (result.affectedRows > 0) {
+        return true;
     } else {
-        checkdata.email = true;
+        return false;
     }
-
-    // Verificando se o nome já está cadastrado:
-    const queryName = "SELECT * FROM usuarios WHERE Nome = ?;";
-    const [nameResult] = await connection.execute(queryName, [nome]);
-
-    if (nameResult.length > 0) {
-        checkdata.nome = false;
-        checkdata.message = "Nome já cadastrado!";
-    } else {
-        checkdata.nome = true;
-    }
-
-    // Verificando se o ID do campus é válido:
-    const queryCampus = "SELECT * FROM campus WHERE ID_campus = ?;";
-    const [campusResult] = await connection.execute(queryCampus, [ID_campus]);
-
-    if (campusResult.length === 0) {
-        checkdata.id_campus = false;
-        checkdata.message = "ID do campus inválido!";
-    } else {
-        checkdata.id_campus = true;
-    }
-
-    if (
-        checkdata.email === true &&
-        checkdata.nome === true &&
-        checkdata.id_campus === true
-    ) {
-        // Salvando o usuário no banco de dados:
-        const query =
-            "INSERT INTO usuarios (Nome, Email, Senha, Tipo, Salt, ID_campus) VALUES (?, ?, ?, ?, ?, ?);";
-        await connection.execute(query, [
-            nome,
-            email,
-            senha,
-            tipo,
-            salt,
-            ID_campus,
-        ]);
-
-        checkdata.saved = true;
-
-        checkdata.message = "Usuário cadastrado com sucesso!";
-    }
-
-    return checkdata;
 };
 
 const getInfo = async (email) => {
@@ -112,15 +116,40 @@ const loginUser = async (email, senha) => {
     const query =
         "SELECT Nome, Email FROM usuarios WHERE Email = ? AND Senha = ?;";
     const [result] = await connection.execute(query, [email, senha]);
+};
 
-    console.log(result[0]);
+const checkBlacklist = async (token) => {
+    const query = "SELECT * FROM blacklist WHERE Token = ?;";
+    const [result] = await connection.execute(query, [token]);
+
+    if (result.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const addTokenToBlackList = async (token) => {
+    const query = "INSERT INTO blacklist (Token) VALUES (?);";
+    const [result] = await connection.execute(query, [token]);
+
+    if (result.affectedRows > 0) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
 module.exports = {
+    checkEmail,
+    checkUsername,
+    checkCampus,
     registerUser,
     getInfo,
     loginUser,
     saveMailCode,
     getMailCode,
     deleteMailCode,
+    checkBlacklist,
+    addTokenToBlackList,
 };

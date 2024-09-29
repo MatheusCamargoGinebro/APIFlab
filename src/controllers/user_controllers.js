@@ -1,38 +1,106 @@
-const { hash } = require("bcryptjs");
 const userModels = require("../models/user_models");
 const passwordTreatment = require("../utils/password_treatment");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 
+// ======================================= Registrando usuário =======================================
+
+// Função para verificar se o código de confirmação de email é válido:
+const checkMailCode = async (mail, code) => {
+    const mailCode = await userModels.getMailCode(mail);
+
+    if (mailCode.status === false) {
+        return false;
+    }
+
+    if (code !== mailCode.code) {
+        return false;
+    }
+
+    userModels.deleteMailCode(mail);
+    return true;
+};
+
+// Função para enviar o código de confirmação de email:
+const sendMailCode = async (req, res) => {
+    const email = req.body.email;
+    const transporter = nodeMailer.createTransport({
+        host: process.env.MAIL_HOST,
+        port: process.env.MAIL_PORT,
+        auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS },
+    });
+
+    // Gerando um número aleatório de 10000 a 99999:
+    const code = Math.floor(Math.random() * 89999 + 10000);
+
+    transporter
+        .sendMail({
+            from: process.env.MAIL_USER,
+            to: email,
+            subject: "Confirmação de email",
+            text: "Seu código de confirmação é: " + code,
+        })
+        .catch((error) => {
+            res.status(500).json({
+                message: "Erro ao enviar email de confirmação" + error,
+            });
+        });
+
+    // Salvando o código no banco de dados:
+    await userModels.deleteMailCode(email);
+
+    const result = await userModels.saveMailCode(email, code.toString());
+
+    if (result.status === true) {
+        return res.status(200).json({
+            message: "Código de confirmação enviado com sucesso!",
+        });
+    } else {
+        return res.status(500).json({
+            message: "Erro ao enviar código de confirmação",
+        });
+    }
+};
+
+// Função para registrar um usuário:
 const userRegister = async (req, res) => {
     const { nome, email, senha, tipo, id_campus, code } = req.body;
 
-    // Verificação do código de confirmação:
-    /* const mailCode = await userModels.getMailCode(email);
+    // Verificando se o código de confirmação é válido:
+    const mailCodeCheck = await checkMailCode(email, code);
 
-    console.log("1: " + mailCode.code);
-
-    if (mailCode.status === false) {
-        return res.status(400).json({ message: "Email não confirmado" });
+    if (mailCodeCheck === false) {
+        return res.status(400).json({
+            message: "Código de confirmação não vinculado ao email",
+        });
     }
 
-    console.log("1.1: " + mailCode.code);
-    console.log("2.1: " + code);
-    const hashedCode = await passwordTreatment.encodeMailCode(code.toString());
-    console.log("2.2: " + hashedCode);
+    // Verificando se o campus existe:
+    const campusCheck = await userModels.checkCampus(id_campus);
 
-    const result = await passwordTreatment.comparePasswords(
-        hashedCode,
-        mailCode.code
-    );
-
-    if (result === false) {
-        return res
-            .status(400)
-            .json({ message: "Código de confirmação inválido" });
+    if (campusCheck === false) {
+        return res.status(400).json({
+            message: "Campus não encontrado",
+        });
     }
 
-    userModels.deleteMailCode(email); */
+    // Verificando se o email já está cadastrado:
+    const emailCheck = await userModels.checkEmail(email);
+
+    if (emailCheck === true) {
+        return res.status(400).json({
+            message: "Email já cadastrado",
+        });
+    }
+
+    // Verificando se o nome de usuário já está cadastrado:
+    const usernameCheck = await userModels.checkUsername(nome);
+
+    if (usernameCheck === true) {
+        return res.status(400).json({
+            message: "Nome de usuário já cadastrado",
+        });
+    }
 
     // Criptografia da senha:
     const salt = await passwordTreatment.saltGenerator();
@@ -50,64 +118,20 @@ const userRegister = async (req, res) => {
         id_campus
     );
 
-    if (status.nome === false) {
-        return res.status(400).json({ message: status.message });
-    }
-
-    if (status.email === false) {
-        return res.status(400).json({ message: status.message });
-    }
-
-    if (status.id_campus === false) {
-        return res.status(400).json({ message: status.message });
-    }
-
-    res.status(201).json({ message: status.message });
-};
-
-const mailCheck = async (req, res) => {
-    const email = req.body.email;
-    const transporter = nodeMailer.createTransport({
-        host: process.env.MAIL_HOST,
-        port: process.env.MAIL_PORT,
-        auth: { user: process.env.MAIL_USER, pass: process.env.MAIL_PASS },
-    });
-
-    // Gerando um número aleatório de 10000 a 99999:
-
-    const code = Math.floor(Math.random() * 89999 + 10000);
-    const hashCode = await passwordTreatment.encodeMailCode(code.toString());
-
-    transporter
-        .sendMail({
-            from: process.env.MAIL_USER,
-            to: email,
-            subject: "Confirmação de email",
-            text: "Seu código de confirmação é: " + code,
-        })
-        .then(() => {
-            // Salvando o código no banco de dados:
-            userModels.deleteMailCode(email);
-            const result = userModels.saveMailCode(email, hashCode);
-
-            if (result === false) {
-                return res.status(500).json({
-                    message: "Erro ao salvar código de confirmação",
-                });
-            } else {
-                return res.status(200).json({
-                    message: "Código de confirmação salvo com sucesso!",
-                });
-            }
-        })
-        .catch((error) => {
-            console.log("Erro ao enviar email de confirmação: " + error);
-            res.status(500).json({
-                message: "Erro ao enviar email de confirmação",
-            });
+    if (status === true) {
+        return res.status(200).json({
+            message: "Usuário cadastrado com sucesso!",
         });
+    } else {
+        return res.status(500).json({
+            message: "Erro ao cadastrar usuário",
+        });
+    }
 };
 
+// ======================================= Login e Logout de usuário =======================================
+
+// Função para realizar o login de um usuário:
 const userLogin = async (req, res) => {
     const { email, senha } = req.body;
 
@@ -151,10 +175,21 @@ const userLogin = async (req, res) => {
     }
 };
 
+// Função para realizar o logout de um usuário:
 const userLogout = async (req, res) => {
-    blacklist.push(req.headers["x-access-token"]);
+    const token = req.headers["x-access-token"];
 
-    res.status(200).json({ message: "Logout efetuado com sucesso!" });
+    const status = await userModels.addTokenToBlackList(token);
+
+    if (status === true) {
+        return res.status(200).json({
+            message: "Logout realizado com sucesso!",
+        });
+    } else {
+        return res.status(500).json({
+            message: "Erro ao realizar logout",
+        });
+    }
 };
 
 const userEdit = async (req, res) => {
@@ -176,5 +211,5 @@ module.exports = {
     userDelete,
     userReservations,
     userLogout,
-    mailCheck,
+    sendMailCode,
 };

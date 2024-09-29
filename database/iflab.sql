@@ -631,5 +631,15 @@ CREATE TABLE
         PRIMARY KEY (ID_email),
         -- values
         Email VARCHAR(256) NOT NULL,
-        Checkcode VARCHAR(60) NOT NULL
+        Checkcode VARCHAR(5) NOT NULL
+    );
+
+CREATE TABLE
+    IF NOT EXISTS blacklist (
+        -- PK
+        ID_blacklist INT NOT NULL AUTO_INCREMENT,
+        PRIMARY KEY (ID_blacklist),
+
+        -- values
+        Token VARCHAR(256) NOT NULL
     );

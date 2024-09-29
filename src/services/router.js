@@ -71,7 +71,8 @@ router.post(
 router.post(
     "/user/register/mailcheck",
     userMiddlewares.user_email,
-    userControllers.mailCheck
+    userMiddlewares.checkMailList,
+    userControllers.sendMailCode
 );
 
 router.post(
@@ -83,10 +84,8 @@ router.post(
 
 router.post(
     "/user/logout",
-    userMiddlewares.addTokenToBlackList,
-    (__req, res) => {
-        res.status(200).send({ message: "Logout realizado com sucesso!" });
-    }
+    userMiddlewares.CheckToken,
+    userControllers.userLogout
 );
 
 router.put("/user/edit", userMiddlewares.CheckToken, userControllers.userEdit);
