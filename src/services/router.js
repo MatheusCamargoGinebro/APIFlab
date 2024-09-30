@@ -84,7 +84,15 @@ router.post(
     userControllers.userLogout
 );
 
-router.put("/user/edit", tokenMiddlewares.CheckToken, userControllers.userEdit);
+router.put(
+    "/user/edit",
+    tokenMiddlewares.CheckToken,
+    userMiddlewares.user_name,
+    userMiddlewares.user_email,
+    userMiddlewares.user_password,
+    userMiddlewares.profile_picture,
+    userControllers.userEdit
+);
 
 router.delete("/user/delete", (req, res) => {
     res.send("Delete Route!");

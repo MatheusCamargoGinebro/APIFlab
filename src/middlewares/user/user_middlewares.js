@@ -4,6 +4,8 @@
     O=============================================================O
 */
 
+const { request } = require("express");
+
 // O============================================================================================O
 
 // Função de verificação do campo Nome:
@@ -308,6 +310,17 @@ const user_mail_code = (request, response, next) => {
 
 // O============================================================================================O
 
+const profile_picture = (request, response, next) => {
+    if (typeof request.body.profile_picture !== "string") {
+        return response.status(400).send({
+            message: "Foto de perfil deve ser uma string",
+            error_at: "7",
+        });
+    }
+
+    next();
+};
+
 // Exportação dos módulos:
 module.exports = {
     user_name,
@@ -316,4 +329,5 @@ module.exports = {
     user_tipo,
     user_id_campus,
     user_mail_code,
+    profile_picture,
 };
