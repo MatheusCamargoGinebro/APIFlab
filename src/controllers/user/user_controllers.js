@@ -229,6 +229,8 @@ const userLogout = async (req, res) => {
 
 const userEdit = async (req, res) => {
     const { nome, email, senha, tipo, profilePic } = req.body;
+
+    res.send("Edit Route!");
 };
 
 // ======================================= Deleção de usuário =======================================
