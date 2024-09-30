@@ -2,14 +2,11 @@ const express = require("express");
 const router = express.Router();
 module.exports = router;
 
-const userControllers = require("../controllers/user_controllers");
-const userMiddlewares = require("../middlewares/user_middlewares");
+const userControllers = require("../controllers/user/user_controllers");
 
-/* router.get("/", userMiddlewares.CheckToken, (__req, res) => {
-    console.log("Chegou aqui!");
-    console.log(__req.userID);
-    res.send("Hello World!");
-}); */
+const userMiddlewares = require("../middlewares/user/user_middlewares");
+
+const tokenMiddlewares = require("../middlewares/token/token_middlewares");
 
 // Rotas:
 /*
@@ -69,9 +66,8 @@ router.post(
 );
 
 router.post(
-    "/user/register/mailcheck",
+    "/user/register/sendMailCode",
     userMiddlewares.user_email,
-    userMiddlewares.checkMailList,
     userControllers.sendMailCode
 );
 
@@ -84,11 +80,11 @@ router.post(
 
 router.post(
     "/user/logout",
-    userMiddlewares.CheckToken,
+    tokenMiddlewares.CheckToken,
     userControllers.userLogout
 );
 
-router.put("/user/edit", userMiddlewares.CheckToken, userControllers.userEdit);
+router.put("/user/edit", tokenMiddlewares.CheckToken, userControllers.userEdit);
 
 router.delete("/user/delete", (req, res) => {
     res.send("Delete Route!");

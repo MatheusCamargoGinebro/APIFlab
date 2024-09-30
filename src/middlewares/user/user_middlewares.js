@@ -1,6 +1,12 @@
-const JWT = require("jsonwebtoken");
-const userModels = require("../models/user_models");
+/*
+    O=============================================================O
+    |    Arquivo de verificação de JSON relacionado a usuários    |
+    O=============================================================O
+*/
 
+// O============================================================================================O
+
+// Função de verificação do campo Nome:
 const user_name = (request, response, next) => {
     if (
         request.body.nome === undefined ||
@@ -10,6 +16,12 @@ const user_name = (request, response, next) => {
         return response
             .status(400)
             .send({ message: "Nome é obrigatório", error_at: "1" });
+    }
+
+    if (typeof request.body.nome !== "string") {
+        return response
+            .status(400)
+            .send({ message: "Nome deve ser uma string", error_at: "1" });
     }
 
     if (request.body.nome.length < 3) {
@@ -47,11 +59,24 @@ const user_name = (request, response, next) => {
     next();
 };
 
+// O============================================================================================O
+
+// Função de verificação do campo Email:
 const user_email = (request, response, next) => {
-    if (!request.body.email) {
+    if (
+        !request.body.email ||
+        request.body.email === undefined ||
+        request.body.email === null
+    ) {
         return response
             .status(400)
             .send({ message: "Email é obrigatório", error_at: "2" });
+    }
+
+    if (typeof request.body.email !== "string") {
+        return response
+            .status(400)
+            .send({ message: "Email deve ser uma string", error_at: "2" });
     }
 
     if (request.body.email.length < 3) {
@@ -93,11 +118,25 @@ const user_email = (request, response, next) => {
     next();
 };
 
+// O============================================================================================O
+
+// Função de verificação do campo Senha:
 const user_password = (request, response, next) => {
-    if (!request.body.senha) {
+    if (
+        !request.body.senha ||
+        request.body.senha === undefined ||
+        request.body.senha === null
+    ) {
         return response
             .status(400)
             .send({ message: "Senha é obrigatória", error_at: "3" });
+    }
+
+    if (typeof request.body.senha !== "string") {
+        return response.status(400).send({
+            message: "Senha deve ser uma string",
+            error_at: "3",
+        });
     }
 
     if (request.body.senha.length < 8) {
@@ -126,7 +165,6 @@ const user_password = (request, response, next) => {
             .send({ message: "Senha não pode ser vazia", error_at: "3" });
     }
 
-    // Verificação de caracteres inseridos na senha:
     if (!/(?=.*[a-z])/.test(request.body.senha)) {
         return response.status(400).send({
             message: "A senha deve conter pelo menos uma letra minúscula",
@@ -165,6 +203,9 @@ const user_password = (request, response, next) => {
     next();
 };
 
+// O============================================================================================O
+
+// Função de verificação do campo Tipo:
 const user_tipo = (request, response, next) => {
     if (
         request.body.tipo === undefined ||
@@ -174,6 +215,13 @@ const user_tipo = (request, response, next) => {
         return response
             .status(400)
             .send({ message: "Tipo é obrigatório", error_at: "4" });
+    }
+
+    if (typeof request.body.tipo !== "number") {
+        return response.status(400).send({
+            message: "Tipo deve ser um número",
+            error_at: "4",
+        });
     }
 
     if (
@@ -190,6 +238,9 @@ const user_tipo = (request, response, next) => {
     next();
 };
 
+// O============================================================================================O
+
+// Função de verificação do campo ID do Campus:
 const user_id_campus = (request, response, next) => {
     if (
         request.body.id_campus === undefined ||
@@ -218,6 +269,9 @@ const user_id_campus = (request, response, next) => {
     next();
 };
 
+// O============================================================================================O
+
+// Função de verificação do código recebido para confirmação de email:
 const user_mail_code = (request, response, next) => {
     const code = request.body.code;
 
@@ -252,54 +306,14 @@ const user_mail_code = (request, response, next) => {
     next();
 };
 
-const checkMailList = async (request, response, next) => {
-    const result = await userModels.checkEmail(request.body.email);
+// O============================================================================================O
 
-    if (result === true) {
-        return response.status(400).send({
-            message: "Email já cadastrado",
-            error_at: "2",
-        });
-    }
-
-    next();
-};
-
-const CheckToken = async (request, response, next) => {
-    const token = request.headers["x-access-token"];
-
-    if (!token || token === undefined || token === null || token === "") {
-        return response
-            .status(401)
-            .send({ message: "Token não fornecido", error_at: "6" });
-    }
-
-    JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return response
-                .status(401)
-                .send({ message: "Token inválido", error_at: "6" });
-        }
-    });
-
-    const result = await userModels.checkBlacklist(token);
-
-    if (result === true) {
-        return response
-            .status(401)
-            .send({ message: "Token inválido", error_at: "6" });
-    }
-
-    next();
-};
-
+// Exportação dos módulos:
 module.exports = {
     user_name,
     user_email,
-    checkMailList,
     user_password,
     user_tipo,
     user_id_campus,
-    CheckToken,
     user_mail_code,
 };

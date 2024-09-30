@@ -1,10 +1,23 @@
-const userModels = require("../models/user_models");
-const passwordTreatment = require("../utils/password_treatment");
+/*
+    O==================================================================O
+    |   Funções de controle relacionadas ao usuário e suas operações   |
+    O==================================================================O
+*/
+
+// Importando módulos:
+const userModels = require("../../models/user/user_models");
+const tokenModels = require("../../models/token/token_models");
+const passwordTreatment = require("../../utils/password_treatment");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 
-// ======================================= Registrando usuário =======================================
+// O========================================================================================O
 
+/*
+    O===============================================================O
+    |   Funções de verificação de código de confirmação de email    |
+    O===============================================================O
+*/
 // Função para verificar se o código de confirmação de email é válido:
 const checkMailCode = async (mail, code) => {
     const mailCode = await userModels.getMailCode(mail);
@@ -21,9 +34,19 @@ const checkMailCode = async (mail, code) => {
     return true;
 };
 
-// Função para enviar o código de confirmação de email:
+// Função para enviar um código de confirmação de email:
 const sendMailCode = async (req, res) => {
     const email = req.body.email;
+
+    // Verificando se o email existe no banco de dados:
+    const emailCheck = await userModels.checkEmail(email);
+
+    if (emailCheck === true) {
+        return res.status(400).json({
+            message: "Email já cadastrado",
+        });
+    }
+
     const transporter = nodeMailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
@@ -62,7 +85,17 @@ const sendMailCode = async (req, res) => {
     }
 };
 
-// Função para registrar um usuário:
+// O========================================================================================O
+
+/*
+    O========================================================================O
+    |   Funções de controle relacionadas a manipulação de usuário no banco   |
+    O========================================================================O
+*/
+
+// ======================================= Registro de usuário =======================================
+
+// Função para registrar um novo usuário, com verificação de código de email criptografia de senha:
 const userRegister = async (req, res) => {
     const { nome, email, senha, tipo, id_campus, code } = req.body;
 
@@ -179,9 +212,7 @@ const userLogin = async (req, res) => {
 const userLogout = async (req, res) => {
     const token = req.headers["x-access-token"];
 
-    const status = await userModels.addTokenToBlackList(token);
-
-    console.log(status);
+    const status = await tokenModels.addTokenToBlackList(token);
 
     if (status.status === true) {
         return res.status(200).json({
@@ -194,16 +225,16 @@ const userLogout = async (req, res) => {
     }
 };
 
+// ======================================= Edição de usuário =======================================
+
 const userEdit = async (req, res) => {
     const { nome, email, senha, tipo, profilePic } = req.body;
 };
 
+// ======================================= Deleção de usuário =======================================
+
 const userDelete = async (req, res) => {
     res.send("Delete Route!");
-};
-
-const userReservations = async (req, res) => {
-    res.send("Reservations Route!");
 };
 
 module.exports = {
@@ -211,7 +242,6 @@ module.exports = {
     userLogin,
     userEdit,
     userDelete,
-    userReservations,
     userLogout,
     sendMailCode,
 };

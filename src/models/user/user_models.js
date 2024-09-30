@@ -1,5 +1,18 @@
-const connection = require("../utils/connection");
+/*
+    O===========================================O
+    |   Arquivo Models relacionado a usuários   |
+    O===========================================O
+*/
 
+// Importando conexão com o banco de dados:
+const connection = require("../../utils/connection");
+
+/*  
+    O=========================================================O
+    |    Funções de Models relacionadas a código de emails    |
+    O=========================================================O
+*/
+// Função para salvar o código de confirmação de email no banco de dados:
 const saveMailCode = async (email, code) => {
     const query = "INSERT INTO email_codes (Email, Checkcode) VALUES (?, ?);";
     const [result] = await connection.execute(query, [email, code]);
@@ -14,6 +27,7 @@ const saveMailCode = async (email, code) => {
     }
 };
 
+// Função para recuperar o código de confirmação de email do banco de dados:
 const getMailCode = async (email) => {
     const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
     const [result] = await connection.execute(query, [email]);
@@ -25,6 +39,7 @@ const getMailCode = async (email) => {
     }
 };
 
+// Função para deletar o código de confirmação já utilizado ou cancelado no banco de dados:
 const deleteMailCode = async (email) => {
     // Verifica se o código de confirmação existe:
     const mailCode = await getMailCode(email);
@@ -50,6 +65,25 @@ const deleteMailCode = async (email) => {
     }
 };
 
+/*
+    O=====================================================================O
+    |    Funções de Models relacionadas a existência de dados no banco    |
+    O=====================================================================O
+
+*/
+// Função para verificar se o email já está cadastrado no banco de dados:
+const checkEmail = async (email) => {
+    const query = "SELECT * FROM usuarios WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    if (result.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+// Função para verificar se o nome de usuário já está cadastrado no banco de dados:
 const checkUsername = async (nome) => {
     const query = "SELECT * FROM usuarios WHERE Nome = ?;";
 
@@ -62,17 +96,7 @@ const checkUsername = async (nome) => {
     }
 };
 
-const checkEmail = async (email) => {
-    const query = "SELECT * FROM usuarios WHERE Email = ?;";
-    const [result] = await connection.execute(query, [email]);
-
-    if (result.length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-};
-
+// Função para verificar se o campus existe no banco de dados:
 const checkCampus = async (ID_campus) => {
     const query = "SELECT * FROM campus WHERE ID_campus = ?;";
     const [result] = await connection.execute(query, [ID_campus]);
@@ -84,6 +108,12 @@ const checkCampus = async (ID_campus) => {
     }
 };
 
+/*
+    O=================================================O
+    |    Funções de Models relacionadas a usuários    |
+    O=================================================O
+*/
+// Função para registrar um usuário no banco de dados:
 const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
     // Salvando no banco de dados (todos os dados já foram verificados)
     const query =
@@ -104,6 +134,7 @@ const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
     }
 };
 
+// Função para recuperar informações do usuário (ID, Salt e Senha) para verificação de login:
 const getInfo = async (email) => {
     const query =
         "SELECT ID_usuario, Salt, Senha FROM usuarios WHERE Email = ?;";
@@ -112,42 +143,16 @@ const getInfo = async (email) => {
     return result[0];
 };
 
+// Função para verificar se o login é válido:
 const loginUser = async (email, senha) => {
     const query =
         "SELECT Nome, Email FROM usuarios WHERE Email = ? AND Senha = ?;";
     const [result] = await connection.execute(query, [email, senha]);
-};
-
-const checkBlacklist = async (token) => {
-    const query = "SELECT * FROM blacklist WHERE Token = ?;";
-    const [result] = await connection.execute(query, [token]);
 
     if (result.length > 0) {
-        return true;
+        return { status: true, message: "Login é válido" };
     } else {
-        return false;
-    }
-};
-
-const addTokenToBlackList = async (token) => {
-    // Verifica se o token já está na blacklist
-    const check = await checkBlacklist(token);
-
-    if (check === true) {
-        return { status: false, message: "Token já está na blacklist" };
-    }
-
-    // Adiciona o token à blacklist
-    const query = "INSERT INTO blacklist (Token) VALUES (?);";
-    const [result] = await connection.execute(query, [token]);
-
-    if (result.affectedRows > 0) {
-        return { status: true, message: "Token adicionado à blacklist" };
-    } else {
-        return {
-            status: false,
-            message: "Erro ao adicionar token à blacklist",
-        };
+        return { status: false, message: "Email ou senha incorretos" };
     }
 };
 
@@ -161,6 +166,6 @@ module.exports = {
     saveMailCode,
     getMailCode,
     deleteMailCode,
-    checkBlacklist,
-    addTokenToBlackList,
 };
+
+// O============================================================================================O
