@@ -23,6 +23,13 @@ const CheckToken = async (request, response, next) => {
         });
     }
 
+    // Verifica se o token realmente é um token JWT, para impedir qualquer tipo de ataque:
+    if (!token.startsWith("Bearer ")) {
+        return response
+            .status(401)
+            .send({ message: "Não é um Token", error_at: "token-header" });
+    }
+
     JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             return response
