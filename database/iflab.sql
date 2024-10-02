@@ -29,6 +29,7 @@ CREATE TABLE
         bairro VARCHAR(128) NOT NULL,
         cidade VARCHAR(128) NOT NULL,
         Estado CHAR(2) NOT NULL,
+        pais VARCHAR(128) NOT NULL DEFAULT 'Brasil',
         CEP CHAR(9) NOT NULL,
         -- FK
         ID_campus INT NOT NULL,
