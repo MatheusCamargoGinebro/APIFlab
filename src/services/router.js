@@ -135,5 +135,5 @@ router.put(
     tokenMiddlewares.CheckToken,
     instituteMiddlewares.campus_state,
     instituteMiddlewares.id_campus,
-    instituteControllers.editCampusName
+    instituteControllers.editCampusState
 );

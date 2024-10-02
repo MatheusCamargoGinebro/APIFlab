@@ -1,11 +1,11 @@
 /*
-    O=====================================================O
-    |   Funções de controle relacionadas aos institutos   |
-    O=====================================================O
+    O===================================================O
+    |   Funções de controle relacionadas aos modelos    |
+    O===================================================O
 */
 
-// Importando o modelo de institutos:
-const connection = require("../../config/database/connection");
+// Importando conexão com o banco de dados:
+const connection = require("../../utils/connection");
 
 const checkCampusName = async (campus_name) => {
     const query = "SELECT * FROM campus WHERE campus_name = ?;";
@@ -19,61 +19,102 @@ const checkCampusName = async (campus_name) => {
 };
 
 // O========================================================================================O
-const registerCampus = async (request, response) => {
-    const { campus_name, campus_state } = request.body;
 
-    const Checkresult = await checkCampusName(campus_name);
-
-    if (Checkresult.length > 0) {
-        return response.status(400).send({
-            status: false,
-            message: "Nome do campus já cadastrado",
-        });
-    }
-
+const createAdminUser = async (user_ID, campus_ID) => {
     const query =
-        "INSERT INTO campus (campus_name, campus_state) VALUES (?, ?);";
+        "INSERT INTO adminusuarioCampus (ID_responsavel, ID_campus) VALUES (?, ?);";
+    const [result] = await connection.execute(query, [user_ID, campus_ID]);
+
+    if (result.affectedRows < 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const checkAdminUser = async (user_ID, campus_ID) => {
+    const query =
+        "SELECT * FROM adminusuarioCampus WHERE ID_responsavel = ? AND ID_campus = ?;";
+    const [result] = await connection.execute(query, [user_ID, campus_ID]);
+
+    if (result.length > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+const removeAdminUser = async (user_ID, campus_ID) => {
+    const query =
+        "DELETE FROM adminusuarioCampus WHERE ID_responsavel = ? AND ID_campus = ?;";
+    const [result] = await connection.execute(query, [user_ID, campus_ID]);
+
+    if (result.affectedRows > 0) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+// O========================================================================================O
+
+const registerCampus = async (campus_name, campus_state, user_ID) => {
+    const query = "INSERT INTO campus (Nome, Estado) VALUES (?, ?);";
     const [result] = await connection.execute(query, [
         campus_name,
         campus_state,
     ]);
 
     if (result.affectedRows > 0) {
-        return response.status(201).send({
-            message: "Campus registrado com sucesso",
-        });
-    } else {
-        return response.status(400).send({
-            message: "Erro ao registrar campus",
-        });
+        const adminResult = createAdminUser(user_ID, result.insertId);
+
+        if (adminResult === true) {
+            return {
+                status: true,
+                message: "Campus cadastrado com sucesso!",
+            };
+        } else {
+            return {
+                status: false,
+                message: "Erro ao cadastrar campus!",
+            };
+        }
     }
 };
 
 // O========================================================================================O
 
-const editCampusName = async (request, response) => {
-    const { campus_name, id_campus } = request.body;
-
-    const Checkresult = await checkCampusName(campus_name);
-
-    if (Checkresult.length > 0) {
-        return response.status(400).send({
-            status: false,
-            message: "Nome do campus já cadastrado",
-        });
-    }
-
-    const query = "UPDATE campus SET campus_name = ? WHERE id_campus = ?;";
-    const [result] = await connection.execute(query, [campus_name, id_campus]);
+const editCampusName = async (ID_campus, newName) => {
+    const query = "UPDATE campus SET Nome = ? WHERE ID_campus = ?;";
+    const result = await connection.execute(query, [newName, ID_campus]);
 
     if (result.affectedRows > 0) {
-        return response.status(200).send({
-            message: "Nome do campus editado com sucesso",
-        });
+        return {
+            status: true,
+            message: "Nome do campus editado com sucesso!",
+        };
     } else {
-        return response.status(400).send({
-            message: "Erro ao editar nome do campus",
-        });
+        return {
+            status: false,
+            message: "Erro ao editar nome do campus!",
+        };
+    }
+};
+
+const editCampusState = async (ID_campus, ID_user, newName) => {
+    const query = "UPDATE campus SET Estado = ? WHERE ID_campus = ?;";
+    const result = await connection.execute(query, [newName, ID_campus]);
+
+    if (result.affectedRows > 0) {
+        return {
+            status: true,
+            message: "Estado do campus editado com sucesso!",
+        };
+    } else {
+        return {
+            status: false,
+            message: "Erro ao editar estado do campus!",
+        };
     }
 };
 
@@ -82,4 +123,8 @@ const editCampusName = async (request, response) => {
 module.exports = {
     registerCampus,
     editCampusName,
+    editCampusState,
+    createAdminUser,
+    checkAdminUser,
+    removeAdminUser,
 };
