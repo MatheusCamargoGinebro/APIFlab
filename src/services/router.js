@@ -3,10 +3,12 @@ const router = express.Router();
 module.exports = router;
 
 const userControllers = require("../controllers/user/user_controllers");
-
 const userMiddlewares = require("../middlewares/user/user_middlewares");
 
 const tokenMiddlewares = require("../middlewares/token/token_middlewares");
+
+const instituteMiddlewares = require("../middlewares/institute/institute_middlewares");
+const instituteControllers = require("../controllers/institute/institute_controllers");
 
 // Rotas:
 /*
@@ -115,61 +117,23 @@ router.put(
 router.post(
     "/institute/register",
     tokenMiddlewares.CheckToken,
-    campusMiddlewares.campus_name,
-    campusMiddlewares.campus_telefone,
-    campusMiddlewares.campus_email,
-    campusControllers.registerCampus
-);
-
-router.post(
-    "/institute/register/endereco",
-    tokenMiddlewares.CheckToken,
-    campusMiddlewares.numero,
-    campusMiddlewares.rua,
-    campusMiddlewares.complemento,
-    campusMiddlewares.bairro,
-    campusMiddlewares.cidade,
-    campusMiddlewares.estado,
-    campusMiddlewares.pais,
-    campusMiddlewares.cep,
-    campusMiddlewares.id_campus
+    instituteMiddlewares.campus_name,
+    instituteMiddlewares.campus_state,
+    instituteControllers.registerCampus
 );
 
 router.put(
     "/institute/edit/name",
     tokenMiddlewares.CheckToken,
-    campusMiddlewares.campus_name,
-    campusMiddlewares.id_campus,
-    campusControllers.editCampusName
+    instituteMiddlewares.campus_name,
+    instituteMiddlewares.id_campus,
+    instituteControllers.editCampusName
 );
 
 router.put(
-    "/institute/edit/telefone",
+    "/institute/edit/state",
     tokenMiddlewares.CheckToken,
-    campusMiddlewares.campus_telefone,
-    campusMiddlewares.id_campus,
-    campusControllers.editCampusTelefone
-);
-
-router.put(
-    "/institute/edit/email",
-    tokenMiddlewares.CheckToken,
-    campusMiddlewares.campus_email,
-    campusMiddlewares.id_campus,
-    campusControllers.editCampusEmail
-);
-
-router.put(
-    "/institute/edit/endereco",
-    tokenMiddlewares.CheckToken,
-    campusMiddlewares.numero,
-    campusMiddlewares.rua,
-    campusMiddlewares.complemento,
-    campusMiddlewares.bairro,
-    campusMiddlewares.cidade,
-    campusMiddlewares.estado,
-    campusMiddlewares.pais,
-    campusMiddlewares.cep,
-    campusMiddlewares.id_campus,
-    campusControllers.editCampusAddress
+    instituteMiddlewares.campus_state,
+    instituteMiddlewares.id_campus,
+    instituteControllers.editCampusName
 );

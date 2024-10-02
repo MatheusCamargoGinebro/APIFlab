@@ -17,45 +17,46 @@ const user_name = (request, response, next) => {
     ) {
         return response
             .status(400)
-            .send({ message: "Nome é obrigatório", error_at: "1" });
+            .send({ message: "Nome é obrigatório", error_at: "nome" });
     }
 
     if (typeof request.body.nome !== "string") {
         return response
             .status(400)
-            .send({ message: "Nome deve ser uma string", error_at: "1" });
+            .send({ message: "Nome deve ser uma string", error_at: "nome" });
     }
 
     if (request.body.nome.length < 3) {
         return response.status(400).send({
             message: "O nome deve ter pelo menos 3 caracteres",
-            error_at: "1",
+            error_at: "nome",
         });
     }
 
     if (request.body.nome.length > 256) {
         return response.status(400).send({
             message: "O nome deve ter no máximo 256 caracteres",
-            error_at: "1",
+            error_at: "nome",
         });
     }
 
     if (typeof request.body.nome !== "string") {
         return response
             .status(400)
-            .send({ message: "Nome deve ser uma string", error_at: "1" });
+            .send({ message: "Nome deve ser uma string", error_at: "nome" });
     }
 
     if (request.body.nome === "") {
         return response
             .status(400)
-            .send({ message: "Nome não pode ser vazio", error_at: "1" });
+            .send({ message: "Nome não pode ser vazio", error_at: "nome" });
     }
 
     if (!/^[a-zA-Z\s]*$/.test(request.body.nome)) {
-        return response
-            .status(400)
-            .send({ message: "Nome deve conter apenas letras", error_at: "1" });
+        return response.status(400).send({
+            message: "Nome deve conter apenas letras",
+            error_at: "nome",
+        });
     }
 
     next();
@@ -72,39 +73,39 @@ const user_email = (request, response, next) => {
     ) {
         return response
             .status(400)
-            .send({ message: "Email é obrigatório", error_at: "2" });
+            .send({ message: "Email é obrigatório", error_at: "email" });
     }
 
     if (typeof request.body.email !== "string") {
         return response
             .status(400)
-            .send({ message: "Email deve ser uma string", error_at: "2" });
+            .send({ message: "Email deve ser uma string", error_at: "email" });
     }
 
     if (request.body.email.length < 3) {
         return response.status(400).send({
             message: "O email deve ter pelo menos 3 caracteres",
-            error_at: "2",
+            error_at: "email",
         });
     }
 
     if (request.body.email.length > 256) {
         return response.status(400).send({
             message: "O email deve ter no máximo 256 caracteres",
-            error_at: "2",
+            error_at: "email",
         });
     }
 
     if (typeof request.body.email !== "string") {
         return response
             .status(400)
-            .send({ message: "Email deve ser uma string", error_at: "2" });
+            .send({ message: "Email deve ser uma string", error_at: "email" });
     }
 
     if (request.body.email === "") {
         return response
             .status(400)
-            .send({ message: "Email não pode ser vazio", error_at: "2" });
+            .send({ message: "Email não pode ser vazio", error_at: "email" });
     }
 
     if (
@@ -113,7 +114,7 @@ const user_email = (request, response, next) => {
     ) {
         return response.status(400).send({
             message: "Email deve ser um email vinculado à instituição",
-            error_at: "2",
+            error_at: "email",
         });
     }
 
@@ -137,68 +138,68 @@ const user_password = (request, response, next) => {
     if (typeof request.body.senha !== "string") {
         return response.status(400).send({
             message: "Senha deve ser uma string",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (request.body.senha.length < 8) {
         return response.status(400).send({
             message: "A senha deve ter pelo menos 8 caracteres",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (request.body.senha.length > 256) {
         return response.status(400).send({
             message: "A senha deve ter no máximo 256 caracteres",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (typeof request.body.senha !== "string") {
         return response
             .status(400)
-            .send({ message: "Senha deve ser uma string", error_at: "3" });
+            .send({ message: "Senha deve ser uma string", error_at: "senha" });
     }
 
     if (request.body.senha === "") {
         return response
             .status(400)
-            .send({ message: "Senha não pode ser vazia", error_at: "3" });
+            .send({ message: "Senha não pode ser vazia", error_at: "senha" });
     }
 
     if (!/(?=.*[a-z])/.test(request.body.senha)) {
         return response.status(400).send({
             message: "A senha deve conter pelo menos uma letra minúscula",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (!/(?=.*[A-Z])/.test(request.body.senha)) {
         return response.status(400).send({
             message: "A senha deve conter pelo menos uma letra maiúscula",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (!/(?=.*[0-9])/.test(request.body.senha)) {
         return response.status(400).send({
             message: "A senha deve conter pelo menos um número",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (!/(?=.*[!@#\$%\^&\*])/.test(request.body.senha)) {
         return response.status(400).send({
             message: "A senha deve conter pelo menos um caracter especial",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
     if (!/(?=.{8,})/.test(request.body.senha)) {
         return response.status(400).send({
             message: "A senha deve conter pelo menos 8 caracteres",
-            error_at: "3",
+            error_at: "senha",
         });
     }
 
@@ -216,13 +217,13 @@ const user_tipo = (request, response, next) => {
     ) {
         return response
             .status(400)
-            .send({ message: "Tipo é obrigatório", error_at: "4" });
+            .send({ message: "Tipo é obrigatório", error_at: "tipo" });
     }
 
     if (typeof request.body.tipo !== "number") {
         return response.status(400).send({
             message: "Tipo deve ser um número",
-            error_at: "4",
+            error_at: "tipo",
         });
     }
 
@@ -233,7 +234,7 @@ const user_tipo = (request, response, next) => {
     ) {
         return response.status(400).send({
             message: "O aluno deve ser do tipo Aluno, Professor ou Outro",
-            error_at: "4",
+            error_at: "tipo",
         });
     }
 
@@ -249,22 +250,23 @@ const user_id_campus = (request, response, next) => {
         request.body.id_campus === null ||
         !request.body.id_campus
     ) {
-        return response
-            .status(400)
-            .send({ message: "ID do campus é obrigatório", error_at: "5" });
+        return response.status(400).send({
+            message: "ID do campus é obrigatório",
+            error_at: "id_campus",
+        });
     }
 
     if (typeof request.body.id_campus !== "number") {
         return response.status(400).send({
             message: "ID do campus deve ser um número",
-            error_at: "5",
+            error_at: "id_campus",
         });
     }
 
     if (request.body.id_campus < 1) {
         return response.status(400).send({
             message: "ID do campus deve ser maior que 0",
-            error_at: "5",
+            error_at: "id_campus",
         });
     }
 
@@ -280,28 +282,28 @@ const user_mail_code = (request, response, next) => {
     if (!code || code === undefined || code === null || code === "") {
         return response.status(400).send({
             message: "Código de confirmação é obrigatório",
-            error_at: "6",
+            error_at: "code",
         });
     }
 
     if (typeof code !== "string") {
         return response.status(400).send({
             message: "Código de confirmação deve ser uma string",
-            error_at: "6",
+            error_at: "code",
         });
     }
 
     if (code.length !== 5) {
         return response.status(400).send({
             message: "Código de confirmação deve ter 5 caracteres",
-            error_at: "6",
+            error_at: "code",
         });
     }
 
     if (!/^[0-9]*$/.test(code)) {
         return response.status(400).send({
             message: "Código de confirmação deve conter apenas números",
-            error_at: "6",
+            error_at: "code",
         });
     }
 
@@ -314,7 +316,7 @@ const profile_picture = (request, response, next) => {
     if (typeof request.body.profilePic !== "string") {
         return response.status(400).send({
             message: "Foto de perfil deve ser uma string",
-            error_at: "7",
+            error_at: "code",
         });
     }
 

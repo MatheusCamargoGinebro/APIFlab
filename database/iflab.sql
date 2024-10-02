@@ -12,28 +12,8 @@ CREATE TABLE
         PRIMARY KEY (ID_campus),
         -- values
         -- Informações de contato:
-        Nome VARCHAR(128) NOT NULL,
-        Telefone CHAR(11),
-        Email VARCHAR(256) NOT NULL
-    );
-
-CREATE TABLE
-    IF NOT EXISTS endereco (
-        -- PK
-        ID_endereco INT NOT NULL AUTO_INCREMENT,
-        PRIMARY KEY (ID_endereco),
-        -- values
-        numero INT NOT NULL,
-        rua VARCHAR(128) NOT NULL,
-        complemento VARCHAR(128),
-        bairro VARCHAR(128) NOT NULL,
-        cidade VARCHAR(128) NOT NULL,
-        Estado CHAR(2) NOT NULL,
-        pais VARCHAR(128) NOT NULL DEFAULT 'Brasil',
-        CEP CHAR(9) NOT NULL,
-        -- FK
-        ID_campus INT NOT NULL,
-        FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
+        Nome VARCHAR(128) NOT NULL
+        Estado VARCHAR(2) NOT NULL,
     );
 
 -- =========================================== Informações do usuário ===========================================
