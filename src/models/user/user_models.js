@@ -156,6 +156,69 @@ const loginUser = async (email, senha) => {
     }
 };
 
+// Função para editar o nome de usuário:
+const editUserName = async (userID, newName) => {
+    //Verifica se o nome de usuário já existe:
+    const check = await checkUsername(newName);
+
+    if (check === true) {
+        return { status: false, message: "Nome de usuário já existe" };
+    }
+
+    const query = "UPDATE usuarios SET Nome = ? WHERE ID_usuario = ?;";
+    const [result] = await connection.execute(query, [newName, userID]);
+
+    if (result.affectedRows > 0) {
+        return { status: true, message: "Nome de usuário atualizado" };
+    } else {
+        return { status: false, message: "Erro ao atualizar nome de usuário" };
+    }
+};
+
+// Função para editar o email do usuário:
+const editUserEmail = async (userID, newEmail) => {
+    const query = "UPDATE usuarios SET Email = ? WHERE ID_usuario = ?;";
+    const [result] = await connection.execute(query, [newEmail, userID]);
+
+    if (result.affectedRows > 0) {
+        return { status: true, message: "Email de usuário atualizado" };
+    } else {
+        return { status: false, message: "Erro ao atualizar email de usuário" };
+    }
+};
+
+// Função para editar a senha do usuário:
+const editUserPassword = async (userID, newPassword, newSalt) => {
+    const query =
+        "UPDATE usuarios SET Senha = ?, Salt = ? WHERE ID_usuario = ?;";
+    const [result] = await connection.execute(query, [
+        newPassword,
+        newSalt,
+        userID,
+    ]);
+
+    if (result.affectedRows > 0) {
+        return { status: true, message: "Senha de usuário atualizada" };
+    } else {
+        return { status: false, message: "Erro ao atualizar senha de usuário" };
+    }
+};
+
+// Função para editar a foto de perfil do usuário:
+const editUserProfilePicture = async (userID, newProfilePicture) => {
+    const query = "UPDATE usuarios SET profilePic = ? WHERE ID_usuario = ?;";
+    const [result] = await connection.execute(query, [
+        newProfilePicture,
+        userID,
+    ]);
+
+    if (result.affectedRows > 0) {
+        return { status: true, message: "Foto de perfil atualizada" };
+    } else {
+        return { status: false, message: "Erro ao atualizar foto de perfil" };
+    }
+};
+
 module.exports = {
     checkEmail,
     checkUsername,
@@ -163,6 +226,10 @@ module.exports = {
     registerUser,
     getInfo,
     loginUser,
+    editUserName,
+    editUserEmail,
+    editUserPassword,
+    editUserProfilePicture,
     saveMailCode,
     getMailCode,
     deleteMailCode,

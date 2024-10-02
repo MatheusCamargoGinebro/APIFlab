@@ -14,7 +14,6 @@ const tokenMiddlewares = require("../middlewares/token/token_middlewares");
     - Registrar usuário
     - Logar como usuário
     - Editar proprias informações de usuário
-    - Deletar próprio usuário
     - Listar reservas do usuário
     
   -- Instituto:
@@ -52,8 +51,7 @@ const tokenMiddlewares = require("../middlewares/token/token_middlewares");
     - Listar reservas do elemento
 */
 
-// Rotas de usuário:
-
+// -=====================================================- Controle de usuários -=====================================================-
 router.post(
     "/user/register",
     userMiddlewares.user_name,
@@ -66,7 +64,7 @@ router.post(
 );
 
 router.post(
-    "/user/register/sendMailCode",
+    "/user/sendMailCode",
     userMiddlewares.user_email,
     userControllers.sendMailCode
 );
@@ -85,19 +83,30 @@ router.post(
 );
 
 router.put(
-    "/user/edit",
+    "/user/edit/name",
     tokenMiddlewares.CheckToken,
     userMiddlewares.user_name,
-    userMiddlewares.user_email,
-    userMiddlewares.user_password,
-    userMiddlewares.profile_picture,
-    userControllers.userEdit
+    userControllers.editUserName
 );
 
-router.delete("/user/delete", (req, res) => {
-    res.send("Delete Route!");
-});
+router.put(
+    "/user/edit/email",
+    tokenMiddlewares.CheckToken,
+    userMiddlewares.user_email,
+    userMiddlewares.user_mail_code,
+    userControllers.editUserEmail
+);
 
-router.get("/user/reservations", (req, res) => {
-    res.send("List reservations Route!");
-});
+router.put(
+    "/user/edit/password",
+    tokenMiddlewares.CheckToken,
+    userMiddlewares.user_password,
+    userControllers.editUserPassword
+);
+
+router.put(
+    "/user/edit/picture",
+    tokenMiddlewares.CheckToken,
+    userMiddlewares.profile_picture,
+    userControllers.editUserProfilePicture
+);

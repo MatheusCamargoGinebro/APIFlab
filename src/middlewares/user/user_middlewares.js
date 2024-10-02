@@ -311,7 +311,7 @@ const user_mail_code = (request, response, next) => {
 // O============================================================================================O
 
 const profile_picture = (request, response, next) => {
-    if (typeof request.body.profile_picture !== "string") {
+    if (typeof request.body.profilePic !== "string") {
         return response.status(400).send({
             message: "Foto de perfil deve ser uma string",
             error_at: "7",

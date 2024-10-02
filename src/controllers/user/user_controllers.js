@@ -227,23 +227,112 @@ const userLogout = async (req, res) => {
 
 // ======================================= Edição de usuário =======================================
 
-const userEdit = async (req, res) => {
-    const { nome, email, senha, tipo, profilePic } = req.body;
+// Função para editar o nome de um usuário:
+const editUserName = async (req, res) => {
+    const token = req.headers["x-access-token"];
+    const userID = jwt.decode(token).userID;
 
-    res.send("Edit Route!");
+    const { nome } = req.body;
+
+    const result = await userModels.editUserName(userID, nome);
+
+    if (result.status === true) {
+        return res.status(200).json({
+            message: "Nome de usuário editado com sucesso!",
+        });
+    } else {
+        return res.status(500).json({
+            message: result.message,
+        });
+    }
+};
+
+// Função para editar o email de um usuário:
+const editUserEmail = async (req, res) => {
+    const token = req.headers["x-access-token"];
+    const userID = jwt.decode(token).userID;
+    const { email, code } = req.body;
+
+    // Verificando se o código de confirmação é válido:
+    const mailCodeCheck = await checkMailCode(email, code);
+
+    if (mailCodeCheck === false) {
+        return res.status(400).json({
+            message: "Código de confirmação não vinculado ao email",
+        });
+    }
+
+    const result = await userModels.editUserEmail(userID, email);
+
+    if (result.status === true) {
+        return res.status(200).json({
+            message: "Email de usuário editado com sucesso!",
+        });
+    } else {
+        return res.status(500).json({
+            message: "Erro ao editar email de usuário",
+        });
+    }
+};
+
+// Função para editar a senha de um usuário:
+const editUserPassword = async (req, res) => {
+    const token = req.headers["x-access-token"];
+    const userID = jwt.decode(token).userID;
+    const { senha } = req.body;
+
+    // Criptografia da senha:
+    const salt = await passwordTreatment.saltGenerator();
+    const hashedPassword = await passwordTreatment.hashPasswordGenerator(
+        senha,
+        salt
+    );
+
+    const result = await userModels.editUserPassword(
+        userID,
+        hashedPassword,
+        salt
+    );
+
+    if (result.status === true) {
+        return res.status(200).json({
+            message: "Senha de usuário editada com sucesso!",
+        });
+    } else {
+        return res.status(500).json({
+            message: "Erro ao editar senha de usuário",
+        });
+    }
+};
+
+// Função para editar a foto de perfil de um usuário:
+const editUserProfilePicture = async (req, res) => {
+    const token = req.headers["x-access-token"];
+    const userID = jwt.decode(token).userID;
+    const { profilePic } = req.body;
+
+    const result = await userModels.editUserProfilePicture(userID, profilePic);
+
+    if (result.status === true) {
+        return res.status(200).json({
+            message: "Foto de perfil editada com sucesso!",
+        });
+    } else {
+        return res.status(500).json({
+            message: "Erro ao editar foto de perfil",
+        });
+    }
 };
 
 // ======================================= Deleção de usuário =======================================
 
-const userDelete = async (req, res) => {
-    res.send("Delete Route!");
-};
-
 module.exports = {
     userRegister,
     userLogin,
-    userEdit,
-    userDelete,
+    editUserName,
+    editUserEmail,
+    editUserPassword,
+    editUserProfilePicture,
     userLogout,
     sendMailCode,
 };
