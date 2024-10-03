@@ -96,6 +96,18 @@ const checkUsername = async (nome) => {
     }
 };
 
+// Verificar se o usuário existe:
+const checkUserID = async (user_ID) => {
+    const query = "SELECT * FROM usuarios WHERE ID_usuario = ?;";
+    const [result] = await connection.execute(query, [user_ID]);
+
+    if (result.length > 0) {
+        return { status: true, message: "Usuário encontrado!" };
+    } else {
+        return { status: false, message: "Usuário não encontrado!" };
+    }
+};
+
 // Função para verificar se o campus existe no banco de dados:
 const checkCampus = async (ID_campus) => {
     const query = "SELECT * FROM campus WHERE ID_campus = ?;";
@@ -222,6 +234,7 @@ const editUserProfilePicture = async (userID, newProfilePicture) => {
 module.exports = {
     checkEmail,
     checkUsername,
+    checkUserID,
     checkCampus,
     registerUser,
     getInfo,

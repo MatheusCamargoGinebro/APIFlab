@@ -80,10 +80,8 @@ const campus_state = (request, response, next) => {
         });
     }
 
-    // letra maiúscula:
     request.body.campus_state = request.body.campus_state.toUpperCase();
 
-    // Verifica se o estado é válido, apenas os 27 estados, letra maiúscula:
     if (
         ![
             "AC",
@@ -153,9 +151,39 @@ const id_campus = (request, response, next) => {
     next();
 };
 
+const id_user = async (request, response, next) => {
+    if (
+        request.body.user_ID === undefined ||
+        request.body.user_ID === null ||
+        !request.body.user_ID
+    ) {
+        return response.status(400).send({
+            message: "ID do usuário é obrigatório",
+            error_at: "user_ID",
+        });
+    }
+
+    if (typeof request.body.user_ID !== "number") {
+        return response.status(400).send({
+            message: "ID do usuário deve ser um número",
+            error_at: "user_ID",
+        });
+    }
+
+    if (request.body.user_ID < 1) {
+        return response.status(400).send({
+            message: "ID do usuário deve ser maior que 0",
+            error_at: "user_ID",
+        });
+    }
+
+    next();
+};
+
 module.exports = {
     campus_name,
     campus_state,
     id_campus,
+    id_user,
 };
 // O============================================================================================O

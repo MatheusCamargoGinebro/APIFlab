@@ -135,7 +135,7 @@ router.put(
 // -=====================================================- Controle de institutos -=====================================================-
 /*
   Instituto:
-    [] Registrar instituto;
+    [X] Registrar instituto;
     [] Administradores:
       [] Adicionar administrador ao instituto;
       [] Remover administrador do instituto;
@@ -144,14 +144,38 @@ router.put(
       [] Editar estado;
     [] Deletar instituto;
 */
+
+// -==========================- Registrar instituto -==========================- // OK
 router.post(
     "/institute/register",
-    tokenMiddlewares.CheckToken,
     instituteMiddlewares.campus_name,
     instituteMiddlewares.campus_state,
     instituteControllers.registerCampus
 );
 
+// -==========================-  administradores -==========================-
+
+// -==========================- Adicionar administrador ao instituto -==========================-
+router.put(
+    "/institute/admin/",
+    tokenMiddlewares.CheckToken,
+    instituteMiddlewares.id_campus,
+    instituteMiddlewares.id_user,
+    instituteControllers.addAdminUser
+);
+
+// -==========================- Remover administrador do instituto -==========================-
+router.delete(
+    "/institute/admin/",
+    tokenMiddlewares.CheckToken,
+    instituteMiddlewares.id_campus,
+    instituteMiddlewares.id_user,
+    instituteControllers.removeAdminUser
+);
+
+// +==========================+ Editar informações do instituto +==========================+
+
+// -==========================- Editar nome -==========================-
 router.put(
     "/institute/edit/name",
     tokenMiddlewares.CheckToken,
@@ -160,6 +184,7 @@ router.put(
     instituteControllers.editCampusName
 );
 
+// -==========================- Editar estado -==========================-
 router.put(
     "/institute/edit/state",
     tokenMiddlewares.CheckToken,

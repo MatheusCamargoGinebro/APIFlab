@@ -21,11 +21,13 @@ const checkCampusName = async (campus_name) => {
     const [result] = await connection.execute(query, [campus_name]);
 
     if (result.length > 0) {
-        return { status: true, message: "Nome do campus já existe!" };
+        return { status: false, message: "Nome do campus já registrado!" };
     } else {
-        return { status: false, message: "Nome do campus disponível!" };
+        return { status: true, message: "Nome do campus disponível!" };
     }
 };
+
+// ----------------------- //
 
 // Verificar se o campus existe:
 const checkCampusID = async (campus_ID) => {
@@ -39,6 +41,8 @@ const checkCampusID = async (campus_ID) => {
     }
 };
 
+// ----------------------- //
+
 // O========================================================================================O
 
 /*
@@ -47,59 +51,72 @@ const checkCampusID = async (campus_ID) => {
     O==========================================================O
 */
 
-// Criar um usuário administrador:
-const createAdminUser = async (user_ID, campus_ID) => {
-    const query =
-        "INSERT INTO userCampus (ID_Responsavel, ID_campus) VALUES (?, ?);";
-    const [result] = await connection.execute(query, [user_ID, campus_ID]);
+// Verificar se o usuário possui relação com o campus:
+const checkUserInCampus = async (user_ID, campus_ID) => {
+    console.log(user_ID, campus_ID);
 
-    if (result.affectedRows < 0) {
-        return {
-            status: false,
-            message: "Erro ao cadastrar usuário administrador!",
-        };
-    } else {
-        return {
-            status: true,
-            message: "Usuário administrador cadastrado com sucesso!",
-        };
-    }
-};
-
-// Verificar se o usuário é um administrador:
-const checkAdminUser = async (user_ID, campus_ID) => {
-    const query =
-        "SELECT AdminLevel FROM userCampus WHERE ID_Responsavel = ? AND ID_campus = ?;";
-
+    /* const query =
+        "SELECT * FROM usuarios WHERE ID_usuario = ? AND ID_campus = ?;";
     const [result] = await connection.execute(query, [user_ID, campus_ID]);
 
     if (result.length > 0) {
         return {
             status: true,
-            level: result.AdminLevel,
-            message: "Usuário é um administrador!",
+            CampusAdminLevel: result.CampusAdminLevel,
+            message: "Usuário encontrado no campus!",
         };
     } else {
         return {
             status: false,
-            level: 0,
-            message: "Usuário não é um administrador!",
+            CampusAdminLevel: null,
+            message: "Usuário não encontrado no campus!",
+        };
+    } */
+};
+
+// ----------------------- //
+
+// Atualizando o AdminLevel do usuário para administrador:
+const addAdminUser = async (user_ID, campus_ID) => {
+    const query =
+        "UPDATE usuarios SET AdminLevel = 2 WHERE ID_usuario = ? AND ID_campus = ?;";
+    const [result] = await connection.execute(query, [user_ID, campus_ID]);
+
+    if (result.affectedRows > 0) {
+        return {
+            status: true,
+            message: "Usuário promovido a administrador com sucesso!",
+        };
+    } else {
+        return {
+            status: false,
+            message: "Erro ao promover usuário a administrador!",
         };
     }
 };
 
+// ----------------------- //
+
 // Remover um usuário administrador:
 const removeAdminUser = async (user_ID, campus_ID) => {
     const query =
-        "DELETE FROM userCampus WHERE ID_Responsavel = ? AND ID_campus = ?;";
+        "UPDATE usuarios SET AdminLevel = 1 WHERE ID_usuario = ? AND ID_campus = ?;";
     const [result] = await connection.execute(query, [user_ID, campus_ID]);
 
     if (result.affectedRows > 0) {
-        return { status: true, message: "Administrador removido com sucesso!" };
+        return {
+            status: true,
+            message: "Usuário removido da lista de administradores!",
+        };
     } else {
-        return { status: false, message: "Erro ao remover Administrador!" };
+        return {
+            status: false,
+            message: "Erro ao remover usuário da lista de administradores!",
+        };
     }
 };
+
+// ----------------------- //
 
 // O========================================================================================O
 
@@ -118,19 +135,21 @@ const registerCampus = async (campus_name, campus_state) => {
     ]);
 
     if (result.affectedRows > 0) {
-        if (adminResult === true) {
-            return {
-                status: true,
-                message: "Campus cadastrado com sucesso!",
-            };
-        } else {
-            return {
-                status: false,
-                message: "Erro ao cadastrar campus!",
-            };
-        }
+        return {
+            status: true,
+            campus_ID: result.insertId,
+            message: "Campus registrado com sucesso!",
+        };
+    } else {
+        return {
+            status: false,
+            campus_ID: null,
+            message: "Erro ao registrar campus!",
+        };
     }
 };
+
+// ----------------------- //
 
 // ++==========================++ Editar Informações do campus ++==========================++
 
@@ -152,6 +171,8 @@ const editCampusName = async (ID_campus, newName) => {
     }
 };
 
+// ----------------------- //
+
 // Editar estado do campus:
 const editCampusState = async (ID_campus, newName) => {
     const query = "UPDATE campus SET Estado = ? WHERE ID_campus = ?;";
@@ -170,16 +191,20 @@ const editCampusState = async (ID_campus, newName) => {
     }
 };
 
+// ----------------------- //
+
 // O========================================================================================O
 
 // Exportando funções:
 module.exports = {
     checkCampusName,
     checkCampusID,
-    createAdminUser,
-    checkAdminUser,
+    checkUserInCampus,
+    addAdminUser,
     removeAdminUser,
     registerCampus,
     editCampusName,
     editCampusState,
 };
+
+// O============================================================================================O
