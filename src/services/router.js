@@ -12,11 +12,7 @@ const instituteControllers = require("../controllers/institute/institute_control
 
 // Rotas:
 /*
- - Usuário: OK
-    - Registrar usuário
-    - Logar como usuário
-    - Editar proprias informações de usuário
-    - Listar reservas do usuário
+ 
     
   -- Instituto:
     - Registrar instituto
@@ -54,6 +50,20 @@ const instituteControllers = require("../controllers/institute/institute_control
 */
 
 // -=====================================================- Controle de usuários -=====================================================-
+/*
+  Usuário:
+    [X] Registrar usuário
+    [X] Enviar código de verificação por email
+    [X] Logar como usuário
+    [X] Editar Informações do usuário
+      [X] Editar nome
+      [X] Editar email
+      [X] Editar senha
+      [X] Editar foto de perfil
+    [X] Deslogar
+*/
+
+// +==========================+ Registro de usuário +==========================+ // OK
 router.post(
     "/user/register",
     userMiddlewares.user_name,
@@ -65,12 +75,14 @@ router.post(
     userControllers.userRegister
 );
 
+// +==========================+ Enviar código de verificação por email +==========================+ // OK
 router.post(
     "/user/sendmailcode",
     userMiddlewares.user_email,
     userControllers.sendMailCode
 );
 
+// +==========================+ Logar como usuário +==========================+ // OK
 router.post(
     "/user/login",
     userMiddlewares.user_email,
@@ -78,12 +90,16 @@ router.post(
     userControllers.userLogin
 );
 
+// +==========================+ Deslogar +==========================+ // OK
 router.post(
     "/user/logout",
     tokenMiddlewares.CheckToken,
     userControllers.userLogout
 );
 
+// +==========================+ Editar Informações do usuário +==========================+ // OK
+
+// -==========================- Editar nome -==========================- // OK
 router.put(
     "/user/edit/name",
     tokenMiddlewares.CheckToken,
@@ -91,6 +107,7 @@ router.put(
     userControllers.editUserName
 );
 
+// -==========================- Editar email -==========================- // OK
 router.put(
     "/user/edit/email",
     tokenMiddlewares.CheckToken,
@@ -99,6 +116,7 @@ router.put(
     userControllers.editUserEmail
 );
 
+// -==========================- Editar senha -==========================- // OK
 router.put(
     "/user/edit/password",
     tokenMiddlewares.CheckToken,
@@ -106,6 +124,7 @@ router.put(
     userControllers.editUserPassword
 );
 
+// -==========================- Editar foto de perfil -==========================- // OK
 router.put(
     "/user/edit/picture",
     tokenMiddlewares.CheckToken,
@@ -114,6 +133,17 @@ router.put(
 );
 
 // -=====================================================- Controle de institutos -=====================================================-
+/*
+  Instituto:
+    [] Registrar instituto;
+    [] Administradores:
+      [] Adicionar administrador ao instituto;
+      [] Remover administrador do instituto;
+    [] Editar informações do instituto:
+      [] Editar nome;
+      [] Editar estado;
+    [] Deletar instituto;
+*/
 router.post(
     "/institute/register",
     tokenMiddlewares.CheckToken,

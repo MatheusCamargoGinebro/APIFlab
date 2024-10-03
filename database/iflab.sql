@@ -12,8 +12,8 @@ CREATE TABLE
         PRIMARY KEY (ID_campus),
         -- values
         -- Informações de contato:
-        Nome VARCHAR(128) NOT NULL
-        Estado VARCHAR(2) NOT NULL,
+        Nome VARCHAR(128) NOT NULL,
+        Estado VARCHAR(2) NOT NULL
     );
 
 -- =========================================== Informações do usuário ===========================================
@@ -38,10 +38,15 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS adminusuarioCampus (
+    IF NOT EXISTS userCampus (
         -- PK
         ID_relation INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_relation),
+        -- values
+        AdminLevel INT CHECK (AdminLevel IN (1, 2, 3)) NOT NULL,
+        -- 1 = Membro
+        -- 2 = Pode adicionar labs
+        -- 3 = Responsável (pode editar)
         -- FK
         ID_Responsavel INT NOT NULL,
         FOREIGN KEY (ID_Responsavel) REFERENCES usuarios (ID_usuario),
@@ -63,15 +68,15 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS adminusuarioLab (
+    IF NOT EXISTS userlab (
         -- PK
         ID_relation INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_relation),
         -- values
-        AdminLevel INT CHECK (AdminLevel IN (1, 2)) NOT NULL,
+        AdminLevel INT CHECK (AdminLevel IN (1, 2, 3)) NOT NULL,
         -- 1 = Membro
-        -- 2 = Responsável
-        -- FK
+        -- 2 = Pode adicionar elementos, equipamentos e reservas
+        -- 3 = Responsável (pode editar)
         -- FK
         ID_Responsavel INT NOT NULL,
         FOREIGN KEY (ID_Responsavel) REFERENCES usuarios (ID_usuario),
@@ -185,422 +190,114 @@ WHERE
 END;
 
 -- INSERTS de para futuros testes com a API:
-INSERT INTO
-    campus (Nome, Telefone, Email)
-VALUES
-    ('Campus 1', '123456789', 'camp@camp1.com.br'),
-    ('Campus 2', '987654321', 'camp@camp2.com.br'),
-    ('Campus 3', '123456789', 'camp@camp3.com.br');
+INSERT INTO campus (Nome, Estado) VALUES 
+('Campus 1', 'SP');
 
-INSERT INTO
-    endereco (
-        numero,
-        rua,
-        complemento,
-        bairro,
-        cidade,
-        Estado,
-        CEP,
-        ID_campus
-    )
-VALUES
-    (
-        123,
-        'Rua 1',
-        'Complemento 1',
-        'Bairro 1',
-        'Cidade 1',
-        'SP',
-        '12345-678',
-        1
-    ),
-    (
-        456,
-        'Rua 2',
-        'Complemento 2',
-        'Bairro 2',
-        'Cidade 2',
-        'SP',
-        '12345-678',
-        2
-    ),
-    (
-        789,
-        'Rua 3',
-        'Complemento 3',
-        'Bairro 3',
-        'Cidade 3',
-        'SP',
-        '12345-678',
-        3
-    );
+INSERT INTO usuarios (Nome, Email, Senha, Salt, Tipo, ID_campus) VALUES 
+('Aluno 1', 'aluno1@aluno.ifsp.edu.br', '123456', '123456', 1, 1),
+('Aluno 2', 'aluno2@aluno.ifsp.edu.br', '123456', '123456', 1, 1),
+('Aluno 3', 'aluno3@aluno.ifsp.edu.br', '123456', '123456', 1, 1),
+('Professor 1', 'professor1@ifsp.edu.br', '123456', '123456', 2, 1),
+('Professor 2', 'professor2@ifsp.edu.br', '123456', '123456', 2, 1);
 
-INSERT INTO
-    usuarios (
-        Nome,
-        Email,
-        Senha,
-        Salt,
-        profilePic,
-        Tipo,
-        ID_campus
-    )
-VALUES
-    (
-        'Usuario 1',
-        'user.1@ifsp.edu.br',
-        '123456',
-        '123456',
-        'profilePic1',
-        2,
-        1
-    ),
-    (
-        'Usuario 2',
-        'user.2@aluno.ifsp.edu.br',
-        '123456',
-        '123456',
-        'profilePic2',
-        1,
-        2
-    ),
-    (
-        'Usuario 3',
-        'user.3@ifsp.edu.br',
-        '123456',
-        '123456',
-        'profilePic3',
-        3,
-        3
-    ),
-    (
-        'Usuario 4',
-        'user.4@ifsp.edu.br',
-        '123456',
-        '123456',
-        'profilePic4',
-        2,
-        1
-    );
+INSERT INTO userCampus (AdminLevel, ID_Responsavel, ID_campus) VALUES 
+(2, 4, 1),
+(2, 5, 1);
 
-INSERT INTO
-    adminusuarioCampus (ID_Responsavel, ID_campus)
-VALUES
-    (1, 1),
-    (3, 2),
-    (4, 3);
+INSERT INTO laboratorios (Sala, ID_campus) VALUES 
+('Sala 1', 1),
+('Sala 2', 1),
+('Sala 3', 1);
 
-INSERT INTO
-    laboratorios (Sala, ID_campus)
-VALUES
-    ('Sala 1', 1),
-    ('Sala 2', 2),
-    ('Sala 3', 3);
+INSERT INTO userLab (AdminLevel, ID_Responsavel, ID_lab) VALUES 
+(2, 4, 1),
+(2, 5, 2),
+(2, 4, 3);
 
-INSERT INTO
-    adminusuarioLab (AdminLevel, ID_Responsavel, ID_lab)
-VALUES
-    (2, 1, 1),
-    (1, 3, 2),
-    (2, 4, 3);
+INSERT INTO Elementos (Nome, Quantidade, Peso_molecular, numero_cas, numero_ec, estado_fisico, ID_lab) VALUES 
+('Elemento 1', 100, 100, '123451', '123451', 1, 1),
+('Elemento 2', 100, 100, '123452', '123452', 1, 1),
+('Elemento 3', 100, 100, '123453', '123453', 1, 1),
+('Elemento 4', 100, 100, '123454', '123454', 1, 1),
+('Elemento 5', 100, 100, '123455', '123455', 1, 1),
+('Elemento 6', 100, 100, '123456', '123456', 1, 2),
+('Elemento 7', 100, 100, '123457', '123457', 1, 2),
+('Elemento 8', 100, 100, '123458', '123458', 1, 2),
+('Elemento 9', 100, 100, '123459', '123459', 1, 2),
+('Elemento 10', 100, 100, '123410', '123410', 1, 2),
+('Elemento 11', 100, 100, '123411', '123411', 1, 3),
+('Elemento 12', 100, 100, '123412', '123412', 1, 3),
+('Elemento 13', 100, 100, '123413', '123413', 1, 3),
+('Elemento 14', 100, 100, '123414', '123414', 1, 3),
+('Elemento 15', 100, 100, '123415', '123415', 1, 3);
 
-INSERT INTO
-    Elementos (
-        Nome,
-        Quantidade,
-        Peso_molecular,
-        numero_cas,
-        numero_ec,
-        estado_fisico,
-        imagem,
-        ID_lab
-    )
-VALUES
-    (
-        'Elemento 1',
-        100,
-        1.0,
-        '123-45-671',
-        '123-45-671',
-        1,
-        'imagem1',
-        1
-    ),
-    (
-        'Elemento 2',
-        200,
-        2.0,
-        '123-45-672',
-        '123-45-672',
-        2,
-        'imagem2',
-        2
-    ),
-    (
-        'Elemento 3',
-        300,
-        3.0,
-        '123-45-673',
-        '123-45-673',
-        3,
-        'imagem3',
-        3
-    ),
-    (
-        'Elemento 4',
-        400,
-        4.0,
-        '123-45-674',
-        '123-45-674',
-        1,
-        'imagem4',
-        1
-    ),
-    (
-        'Elemento 5',
-        500,
-        5.0,
-        '123-45-675',
-        '123-45-675',
-        2,
-        'imagem5',
-        2
-    ),
-    (
-        'Elemento 6',
-        600,
-        6.0,
-        '123-45-676',
-        '123-45-676',
-        3,
-        'imagem6',
-        3
-    ),
-    (
-        'Elemento 7',
-        700,
-        7.0,
-        '123-45-677',
-        '123-45-677',
-        1,
-        'imagem7',
-        1
-    ),
-    (
-        'Elemento 8',
-        800,
-        8.0,
-        '123-45-678',
-        '123-45-678',
-        2,
-        'imagem8',
-        2
-    ),
-    (
-        'Elemento 9',
-        900,
-        9.0,
-        '123-45-679',
-        '123-45-679',
-        3,
-        'imagem9',
-        3
-    );
+INSERT INTO Equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, ID_lab) VALUES 
+('Equipamento 1', 'Equipamento 1', 10, 10, 5, 1),
+('Equipamento 2', 'Equipamento 2', 10, 10, 5, 1),
+('Equipamento 3', 'Equipamento 3', 10, 10, 5, 1),
+('Equipamento 4', 'Equipamento 4', 10, 10, 5, 1),
+('Equipamento 5', 'Equipamento 5', 10, 10, 5, 1),
+('Equipamento 6', 'Equipamento 6', 10, 10, 5, 2),
+('Equipamento 7', 'Equipamento 7', 10, 10, 5, 2),
+('Equipamento 8', 'Equipamento 8', 10, 10, 5, 2),
+('Equipamento 9', 'Equipamento 9', 10, 10, 5, 2),
+('Equipamento 10', 'Equipamento 10', 10, 10, 5, 2),
+('Equipamento 11', 'Equipamento 11', 10, 10, 5, 3),
+('Equipamento 12', 'Equipamento 12', 10, 10, 5, 3),
+('Equipamento 13', 'Equipamento 13', 10, 10, 5, 3),
+('Equipamento 14', 'Equipamento 14', 10, 10, 5, 3),
+('Equipamento 15', 'Equipamento 15', 10, 10, 5, 3);
 
-INSERT INTO
-    Equipamentos (
-        Nome,
-        Descricao,
-        QuantidadeTotal,
-        QuantidadeDisponivel,
-        Qualidade,
-        Imagem,
-        ID_lab
-    )
-VALUES
-    (
-        'Equipamento 1',
-        'Descricao 1',
-        10,
-        10,
-        1,
-        'imagem1',
-        1
-    ),
-    (
-        'Equipamento 2',
-        'Descricao 2',
-        20,
-        20,
-        2,
-        'imagem2',
-        2
-    ),
-    (
-        'Equipamento 3',
-        'Descricao 3',
-        30,
-        30,
-        3,
-        'imagem3',
-        3
-    ),
-    (
-        'Equipamento 4',
-        'Descricao 4',
-        40,
-        40,
-        4,
-        'imagem4',
-        1
-    ),
-    (
-        'Equipamento 5',
-        'Descricao 5',
-        50,
-        50,
-        5,
-        'imagem5',
-        2
-    ),
-    (
-        'Equipamento 6',
-        'Descricao 6',
-        60,
-        60,
-        1,
-        'imagem6',
-        3
-    ),
-    (
-        'Equipamento 7',
-        'Descricao 7',
-        70,
-        70,
-        2,
-        'imagem7',
-        1
-    ),
-    (
-        'Equipamento 8',
-        'Descricao 8',
-        80,
-        80,
-        3,
-        'imagem8',
-        2
-    ),
-    (
-        'Equipamento 9',
-        'Descricao 9',
-        90,
-        90,
-        4,
-        'imagem9',
-        3
-    );
+INSERT INTO Horarios (Tipo, Inicio, Fim, ID_lab, ID_usuario) VALUES 
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 1),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 2),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 3),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 4),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 1, 5),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 2, 1),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 2, 2),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 2, 3),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 2, 4),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 2, 5),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 3, 1),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 3, 2),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 3, 3),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 3, 4),
+(1, '2021-06-01 08:00:00', '2021-06-01 12:00:00', 3, 5);
 
-INSERT INTO
-    Horarios (Tipo, Inicio, Fim, ID_lab, ID_usuario)
-VALUES
-    (
-        1,
-        '2021-01-01 08:00:00',
-        '2021-01-01 12:00:00',
-        1,
-        1
-    ),
-    (
-        2,
-        '2021-01-01 13:00:00',
-        '2021-01-01 17:00:00',
-        2,
-        2
-    ),
-    (
-        1,
-        '2021-01-01 08:00:00',
-        '2021-01-01 12:00:00',
-        3,
-        3
-    ),
-    (
-        2,
-        '2021-01-01 13:00:00',
-        '2021-01-01 17:00:00',
-        1,
-        4
-    ),
-    (
-        1,
-        '2021-01-01 08:00:00',
-        '2021-01-01 12:00:00',
-        2,
-        1
-    ),
-    (
-        2,
-        '2021-01-01 13:00:00',
-        '2021-01-01 17:00:00',
-        3,
-        2
-    ),
-    (
-        1,
-        '2021-01-01 08:00:00',
-        '2021-01-01 12:00:00',
-        1,
-        3
-    ),
-    (
-        2,
-        '2021-01-01 13:00:00',
-        '2021-01-01 17:00:00',
-        2,
-        4
-    ),
-    (
-        1,
-        '2021-01-01 08:00:00',
-        '2021-01-01 12:00:00',
-        3,
-        1
-    ),
-    (
-        2,
-        '2021-01-01 13:00:00',
-        '2021-01-01 17:00:00',
-        1,
-        2
-    );
+INSERT INTO Reserva_elemento (Quantidade, ID_elem, ID_hor) VALUES 
+(10, 1, 1),
+(10, 2, 2),
+(10, 3, 3),
+(10, 4, 4),
+(10, 5, 5),
+(10, 6, 6),
+(10, 7, 7),
+(10, 8, 8),
+(10, 9, 9),
+(10, 10, 10),
+(10, 11, 11),
+(10, 12, 12),
+(10, 13, 13),
+(10, 14, 14),
+(10, 15, 15);
 
-INSERT INTO
-    Reserva_elemento (Quantidade, ID_elem, ID_hor)
-VALUES
-    (10, 1, 1),
-    (20, 2, 2),
-    (30, 3, 3),
-    (40, 4, 4),
-    (50, 5, 5),
-    (60, 6, 6),
-    (70, 7, 7),
-    (80, 8, 8),
-    (90, 9, 9),
-    (100, 1, 10);
-
-INSERT INTO
-    Reserva_equipamento (Quantidade, ID_equip, ID_hor)
-VALUES
-    (10, 1, 1),
-    (20, 2, 2),
-    (30, 3, 3),
-    (40, 4, 4),
-    (50, 5, 5),
-    (60, 6, 6),
-    (70, 7, 7),
-    (80, 8, 8),
-    (90, 9, 9),
-    (100, 1, 10);
+INSERT INTO Reserva_equipamento (Quantidade, ID_equip, ID_hor) VALUES 
+(1, 1, 1),
+(1, 2, 2),
+(1, 3, 3),
+(1, 4, 4),
+(1, 5, 5),
+(1, 6, 6),
+(1, 7, 7),
+(1, 8, 8),
+(1, 9, 9),
+(1, 10, 10),
+(1, 11, 11),
+(1, 12, 12),
+(1, 13, 13),
+(1, 14, 14),
+(1, 15, 15);
 
 
 -- =========================================== Email Confirmation Code ===========================================
