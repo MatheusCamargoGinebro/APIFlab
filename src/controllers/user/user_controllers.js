@@ -30,7 +30,6 @@ const checkMailCode = async (mail, code) => {
         return false;
     }
 
-    userModels.deleteMailCode(mail);
     return true;
 };
 
@@ -99,21 +98,33 @@ const sendMailCode = async (req, res) => {
 const userRegister = async (req, res) => {
     const { nome, email, senha, tipo, id_campus, code } = req.body;
 
-    // Verificando se o código de confirmação é válido:
-    const mailCodeCheck = await checkMailCode(email, code);
-
-    if (mailCodeCheck === false) {
-        return res.status(400).json({
-            message: "Código de confirmação não vinculado ao email",
-        });
-    }
-
     // Verificando se o campus existe:
     const campusCheck = await userModels.checkCampus(id_campus);
 
     if (campusCheck === false) {
         return res.status(400).json({
+            status: false,
             message: "Campus não encontrado",
+        });
+    }
+
+    // Verificando se o código de confirmação é válido:
+    const mailCodeCheck = await checkMailCode(email, code);
+
+    if (mailCodeCheck === false) {
+        return res.status(400).json({
+            status: false,
+            message: "Código de confirmação não vinculado ao email",
+        });
+    }
+
+    // Deletando o código de confirmação:
+    const mailCodeDelete = await userModels.deleteMailCode(email);
+
+    if (mailCodeDelete.status === false) {
+        return res.status(500).json({
+            status: false,
+            message: "Erro ao deletar código de confirmação",
         });
     }
 
@@ -122,6 +133,7 @@ const userRegister = async (req, res) => {
 
     if (emailCheck === true) {
         return res.status(400).json({
+            status: false,
             message: "Email já cadastrado",
         });
     }
@@ -131,6 +143,7 @@ const userRegister = async (req, res) => {
 
     if (usernameCheck === true) {
         return res.status(400).json({
+            status: false,
             message: "Nome de usuário já cadastrado",
         });
     }
@@ -142,21 +155,31 @@ const userRegister = async (req, res) => {
         salt
     );
 
+    // Verificando quantos usuários já estão cadastrados no campus para definir o nível de adminstração do usuário:
+    const usersInCampus = await userModels.getUsersInCampus(id_campus);
+
+    // Se não houver usuários cadastrados no campus, o usuário será um administrador de campus:
+    // Se houver usuários cadastrados no campus, o usuário será um usuário comum:
+    const CampusAdminLevel = usersInCampus.length === 0 ? 3 : 1;
+
     const status = await userModels.registerUser(
         nome,
         email,
         hashedPassword,
         tipo,
         salt,
-        id_campus
+        id_campus,
+        CampusAdminLevel
     );
 
     if (status === true) {
         return res.status(200).json({
+            status: true,
             message: "Usuário cadastrado com sucesso!",
         });
     } else {
         return res.status(500).json({
+            status: false,
             message: "Erro ao cadastrar usuário",
         });
     }
@@ -237,13 +260,9 @@ const editUserName = async (req, res) => {
     const result = await userModels.editUserName(userID, nome);
 
     if (result.status === true) {
-        return res.status(200).json({
-            message: "Nome de usuário editado com sucesso!",
-        });
+        return res.status(200).json(result);
     } else {
-        return res.status(500).json({
-            message: result.message,
-        });
+        return res.status(400).json(result);
     }
 };
 
@@ -265,13 +284,9 @@ const editUserEmail = async (req, res) => {
     const result = await userModels.editUserEmail(userID, email);
 
     if (result.status === true) {
-        return res.status(200).json({
-            message: "Email de usuário editado com sucesso!",
-        });
+        return res.status(200).json(result);
     } else {
-        return res.status(500).json({
-            message: "Erro ao editar email de usuário",
-        });
+        return res.status(400).json(result);
     }
 };
 
@@ -295,13 +310,9 @@ const editUserPassword = async (req, res) => {
     );
 
     if (result.status === true) {
-        return res.status(200).json({
-            message: "Senha de usuário editada com sucesso!",
-        });
+        return res.status(200).json(result);
     } else {
-        return res.status(500).json({
-            message: "Erro ao editar senha de usuário",
-        });
+        return res.status(400).json(result);
     }
 };
 
@@ -314,13 +325,9 @@ const editUserProfilePicture = async (req, res) => {
     const result = await userModels.editUserProfilePicture(userID, profilePic);
 
     if (result.status === true) {
-        return res.status(200).json({
-            message: "Foto de perfil editada com sucesso!",
-        });
+        return res.status(200).json(result);
     } else {
-        return res.status(500).json({
-            message: "Erro ao editar foto de perfil",
-        });
+        return res.status(400).json(result);
     }
 };
 

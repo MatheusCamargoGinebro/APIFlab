@@ -36,7 +36,41 @@ const addTokenToBlackList = async (token) => {
     }
 };
 
+const getAllBlacklist = async () => {
+    const query = "SELECT * FROM blacklist;";
+
+    const [result] = await connection.execute(query);
+
+    return result;
+};
+
+const removeTokenFromBlacklist = async (token) => {
+    const query = "DELETE FROM blacklist WHERE Token = ?;";
+
+    const [result] = await connection.execute(query, [token]);
+
+    if (result.affectedRows > 0) {
+        return { status: true, message: "Token removido da blacklist" };
+    } else {
+        return {
+            status: false,
+            message: "Erro ao remover token da blacklist",
+        };
+    }
+};
+
+const clearMailCodeList = async () => {
+    const query = "DELETE FROM email_codes;";
+
+    await connection.execute(query);
+
+    return { status: true, message: "Códigos de email deletados" };
+};
+
 module.exports = {
     checkBlacklist,
     addTokenToBlackList,
+    getAllBlacklist,
+    removeTokenFromBlacklist,
+    clearMailCodeList,
 };

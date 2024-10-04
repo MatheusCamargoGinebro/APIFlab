@@ -124,27 +124,27 @@ const campus_state = (request, response, next) => {
 
 const id_campus = (request, response, next) => {
     if (
-        request.body.campus_ID === undefined ||
-        request.body.campus_ID === null ||
-        !request.body.campus_ID
+        request.body.campus_id === undefined ||
+        request.body.campus_id === null ||
+        !request.body.campus_id
     ) {
         return response.status(400).send({
             message: "ID do campus é obrigatório",
-            error_at: "campus_ID",
+            error_at: "campus_id",
         });
     }
 
-    if (typeof request.body.campus_ID !== "number") {
+    if (typeof request.body.campus_id !== "number") {
         return response.status(400).send({
             message: "ID do campus deve ser um número",
-            error_at: "campus_ID",
+            error_at: "campus_id",
         });
     }
 
-    if (request.body.campus_ID < 1) {
+    if (request.body.campus_id < 1) {
         return response.status(400).send({
             message: "ID do campus deve ser maior que 0",
-            error_at: "campus_ID",
+            error_at: "campus_id",
         });
     }
 

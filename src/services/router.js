@@ -6,19 +6,19 @@ const userControllers = require("../controllers/user/user_controllers");
 const userMiddlewares = require("../middlewares/user/user_middlewares");
 
 const tokenMiddlewares = require("../middlewares/token/token_middlewares");
+const tokenControllers = require("../controllers/token/token_controllers");
 
 const instituteMiddlewares = require("../middlewares/institute/institute_middlewares");
 const instituteControllers = require("../controllers/institute/institute_controllers");
 
+// A cada 30seg, limpar a blacklist de tokens:
+setInterval(tokenControllers.clearBlackList, 1800000);
+
+// A cada 24h, limpar os códigos de verificação de email:
+setInterval(tokenControllers.clearMailCodeList, 86400000);
+
 // Rotas:
 /*
- 
-    
-  -- Instituto:
-    - Registrar instituto
-    - Editar informações do instituto
-    - Deletar instituto
-
   -- Laboratório:
     - Registrar laboratório
     - Editar informações do laboratório

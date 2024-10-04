@@ -18,7 +18,9 @@ const connection = require("../../utils/connection");
 // Verificar se o nome do campus já existe:
 const checkCampusName = async (campus_name) => {
     const query = "SELECT * FROM campus WHERE Nome = ?;";
-    const [result] = await connection.execute(query, [campus_name]);
+    const result = await connection.execute(query, [campus_name]);
+
+    console.log("O===============O\n" + result[0] + "\nO===============O");
 
     if (result.length > 0) {
         return { status: false, message: "Nome do campus já registrado!" };
@@ -53,16 +55,14 @@ const checkCampusID = async (campus_ID) => {
 
 // Verificar se o usuário possui relação com o campus:
 const checkUserInCampus = async (user_ID, campus_ID) => {
-    console.log(user_ID, campus_ID);
-
-    /* const query =
+    const query =
         "SELECT * FROM usuarios WHERE ID_usuario = ? AND ID_campus = ?;";
     const [result] = await connection.execute(query, [user_ID, campus_ID]);
 
     if (result.length > 0) {
         return {
             status: true,
-            CampusAdminLevel: result.CampusAdminLevel,
+            CampusAdminLevel: result[0].CampusAdminLevel,
             message: "Usuário encontrado no campus!",
         };
     } else {
@@ -71,7 +71,7 @@ const checkUserInCampus = async (user_ID, campus_ID) => {
             CampusAdminLevel: null,
             message: "Usuário não encontrado no campus!",
         };
-    } */
+    }
 };
 
 // ----------------------- //

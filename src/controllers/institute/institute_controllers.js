@@ -40,47 +40,54 @@ const registerCampus = async (request, response) => {
 
 // Editar nome do campus:
 const editCampusName = async (request, response) => {
-    // Coletando ID do usuário:
-    const token = request.headers["x-access-token"];
-    const userID = jwt.decode(token).ID_usuario;
+    const { campus_name, campus_id } = request.body;
 
-    // Verificar se o usuário pertence ao campus:
+    console.log(campus_name, campus_id);
+
+    // Verificar se o campus existe:
+    const checkCampusID = await instituteModels.checkCampusID(campus_id);
+
+    if (!checkCampusID.status) {
+        return response.status(400).json(checkCampusID);
+    }
+
+    console.log(campus_name);
+
+    // Verifica se o nome do campus já existe:
+    const checkCampusName = await instituteModels.checkCampusName(campus_name);
+
+    console.log(checkCampusName);
+
+    if (!checkCampusName.status) {
+        return response.status(400).json(checkCampusName);
+    }
+
+    //x-access-token
+    const token = request.headers["x-access-token"];
+    const userID = jwt.decode(token).userID;
+
+    // Verifica se o usuário tem permissão e relação com o campus:
     const checkUserInCampus = await instituteModels.checkUserInCampus(
         userID,
-        id_campus
+        campus_id
     );
 
     if (!checkUserInCampus.status) {
         return response.status(400).json(checkUserInCampus);
     }
 
-    if (checkUserInCampus.CampusAdminLevel < 2) {
-        return response.status(401).json({
+    // Verifica se o usuário é administrador do campus:
+    if (checkUserInCampus.CampusAdminLevel < 3) {
+        return response.status(400).json({
             status: false,
-            message: "Usuário não tem permissão para realizar essa ação!",
+            message: "Usuário não tem permissão para editar o campus!",
         });
-    }
-
-    const { campus_name, id_campus } = request.body;
-
-    // Verificar se o campus existe:
-    const checkCampusID = await instituteModels.checkCampusID(id_campus);
-
-    if (!checkCampusID.status) {
-        return response.status(400).json(checkCampusID);
-    }
-
-    // Verificar se o nome do campus já existe:
-    const checkCampusName = await instituteModels.checkCampusName(campus_name);
-
-    if (!checkCampusName.status) {
-        return response.status(400).json(checkCampusName);
     }
 
     // Editar nome do campus:
     const editCampusName = await instituteModels.editCampusName(
-        campus_name,
-        id_campus
+        campus_id,
+        campus_name
     );
 
     if (!editCampusName.status) {
@@ -92,40 +99,41 @@ const editCampusName = async (request, response) => {
 
 // Editar Estado do campus:
 const editCampusState = async (request, response) => {
-    // Coletando ID do usuário:
-    const token = request.headers["x-access-token"];
-    const userID = jwt.decode(token).ID_usuario;
+    const { campus_state, campus_id } = request.body;
 
-    // Verificar se o usuário pertence ao campus:
+    // Verificar se o campus existe:
+    const checkCampusID = await instituteModels.checkCampusID(campus_id);
+
+    if (!checkCampusID.status) {
+        return response.status(400).json(checkCampusID);
+    }
+
+    //x-access-token
+    const token = request.headers["x-access-token"];
+    const userID = jwt.decode(token).userID;
+
+    // Verifica se o usuário tem permissão e relação com o campus:
     const checkUserInCampus = await instituteModels.checkUserInCampus(
         userID,
-        id_campus
+        campus_id
     );
 
     if (!checkUserInCampus.status) {
         return response.status(400).json(checkUserInCampus);
     }
 
-    if (checkUserInCampus.CampusAdminLevel < 2) {
-        return response.status(401).json({
+    // Verifica se o usuário é administrador do campus:
+    if (checkUserInCampus.CampusAdminLevel < 3) {
+        return response.status(400).json({
             status: false,
-            message: "Usuário não tem permissão para realizar essa ação!",
+            message: "Usuário não tem permissão para editar o campus!",
         });
-    }
-
-    const { campus_state, id_campus } = request.body;
-
-    // Verificar se o campus existe:
-    const checkCampusID = await instituteModels.checkCampusID(id_campus);
-
-    if (!checkCampusID.status) {
-        return response.status(400).json(checkCampusID);
     }
 
     // Editar estado do campus:
     const editCampusState = await instituteModels.editCampusState(
         campus_state,
-        id_campus
+        campus_id
     );
 
     if (!editCampusState.status) {
@@ -138,114 +146,10 @@ const editCampusState = async (request, response) => {
 // ++==========================++ Editar administradores do campus ++==========================++
 
 // Adicionar administrador ao campus:
-const addAdminUser = async (request, response) => {
-    const { id_user, id_campus } = request.body;
-
-    // Verificando se o usuário tem permissão para adicionar um administrador:
-    const token = request.headers["x-access-token"];
-    const userID = jwt.decode(token).ID_usuario;
-
-    // Verificar se o usuário pertence ao campus, e qual seu nível de administração:
-    const checkUserInCampus = await instituteModels.checkUserInCampus(
-        userID,
-        id_campus
-    );
-
-    if (!checkUserInCampus.status) {
-        return response.status(400).json(checkUserInCampus);
-    }
-
-    if (checkUserInCampus.CampusAdminLevel < 2) {
-        return response.status(401).json({
-            status: false,
-            message: "Usuário não tem permissão para realizar essa ação!",
-        });
-    }
-
-    // Verificar se o usuário existe no campus:
-    const CheckNewAdmin = await instituteModels.checkUserInCampus(
-        id_user,
-        id_campus
-    );
-
-    if (!CheckNewAdmin.status) {
-        return response.status(400).json(CheckNewAdmin);
-    }
-
-    if (
-        CheckNewAdmin.CampusAdminLevel === 2 ||
-        CheckNewAdmin.CampusAdminLevel === 3
-    ) {
-        return response.status(400).json({
-            status: false,
-            message: "Usuário já é administrador do campus!",
-        });
-    }
-
-    // Adicionar administrador ao campus:
-    const addAdminUser = await instituteModels.addAdminUser(id_user, id_campus);
-
-    if (!addAdminUser.status) {
-        return response.status(400).json(addAdminUser);
-    }
-
-    return response.status(200).json(addAdminUser);
-};
+const addAdminUser = async (request, response) => {};
 
 // Remover administrador do campus:
-const removeAdminUser = async (request, response) => {
-    const { id_user, id_campus } = request.body;
-
-    // Verificando se o usuário tem permissão para remover um administrador:
-    const token = request.headers["x-access-token"];
-    const userID = jwt.decode(token).ID_usuario;
-
-    // Verificar se o usuário pertence ao campus, e qual seu nível de administração:
-    const checkUserInCampus = await instituteModels.checkUserInCampus(
-        userID,
-        id_campus
-    );
-
-    if (!checkUserInCampus.status) {
-        return response.status(400).json(checkUserInCampus);
-    }
-
-    if (checkUserInCampus.CampusAdminLevel < 2) {
-        return response.status(401).json({
-            status: false,
-            message: "Usuário não tem permissão para realizar essa ação!",
-        });
-    }
-
-    // Verificar se o usuário existe no campus:
-    const CheckAdmin = await instituteModels.checkUserInCampus(
-        id_user,
-        id_campus
-    );
-
-    if (!CheckAdmin.status) {
-        return response.status(400).json(CheckAdmin);
-    }
-
-    if (CheckAdmin.CampusAdminLevel === 1) {
-        return response.status(400).json({
-            status: false,
-            message: "Usuário não é administrador do campus!",
-        });
-    }
-
-    // Remover administrador do campus:
-    const removeAdminUser = await instituteModels.removeAdminUser(
-        id_user,
-        id_campus
-    );
-
-    if (!removeAdminUser.status) {
-        return response.status(400).json(removeAdminUser);
-    }
-
-    return response.status(200).json(removeAdminUser);
-};
+const removeAdminUser = async (request, response) => {};
 
 // O========================================================================================O
 

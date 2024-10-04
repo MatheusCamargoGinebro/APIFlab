@@ -120,16 +120,31 @@ const checkCampus = async (ID_campus) => {
     }
 };
 
+const getUsersInCampus = async (ID_campus) => {
+    const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
+    const [result] = await connection.execute(query, [ID_campus]);
+
+    return result;
+};
+
 /*
     O=================================================O
     |    Funções de Models relacionadas a usuários    |
     O=================================================O
 */
 // Função para registrar um usuário no banco de dados:
-const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
+const registerUser = async (
+    nome,
+    email,
+    senha,
+    tipo,
+    salt,
+    ID_campus,
+    CampusAdminLevel
+) => {
     // Salvando no banco de dados (todos os dados já foram verificados)
     const query =
-        "INSERT INTO usuarios (Nome, Email, Senha, Tipo, Salt, ID_campus) VALUES (?, ?, ?, ?, ?, ?);";
+        "INSERT INTO usuarios (Nome, Email, Senha, Tipo, Salt, ID_campus, CampusAdminLevel) VALUES (?, ?, ?, ?, ?, ?, ?);";
     const [result] = await connection.execute(query, [
         nome,
         email,
@@ -137,6 +152,7 @@ const registerUser = async (nome, email, senha, tipo, salt, ID_campus) => {
         tipo,
         salt,
         ID_campus,
+        CampusAdminLevel,
     ]);
 
     if (result.affectedRows > 0) {
@@ -232,10 +248,14 @@ const editUserProfilePicture = async (userID, newProfilePicture) => {
 };
 
 module.exports = {
+    saveMailCode,
+    getMailCode,
+    deleteMailCode,
     checkEmail,
     checkUsername,
     checkUserID,
     checkCampus,
+    getUsersInCampus,
     registerUser,
     getInfo,
     loginUser,
@@ -243,9 +263,6 @@ module.exports = {
     editUserEmail,
     editUserPassword,
     editUserProfilePicture,
-    saveMailCode,
-    getMailCode,
-    deleteMailCode,
 };
 
 // O============================================================================================O

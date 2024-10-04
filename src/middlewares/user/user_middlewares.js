@@ -132,7 +132,7 @@ const user_password = (request, response, next) => {
     ) {
         return response
             .status(400)
-            .send({ message: "Senha é obrigatória", error_at: "3" });
+            .send({ message: "Senha é obrigatória", error_at: "senha" });
     }
 
     if (typeof request.body.senha !== "string") {
@@ -316,7 +316,7 @@ const profile_picture = (request, response, next) => {
     if (typeof request.body.profilePic !== "string") {
         return response.status(400).send({
             message: "Foto de perfil deve ser uma string",
-            error_at: "code",
+            error_at: "profilePic",
         });
     }
 

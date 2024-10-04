@@ -18,7 +18,17 @@ const CheckToken = async (request, response, next) => {
         });
     }
 
-    // Verifica se o token é um token JWT válido:
+    // Verifica se o token está presente no banco de dados:
+    const blackListedToken = await tokenModels.checkBlacklist(token);
+
+    if (blackListedToken.status) {
+        return response.status(401).send({
+            message: "Token descartado.",
+            error_at: "token",
+        });
+    }
+
+    // Verifica se o token é válido:
     JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             return response.status(401).send({
