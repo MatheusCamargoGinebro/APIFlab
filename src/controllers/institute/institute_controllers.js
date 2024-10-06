@@ -23,9 +23,12 @@ const registerCampus = async (request, response) => {
     // Verificar se o nome do campus já existe:
     const checkCampusName = await instituteModels.checkCampusName(campus_name);
 
-    if (!checkCampusName.status) {
+    if (checkCampusName.status) {
+        // Nome existe
         return response.status(400).json(checkCampusName);
     }
+
+    // Nome não existe
 
     // Registrar o campus:
     const registerCampus = await instituteModels.registerCampus(
@@ -42,8 +45,6 @@ const registerCampus = async (request, response) => {
 const editCampusName = async (request, response) => {
     const { campus_name, campus_id } = request.body;
 
-    console.log(campus_name, campus_id);
-
     // Verificar se o campus existe:
     const checkCampusID = await instituteModels.checkCampusID(campus_id);
 
@@ -51,18 +52,14 @@ const editCampusName = async (request, response) => {
         return response.status(400).json(checkCampusID);
     }
 
-    console.log(campus_name);
-
     // Verifica se o nome do campus já existe:
     const checkCampusName = await instituteModels.checkCampusName(campus_name);
 
-    console.log(checkCampusName);
-
-    if (!checkCampusName.status) {
+    if (checkCampusName.status) {
         return response.status(400).json(checkCampusName);
     }
 
-    //x-access-token
+    // x-access-token
     const token = request.headers["x-access-token"];
     const userID = jwt.decode(token).userID;
 
@@ -90,11 +87,7 @@ const editCampusName = async (request, response) => {
         campus_name
     );
 
-    if (!editCampusName.status) {
-        return response.status(400).json(editCampusName);
-    }
-
-    return response.status(200).json(editCampusName);
+    console.log("\n\n" + editCampusName);
 };
 
 // Editar Estado do campus:
@@ -132,8 +125,8 @@ const editCampusState = async (request, response) => {
 
     // Editar estado do campus:
     const editCampusState = await instituteModels.editCampusState(
-        campus_state,
-        campus_id
+        campus_id,
+        campus_state
     );
 
     if (!editCampusState.status) {

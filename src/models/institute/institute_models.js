@@ -18,14 +18,15 @@ const connection = require("../../utils/connection");
 // Verificar se o nome do campus já existe:
 const checkCampusName = async (campus_name) => {
     const query = "SELECT * FROM campus WHERE Nome = ?;";
-    const result = await connection.execute(query, [campus_name]);
-
-    console.log("O===============O\n" + result[0] + "\nO===============O");
+    const [result] = await connection.execute(query, [campus_name]);
 
     if (result.length > 0) {
-        return { status: false, message: "Nome do campus já registrado!" };
+        return {
+            status: true,
+            message: "Nome do campus existe!",
+        };
     } else {
-        return { status: true, message: "Nome do campus disponível!" };
+        return { status: false, message: "Nome do campus não existe!" };
     }
 };
 
@@ -156,7 +157,7 @@ const registerCampus = async (campus_name, campus_state) => {
 // Editar nome do campus:
 const editCampusName = async (ID_campus, newName) => {
     const query = "UPDATE campus SET Nome = ? WHERE ID_campus = ?;";
-    const result = await connection.execute(query, [newName, ID_campus]);
+    const [result] = await connection.execute(query, [newName, ID_campus]);
 
     if (result.affectedRows > 0) {
         return {
@@ -176,7 +177,7 @@ const editCampusName = async (ID_campus, newName) => {
 // Editar estado do campus:
 const editCampusState = async (ID_campus, newName) => {
     const query = "UPDATE campus SET Estado = ? WHERE ID_campus = ?;";
-    const result = await connection.execute(query, [newName, ID_campus]);
+    const [result] = await connection.execute(query, [newName, ID_campus]);
 
     if (result.affectedRows > 0) {
         return {
