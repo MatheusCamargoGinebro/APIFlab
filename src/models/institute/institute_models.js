@@ -80,7 +80,7 @@ const checkUserInCampus = async (user_ID, campus_ID) => {
 // Atualizando o AdminLevel do usuário para administrador:
 const addAdminUser = async (user_ID, campus_ID) => {
     const query =
-        "UPDATE usuarios SET AdminLevel = 2 WHERE ID_usuario = ? AND ID_campus = ?;";
+        "UPDATE usuarios SET CampusAdminLevel = 2 WHERE ID_usuario = ? AND ID_campus = ?;";
     const [result] = await connection.execute(query, [user_ID, campus_ID]);
 
     if (result.affectedRows > 0) {
@@ -101,7 +101,7 @@ const addAdminUser = async (user_ID, campus_ID) => {
 // Remover um usuário administrador:
 const removeAdminUser = async (user_ID, campus_ID) => {
     const query =
-        "UPDATE usuarios SET AdminLevel = 1 WHERE ID_usuario = ? AND ID_campus = ?;";
+        "UPDATE usuarios SET CampusAdminLevel = 1 WHERE ID_usuario = ? AND ID_campus = ?;";
     const [result] = await connection.execute(query, [user_ID, campus_ID]);
 
     if (result.affectedRows > 0) {

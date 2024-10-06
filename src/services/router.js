@@ -137,12 +137,12 @@ router.put(
   Instituto:
     [X] Registrar instituto;
     [] Administradores:
-      [] Adicionar administrador ao instituto;
-      [] Remover administrador do instituto;
-    [] Editar informações do instituto:
-      [] Editar nome;
-      [] Editar estado;
-    [] Deletar instituto;
+      [X] Adicionar administrador ao instituto;
+      [X] Remover administrador do instituto;
+    [X] Editar informações do instituto:
+      X] Editar nome;
+      [X] Editar estado;
+    [-] Deletar instituto;
 */
 
 // -==========================- Registrar instituto -==========================- // OK
@@ -160,7 +160,7 @@ router.put(
     "/institute/admin/",
     tokenMiddlewares.CheckToken,
     instituteMiddlewares.id_campus,
-    instituteMiddlewares.id_user,
+    instituteMiddlewares.user_id,
     instituteControllers.addAdminUser
 );
 
@@ -169,7 +169,7 @@ router.delete(
     "/institute/admin/",
     tokenMiddlewares.CheckToken,
     instituteMiddlewares.id_campus,
-    instituteMiddlewares.id_user,
+    instituteMiddlewares.user_id,
     instituteControllers.removeAdminUser
 );
 
@@ -192,3 +192,53 @@ router.put(
     instituteMiddlewares.id_campus,
     instituteControllers.editCampusState
 );
+
+// -=====================================================- Controle de laboratório -=====================================================-
+/*
+  Laboratório:
+    [] Registrar laboratório;
+    [] Editar informações do laboratório:
+      [] Editar código da sala;
+      [] Editar capacidade;
+    [] Listar:
+      [] Listar laboratórios por instituto;
+      [] Listar laboratórios em que o usuário é responsável;
+      [] Listar laboratórios em que o usuário possui acesso;
+      [] Listar elementos do laboratório;
+      [] Listar equipamentos do laboratório;
+    [-] Deletar laboratório;
+*/
+
+// -=====================================================- Controle de elementos -=====================================================-
+/*
+  Elemento:
+    [] Registrar elemento em laboratório;
+    [] Editar informações do elemento:
+      [] Editar nome;
+      [] Editar quantidade;
+      [] Editar peso molecular;
+      [] Editar numero_cas;
+      [] Editar numero_ec;
+      [] Editar estado_fisico;
+      [] editar imagem;
+    [] Listar:
+      [] Listar elementos de determinado laboratório;
+      [] Listar reservas do elemento;
+    [] Deletar elemento;
+*/
+
+// -=====================================================- Controle de equipamentos -=====================================================-
+/*
+  Equipamento:
+    [] Registrar equipamento em laboratório;
+    [] Editar informações do equipamento: 
+      [] Editar nome;
+      [] Editar descrição;
+      [] Editar QuantidadeTotal;
+      [] Editar Qualidade;
+      [] Editar imagem;
+    [] Listar:
+      [] Listar equipamentos de determinado laboratório;
+      [] Listar reservas do equipamento;
+    [] Deletar equipamento;
+*/

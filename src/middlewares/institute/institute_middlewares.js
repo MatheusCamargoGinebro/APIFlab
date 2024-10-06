@@ -151,29 +151,29 @@ const id_campus = (request, response, next) => {
     next();
 };
 
-const id_user = async (request, response, next) => {
+const user_id = async (request, response, next) => {
     if (
-        request.body.user_ID === undefined ||
-        request.body.user_ID === null ||
-        !request.body.user_ID
+        request.body.user_id === undefined ||
+        request.body.user_id === null ||
+        !request.body.user_id
     ) {
         return response.status(400).send({
             message: "ID do usuário é obrigatório",
-            error_at: "user_ID",
+            error_at: "user_id",
         });
     }
 
-    if (typeof request.body.user_ID !== "number") {
+    if (typeof request.body.user_id !== "number") {
         return response.status(400).send({
             message: "ID do usuário deve ser um número",
-            error_at: "user_ID",
+            error_at: "user_id",
         });
     }
 
-    if (request.body.user_ID < 1) {
+    if (request.body.user_id < 1) {
         return response.status(400).send({
             message: "ID do usuário deve ser maior que 0",
-            error_at: "user_ID",
+            error_at: "user_id",
         });
     }
 
@@ -184,6 +184,6 @@ module.exports = {
     campus_name,
     campus_state,
     id_campus,
-    id_user,
+    user_id,
 };
 // O============================================================================================O
