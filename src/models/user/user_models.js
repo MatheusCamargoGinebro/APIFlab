@@ -27,18 +27,6 @@ const saveMailCode = async (email, code) => {
     }
 };
 
-// Função para recuperar o código de confirmação de email do banco de dados:
-const getMailCode = async (email) => {
-    const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
-    const [result] = await connection.execute(query, [email]);
-
-    if (result.length > 0) {
-        return { code: result[0].Checkcode, status: true };
-    } else {
-        return { code: null, status: false };
-    }
-};
-
 // Função para deletar o código de confirmação já utilizado ou cancelado no banco de dados:
 const deleteMailCode = async (email) => {
     // Verifica se o código de confirmação existe:
@@ -120,13 +108,6 @@ const checkCampus = async (ID_campus) => {
     }
 };
 
-const getUsersInCampus = async (ID_campus) => {
-    const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
-    const [result] = await connection.execute(query, [ID_campus]);
-
-    return result;
-};
-
 /*
     O=================================================O
     |    Funções de Models relacionadas a usuários    |
@@ -160,15 +141,6 @@ const registerUser = async (
     } else {
         return false;
     }
-};
-
-// Função para recuperar informações do usuário (ID, Salt e Senha) para verificação de login:
-const getInfo = async (email) => {
-    const query =
-        "SELECT ID_usuario, Salt, Senha FROM usuarios WHERE Email = ?;";
-    const [result] = await connection.execute(query, [email]);
-
-    return result[0];
 };
 
 // Função para verificar se o login é válido:
@@ -247,22 +219,76 @@ const editUserProfilePicture = async (userID, newProfilePicture) => {
     }
 };
 
+// O====================================================================================O
+
+/*
+    O=======================O
+    |    Funções de gets    |
+    O=======================O
+*/
+
+// Função para pegar informações do usuário pelo ID:
+const getUserByID = async (ID_usuario) => {
+    const query = "SELECT * FROM usuarios WHERE ID_usuario = ?;";
+    const [result] = await connection.execute(query, [ID_usuario]);
+
+    if (result.length > 0) {
+        return { status: true, userData: result[0] };
+    } else {
+        return { status: false, userData: null };
+    }
+};
+
+// Função para recuperar o código de confirmação de email do banco de dados:
+const getMailCode = async (email) => {
+    const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    if (result.length > 0) {
+        return { code: result[0].Checkcode, status: true };
+    } else {
+        return { code: null, status: false };
+    }
+};
+
+// Função para recuperar informações do usuário (ID, Salt e Senha) para verificação de login:
+const getInfo = async (email) => {
+    const query =
+        "SELECT ID_usuario, Salt, Senha FROM usuarios WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    return result[0];
+};
+
+const getUsersInCampus = async (ID_campus) => {
+    const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
+    const [result] = await connection.execute(query, [ID_campus]);
+
+    return result;
+};
+
 module.exports = {
+    /* Create/Delete */
     saveMailCode,
-    getMailCode,
     deleteMailCode,
+    /* Check */
     checkEmail,
     checkUsername,
     checkUserID,
     checkCampus,
-    getUsersInCampus,
+    /* User */
     registerUser,
-    getInfo,
     loginUser,
+    /* Edit */
     editUserName,
     editUserEmail,
     editUserPassword,
     editUserProfilePicture,
+    /* Gets */
+    getUserByID,
+    getMailCode,
+    getInfo,
+    getUsersInCampus,
 };
 
 // O============================================================================================O

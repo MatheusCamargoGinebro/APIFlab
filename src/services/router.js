@@ -11,6 +11,9 @@ const tokenControllers = require("../controllers/token/token_controllers");
 const instituteMiddlewares = require("../middlewares/institute/institute_middlewares");
 const instituteControllers = require("../controllers/institute/institute_controllers");
 
+const labMiddlewares = require("../middlewares/lab/lab_middlewares");
+const labControllers = require("../controllers/lab/lab_controllers");
+
 // A cada 30seg, limpar a blacklist de tokens:
 setInterval(tokenControllers.clearBlackList, 1800000);
 
@@ -208,6 +211,13 @@ router.put(
       [] Listar equipamentos do laboratório;
     [-] Deletar laboratório;
 */
+
+router.post(
+    "/lab/register",
+    /* tokenMiddlewares.CheckToken, */
+    labMiddlewares.checkLabName,
+    labControllers.registerLab
+);
 
 // -=====================================================- Controle de elementos -=====================================================-
 /*
