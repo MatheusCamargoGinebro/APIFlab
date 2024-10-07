@@ -7,11 +7,19 @@
 // Importando conexão com o banco de dados:
 const connection = require("../../utils/connection");
 
+// O====================================================================================O
 /*  
     O=========================================================O
     |    Funções de Models relacionadas a código de emails    |
     O=========================================================O
+
+    Funções relacionadas a códigos de email:
+    - [X] SaveMailCode;
+    - [X] GetMailCode;
+    - [X] DeleteMailCode;
 */
+// O====================================================================================O
+
 // Função para salvar o código de confirmação de email no banco de dados:
 const saveMailCode = async (email, code) => {
     const query = "INSERT INTO email_codes (Email, Checkcode) VALUES (?, ?);";
@@ -27,19 +35,20 @@ const saveMailCode = async (email, code) => {
     }
 };
 
+// Função para recuperar o código de confirmação de email do banco de dados:
+const getMailCode = async (email) => {
+    const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
+    const [result] = await connection.execute(query, [email]);
+
+    if (result.length > 0) {
+        return { code: result[0].Checkcode, status: true };
+    } else {
+        return { code: null, status: false };
+    }
+};
+
 // Função para deletar o código de confirmação já utilizado ou cancelado no banco de dados:
 const deleteMailCode = async (email) => {
-    // Verifica se o código de confirmação existe:
-    const mailCode = await getMailCode(email);
-
-    if (mailCode.status === false) {
-        return {
-            status: false,
-            message: "Código de confirmação não encontrado",
-        };
-    }
-
-    // Deleta o código de confirmação:
     const query = "DELETE FROM email_codes WHERE Email = ?;";
     const [result] = await connection.execute(query, [email]);
 
@@ -53,66 +62,20 @@ const deleteMailCode = async (email) => {
     }
 };
 
-/*
-    O=====================================================================O
-    |    Funções de Models relacionadas a existência de dados no banco    |
-    O=====================================================================O
-
-*/
-// Função para verificar se o email já está cadastrado no banco de dados:
-const checkEmail = async (email) => {
-    const query = "SELECT * FROM usuarios WHERE Email = ?;";
-    const [result] = await connection.execute(query, [email]);
-
-    if (result.length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-};
-
-// Função para verificar se o nome de usuário já está cadastrado no banco de dados:
-const checkUsername = async (nome) => {
-    const query = "SELECT * FROM usuarios WHERE Nome = ?;";
-
-    const [result] = await connection.execute(query, [nome]);
-
-    if (result.length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-};
-
-// Verificar se o usuário existe:
-const checkUserID = async (user_ID) => {
-    const query = "SELECT * FROM usuarios WHERE ID_usuario = ?;";
-    const [result] = await connection.execute(query, [user_ID]);
-
-    if (result.length > 0) {
-        return { status: true, message: "Usuário encontrado!" };
-    } else {
-        return { status: false, message: "Usuário não encontrado!" };
-    }
-};
-
-// Função para verificar se o campus existe no banco de dados:
-const checkCampus = async (ID_campus) => {
-    const query = "SELECT * FROM campus WHERE ID_campus = ?;";
-    const [result] = await connection.execute(query, [ID_campus]);
-
-    if (result.length > 0) {
-        return true;
-    } else {
-        return false;
-    }
-};
+// O====================================================================================O
 
 /*
     O=================================================O
     |    Funções de Models relacionadas a usuários    |
     O=================================================O
+
+    Funções relacionadas a usuários:
+    - [X] RegisterUser;
+    - [X] LoginUser;
 */
+
+// O====================================================================================O
+
 // Função para registrar um usuário no banco de dados:
 const registerUser = async (
     nome,
@@ -156,15 +119,24 @@ const loginUser = async (email, senha) => {
     }
 };
 
+// O====================================================================================O
+
+/*
+    O===============================================O
+    |    Funções de Models relacionadas a edição    |
+    O===============================================O
+
+    Funções relacionadas a edição de dados de usuários:
+    - [X] EditUserName;
+    - [X] EditUserEmail;
+    - [X] EditUserPassword;
+    - [X] EditUserProfilePicture;
+*/
+
+// O====================================================================================O
+
 // Função para editar o nome de usuário:
 const editUserName = async (userID, newName) => {
-    //Verifica se o nome de usuário já existe:
-    const check = await checkUsername(newName);
-
-    if (check === true) {
-        return { status: false, message: "Nome de usuário já existe" };
-    }
-
     const query = "UPDATE usuarios SET Nome = ? WHERE ID_usuario = ?;";
     const [result] = await connection.execute(query, [newName, userID]);
 
@@ -222,10 +194,18 @@ const editUserProfilePicture = async (userID, newProfilePicture) => {
 // O====================================================================================O
 
 /*
-    O=======================O
-    |    Funções de gets    |
-    O=======================O
+    O============================================O
+    |    Funções de Models relacionadas a get    |
+    O============================================O
+
+    Funções relacionadas a pegar informações de usuários:
+    - [X] GetUserByID;
+    - [X] GetUserByEmail;
+    - [X] GetUserByName;
+    - [X] GetUserbyCampus;
 */
+
+// O====================================================================================O
 
 // Função para pegar informações do usuário pelo ID:
 const getUserByID = async (ID_usuario) => {
@@ -239,56 +219,65 @@ const getUserByID = async (ID_usuario) => {
     }
 };
 
-// Função para recuperar o código de confirmação de email do banco de dados:
-const getMailCode = async (email) => {
-    const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
+// Função para pegar informações do usuário pelo email:
+const getUserByEmail = async (email) => {
+    const query = "SELECT * FROM usuarios WHERE Email = ?;";
     const [result] = await connection.execute(query, [email]);
 
     if (result.length > 0) {
-        return { code: result[0].Checkcode, status: true };
+        return { status: true, userData: result[0] };
     } else {
-        return { code: null, status: false };
+        return { status: false, userData: null };
     }
 };
 
-// Função para recuperar informações do usuário (ID, Salt e Senha) para verificação de login:
-const getInfo = async (email) => {
-    const query =
-        "SELECT ID_usuario, Salt, Senha FROM usuarios WHERE Email = ?;";
-    const [result] = await connection.execute(query, [email]);
+// Função para pegar informações do usuário pelo nome de usuário:
+const getUserByName = async (username) => {
+    const query = "SELECT * FROM usuarios WHERE Nome = ?;";
+    const [result] = await connection.execute(query, [username]);
 
-    return result[0];
+    if (result.length > 0) {
+        return { status: true, userData: result[0] };
+    } else {
+        return { status: false, userData: null };
+    }
 };
 
-const getUsersInCampus = async (ID_campus) => {
+// Função para pegar todos os usuários de um campus:
+const getUserbyCampus = async (ID_campus) => {
     const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
     const [result] = await connection.execute(query, [ID_campus]);
 
-    return result;
+    if (result.length > 0) {
+        return { status: true, userData: result };
+    } else {
+        return { status: false, userData: null };
+    }
 };
 
+// O====================================================================================O
+
 module.exports = {
-    /* Create/Delete */
+    /* Código de email */
     saveMailCode,
     deleteMailCode,
-    /* Check */
-    checkEmail,
-    checkUsername,
-    checkUserID,
-    checkCampus,
-    /* User */
+
+    /* Account */
     registerUser,
     loginUser,
+
     /* Edit */
     editUserName,
     editUserEmail,
     editUserPassword,
     editUserProfilePicture,
-    /* Gets */
+
+    /* Get */
     getUserByID,
+    getUserByEmail,
+    getUserByName,
+    getUserbyCampus,
     getMailCode,
-    getInfo,
-    getUsersInCampus,
 };
 
 // O============================================================================================O

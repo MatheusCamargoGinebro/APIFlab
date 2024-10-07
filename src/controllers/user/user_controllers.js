@@ -7,6 +7,7 @@
 // Importando módulos:
 const userModels = require("../../models/user/user_models");
 const tokenModels = require("../../models/token/token_models");
+
 const passwordTreatment = require("../../utils/password_treatment");
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
@@ -18,6 +19,9 @@ const nodeMailer = require("nodemailer");
     |   Funções de verificação de código de confirmação de email    |
     O===============================================================O
 */
+
+// O========================================================================================O
+
 // Função para verificar se o código de confirmação de email é válido:
 const checkMailCode = async (mail, code) => {
     const mailCode = await userModels.getMailCode(mail);
@@ -92,7 +96,7 @@ const sendMailCode = async (req, res) => {
     O========================================================================O
 */
 
-// ======================================= Registro de usuário =======================================
+// O========================================================================================O
 
 // Função para registrar um novo usuário, com verificação de código de email criptografia de senha:
 const userRegister = async (req, res) => {
@@ -185,7 +189,15 @@ const userRegister = async (req, res) => {
     }
 };
 
-// ======================================= Login e Logout de usuário =======================================
+// O========================================================================================O
+
+/*
+    O=========================================================O
+    |   Funções de controle relacionadas ao login e logout    |
+    O=========================================================O
+*/
+
+// O========================================================================================O
 
 // Função para realizar o login de um usuário:
 const userLogin = async (req, res) => {
@@ -248,7 +260,15 @@ const userLogout = async (req, res) => {
     }
 };
 
-// ======================================= Edição de usuário =======================================
+// O========================================================================================O
+
+/*
+    O=========================================================O
+    |   Funções de controle relacionadas a edição de usuário  |
+    O=========================================================O
+*/
+
+// O========================================================================================O
 
 // Função para editar o nome de um usuário:
 const editUserName = async (req, res) => {
@@ -331,15 +351,22 @@ const editUserProfilePicture = async (req, res) => {
     }
 };
 
-// ======================================= Deleção de usuário =======================================
+// O========================================================================================O
 
 module.exports = {
+    /* Create */
+    sendMailCode,
     userRegister,
+
+    /* Account */
     userLogin,
+    userLogout,
+
+    /* Edit */
     editUserName,
     editUserEmail,
     editUserPassword,
     editUserProfilePicture,
-    userLogout,
-    sendMailCode,
 };
+
+// O========================================================================================O
