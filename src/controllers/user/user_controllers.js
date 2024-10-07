@@ -7,17 +7,17 @@
 // Importando módulos:
 const userModels = require("../../models/user/user_models");
 const tokenModels = require("../../models/token/token_models");
-
 const passwordTreatment = require("../../utils/password_treatment");
+
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 
 // O========================================================================================O
 
 /*
-    O===============================================================O
-    |   Funções de verificação de código de confirmação de email    |
-    O===============================================================O
+    O================================================================O
+    |    Funções de verificação de código de confirmação de email    |
+    O================================================================O
 */
 
 // O========================================================================================O
