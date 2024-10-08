@@ -290,6 +290,7 @@ module.exports = {
     getUserByName,
     getUsersByCampus,
     getMailCode,
+    getUserByCampus,
 };
 
 // O============================================================================================O
