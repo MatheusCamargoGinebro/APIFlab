@@ -7,26 +7,38 @@
 // Importando módulos:
 const userModels = require("../../models/user/user_models");
 const tokenModels = require("../../models/token/token_models");
+const campusModels = require("../../models/institute/institute_models");
+
 const passwordTreatment = require("../../utils/password_treatment");
+
 const jwt = require("jsonwebtoken");
 const nodeMailer = require("nodemailer");
 
 // O========================================================================================O
 
 /*
-    O===============================================================O
-    |   Funções de verificação de código de confirmação de email    |
-    O===============================================================O
+    O================================================================O
+    |    Funções de verificação de código de confirmação de email    |
+    O================================================================O
+
+    Funções relacionadas a verificação de código de confirmação de email:
+    - [X] CheckMailCode;
+    - [X] SendMailCode;
 */
+
+// O========================================================================================O
+
 // Função para verificar se o código de confirmação de email é válido:
 const checkMailCode = async (mail, code) => {
-    const mailCode = await userModels.getMailCode(mail);
+    const mailExistance = await userModels.getMailCode(mail);
 
-    if (mailCode.status === false) {
+    // Verificando se o email existe no banco de dados:
+    if (mailExistance.status === false) {
         return false;
     }
 
-    if (code !== mailCode.code) {
+    // Verificando se o código de confirmação é válido:
+    if (mailExistance.code !== code) {
         return false;
     }
 
@@ -38,14 +50,16 @@ const sendMailCode = async (req, res) => {
     const email = req.body.email;
 
     // Verificando se o email existe no banco de dados:
-    const emailCheck = await userModels.checkEmail(email);
+    const emailCheck = await userModels.getUserByEmail(email);
 
-    if (emailCheck === true) {
+    if (emailCheck.status === true) {
         return res.status(400).json({
+            status: false,
             message: "Email já cadastrado",
         });
     }
 
+    // Configurações do nodemailer:
     const transporter = nodeMailer.createTransport({
         host: process.env.MAIL_HOST,
         port: process.env.MAIL_PORT,
@@ -55,6 +69,7 @@ const sendMailCode = async (req, res) => {
     // Gerando um número aleatório de 10000 a 99999:
     const code = Math.floor(Math.random() * 89999 + 10000);
 
+    // Enviando o email de confirmação:
     transporter
         .sendMail({
             from: process.env.MAIL_USER,
@@ -64,6 +79,7 @@ const sendMailCode = async (req, res) => {
         })
         .catch((error) => {
             res.status(500).json({
+                status: false,
                 message: "Erro ao enviar email de confirmação" + error,
             });
         });
@@ -75,10 +91,12 @@ const sendMailCode = async (req, res) => {
 
     if (result.status === true) {
         return res.status(200).json({
+            status: true,
             message: "Código de confirmação enviado com sucesso!",
         });
     } else {
         return res.status(500).json({
+            status: false,
             message: "Erro ao enviar código de confirmação",
         });
     }
@@ -90,25 +108,18 @@ const sendMailCode = async (req, res) => {
     O========================================================================O
     |   Funções de controle relacionadas a manipulação de usuário no banco   |
     O========================================================================O
+
+    Funções relacionadas a manipulação de usuário no banco:
+    - [X] UserRegister;
 */
 
-// ======================================= Registro de usuário =======================================
+// O========================================================================================O
 
 // Função para registrar um novo usuário, com verificação de código de email criptografia de senha:
 const userRegister = async (req, res) => {
     const { nome, email, senha, tipo, id_campus, code } = req.body;
 
-    // Verificando se o campus existe:
-    const campusCheck = await userModels.checkCampus(id_campus);
-
-    if (campusCheck === false) {
-        return res.status(400).json({
-            status: false,
-            message: "Campus não encontrado",
-        });
-    }
-
-    // Verificando se o código de confirmação é válido:
+    // Verifica se o código de confirmação é válido:
     const mailCodeCheck = await checkMailCode(email, code);
 
     if (mailCodeCheck === false) {
@@ -128,10 +139,20 @@ const userRegister = async (req, res) => {
         });
     }
 
-    // Verificando se o email já está cadastrado:
-    const emailCheck = await userModels.checkEmail(email);
+    // Verifica se o campus existe:
+    const campusCheck = await campusModels.checkCampusID(id_campus);
 
-    if (emailCheck === true) {
+    if (campusCheck.status === false) {
+        return res.status(400).json({
+            status: false,
+            message: "Campus não encontrado",
+        });
+    }
+
+    // Verificando se o email já está cadastrado:
+    const emailCheck = await userModels.getUserByEmail(email);
+
+    if (emailCheck.status === true) {
         return res.status(400).json({
             status: false,
             message: "Email já cadastrado",
@@ -139,9 +160,9 @@ const userRegister = async (req, res) => {
     }
 
     // Verificando se o nome de usuário já está cadastrado:
-    const usernameCheck = await userModels.checkUsername(nome);
+    const nameCheck = await userModels.getUserByName(nome);
 
-    if (usernameCheck === true) {
+    if (nameCheck.status === true) {
         return res.status(400).json({
             status: false,
             message: "Nome de usuário já cadastrado",
@@ -156,11 +177,8 @@ const userRegister = async (req, res) => {
     );
 
     // Verificando quantos usuários já estão cadastrados no campus para definir o nível de adminstração do usuário:
-    const usersInCampus = await userModels.getUsersInCampus(id_campus);
-
-    // Se não houver usuários cadastrados no campus, o usuário será um administrador de campus:
-    // Se houver usuários cadastrados no campus, o usuário será um usuário comum:
-    const CampusAdminLevel = usersInCampus.length === 0 ? 3 : 1;
+    const usersInCampus = await userModels.getUserByCampus(id_campus);
+    const CampusAdminLevel = usersInCampus.status === false ? 3 : 1;
 
     const status = await userModels.registerUser(
         nome,
@@ -185,15 +203,28 @@ const userRegister = async (req, res) => {
     }
 };
 
-// ======================================= Login e Logout de usuário =======================================
+// O========================================================================================O
+
+/*
+    O=========================================================O
+    |   Funções de controle relacionadas ao login e logout    |
+    O=========================================================O
+
+    Funções relacionadas ao login e logout de usuário:
+    - [X] UserLogin;
+    - [X] UserLogout;
+*/
+
+// O========================================================================================O
 
 // Função para realizar o login de um usuário:
 const userLogin = async (req, res) => {
     const { email, senha } = req.body;
 
-    const userInfo = await userModels.getInfo(email);
+    // Verificando se o email existe no banco de dados:
+    const userInfo = await userModels.getUserByEmail(email);
 
-    if (userInfo === undefined || userInfo === null || userInfo.length === 0) {
+    if (userInfo.status === false) {
         return res.status(401).json({
             auth: false,
             token: null,
@@ -204,8 +235,8 @@ const userLogin = async (req, res) => {
     // Comparando senhas:
     const result = await passwordTreatment.comparePasswords(
         senha,
-        userInfo.Salt,
-        userInfo.Senha
+        userInfo.userData.Salt,
+        userInfo.userData.Senha
     );
 
     if (result === false) {
@@ -214,21 +245,22 @@ const userLogin = async (req, res) => {
             token: null,
             message: "Usuário ou senha inválidos",
         });
-    } else {
-        const token = jwt.sign(
-            { userID: userInfo.ID_usuario },
-            process.env.JWT_SECRET,
-            {
-                expiresIn: 86400,
-            }
-        );
-
-        return res.status(200).json({
-            auth: true,
-            token: token,
-            message: "Login efetuado com sucesso!",
-        });
     }
+
+    // Gerando token de autenticação:
+    const token = jwt.sign(
+        { userID: userInfo.userData.ID_usuario },
+        process.env.JWT_SECRET,
+        {
+            expiresIn: 86400,
+        }
+    );
+
+    return res.status(200).json({
+        auth: true,
+        token: token,
+        message: "Login efetuado com sucesso!",
+    });
 };
 
 // Função para realizar o logout de um usuário:
@@ -248,7 +280,21 @@ const userLogout = async (req, res) => {
     }
 };
 
-// ======================================= Edição de usuário =======================================
+// O========================================================================================O
+
+/*
+    O=========================================================O
+    |   Funções de controle relacionadas a edição de usuário  |
+    O=========================================================O
+
+    Funções relacionadas a edição de usuário:
+    - [X] EditUserName;
+    - [X] EditUserEmail;
+    - [X] EditUserPassword;
+    - [X] EditUserProfilePicture;
+*/
+
+// O========================================================================================O
 
 // Função para editar o nome de um usuário:
 const editUserName = async (req, res) => {
@@ -257,6 +303,17 @@ const editUserName = async (req, res) => {
 
     const { nome } = req.body;
 
+    // Verificando se o nome de usuário já está cadastrado:
+    const nameCheck = await userModels.getUserByName(nome);
+
+    if (nameCheck.status === true) {
+        return res.status(400).json({
+            status: false,
+            message: "Nome de usuário já cadastrado",
+        });
+    }
+
+    // Editando o nome do usuário:
     const result = await userModels.editUserName(userID, nome);
 
     if (result.status === true) {
@@ -281,6 +338,27 @@ const editUserEmail = async (req, res) => {
         });
     }
 
+    // Deletando o código de confirmação:
+    const mailCodeDelete = await userModels.deleteMailCode(email);
+
+    if (mailCodeDelete.status === false) {
+        return res.status(500).json({
+            status: false,
+            message: "Erro ao deletar código de confirmação",
+        });
+    }
+
+    // Verificando se o email já está cadastrado:
+    const emailCheck = await userModels.getUserByEmail(email);
+
+    if (emailCheck.status === true) {
+        return res.status(400).json({
+            status: false,
+            message: "Email já cadastrado",
+        });
+    }
+
+    // Editando o email do usuário:
     const result = await userModels.editUserEmail(userID, email);
 
     if (result.status === true) {
@@ -320,6 +398,7 @@ const editUserPassword = async (req, res) => {
 const editUserProfilePicture = async (req, res) => {
     const token = req.headers["x-access-token"];
     const userID = jwt.decode(token).userID;
+
     const { profilePic } = req.body;
 
     const result = await userModels.editUserProfilePicture(userID, profilePic);
@@ -331,15 +410,22 @@ const editUserProfilePicture = async (req, res) => {
     }
 };
 
-// ======================================= Deleção de usuário =======================================
+// O========================================================================================O
 
 module.exports = {
+    /* Create */
+    sendMailCode,
     userRegister,
+
+    /* Account */
     userLogin,
+    userLogout,
+
+    /* Edit */
     editUserName,
     editUserEmail,
     editUserPassword,
     editUserProfilePicture,
-    userLogout,
-    sendMailCode,
 };
+
+// O========================================================================================O
