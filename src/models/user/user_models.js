@@ -243,12 +243,25 @@ const getUserByName = async (username) => {
 };
 
 // Função para pegar todos os usuários de um campus:
-const getUserByCampus = async (ID_campus) => {
+const getUsersByCampus = async (ID_campus) => {
     const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
     const [result] = await connection.execute(query, [ID_campus]);
 
     if (result.length > 0) {
         return { status: true, userData: result };
+    } else {
+        return { status: false, userData: null };
+    }
+};
+
+// Função para pegar um usuário específico de um campus:
+const getUserByCampus = async (ID_usuario, ID_campus) => {
+    const query =
+        "SELECT * FROM usuarios WHERE ID_usuario = ? AND ID_campus = ?;";
+    const [result] = await connection.execute(query, [ID_usuario, ID_campus]);
+
+    if (result.length > 0) {
+        return { status: true, userData: result[0] };
     } else {
         return { status: false, userData: null };
     }
@@ -275,7 +288,7 @@ module.exports = {
     getUserByID,
     getUserByEmail,
     getUserByName,
-    getUserByCampus,
+    getUsersByCampus,
     getMailCode,
 };
 

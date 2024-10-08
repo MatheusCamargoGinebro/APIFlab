@@ -177,7 +177,7 @@ const userRegister = async (req, res) => {
     );
 
     // Verificando quantos usuários já estão cadastrados no campus para definir o nível de adminstração do usuário:
-    const usersInCampus = await userModels.getUserByCampus(id_campus);
+    const usersInCampus = await userModels.getUsersByCampus(id_campus);
     const CampusAdminLevel = usersInCampus.status === false ? 3 : 1;
 
     const status = await userModels.registerUser(
