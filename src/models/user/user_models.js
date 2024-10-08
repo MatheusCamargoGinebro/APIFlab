@@ -108,8 +108,7 @@ const registerUser = async (
 
 // Função para verificar se o login é válido:
 const loginUser = async (email, senha) => {
-    const query =
-        "SELECT Nome, Email FROM usuarios WHERE Email = ? AND Senha = ?;";
+    const query = "SELECT * FROM usuarios WHERE Email = ? AND Senha = ?;";
     const [result] = await connection.execute(query, [email, senha]);
 
     if (result.length > 0) {
@@ -244,7 +243,7 @@ const getUserByName = async (username) => {
 };
 
 // Função para pegar todos os usuários de um campus:
-const getUserbyCampus = async (ID_campus) => {
+const getUserByCampus = async (ID_campus) => {
     const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
     const [result] = await connection.execute(query, [ID_campus]);
 
@@ -276,7 +275,7 @@ module.exports = {
     getUserByID,
     getUserByEmail,
     getUserByName,
-    getUserbyCampus,
+    getUserByCampus,
     getMailCode,
 };
 
