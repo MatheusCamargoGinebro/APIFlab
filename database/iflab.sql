@@ -32,12 +32,10 @@ CREATE TABLE
         -- 1 = Aluno
         -- 2 = Professor
         -- 3 = Outro
-
         CampusAdminLevel INT CHECK (CampusAdminLevel IN (1, 2, 3)) NOT NULL,
         -- 1 = Membro
         -- 2 = Pode adicionar labs
         -- 3 = Responsável (pode editar, adicionar e remover admins)
-
         -- FK
         ID_campus INT NOT NULL,
         FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
@@ -158,13 +156,14 @@ CREATE TABLE
     );
 
 -- ========================================= Codigos de inserção de dados com triggers ========================================= --
+/*
 DELIMITER $$
 CREATE TRIGGER decrementa_elemento AFTER INSERT ON Reserva_elemento FOR EACH ROW BEGIN
 UPDATE Elementos
 SET
-    Quantidade = Quantidade - NEW.Quantidade
+Quantidade = Quantidade - NEW.Quantidade
 WHERE
-    ID_elem = NEW.ID_elem;
+ID_elem = NEW.ID_elem;
 
 END;
 
@@ -172,17 +171,13 @@ DELIMITER $$
 CREATE TRIGGER decrementa_equipamento AFTER INSERT ON Reserva_equipamento FOR EACH ROW BEGIN
 UPDATE Equipamentos
 SET
-    QuantidadeDisponivel = QuantidadeDisponivel - NEW.Quantidade
+QuantidadeDisponivel = QuantidadeDisponivel - NEW.Quantidade
 WHERE
-    ID_equip = NEW.ID_equip;
+ID_equip = NEW.ID_equip;
 
 END;
-
--- INSERTS de para futuros testes com a API:
-
-
+ */
 -- =========================================== Email Confirmation Code ===========================================
-
 CREATE TABLE
     IF NOT EXISTS email_codes (
         -- PK
@@ -198,7 +193,6 @@ CREATE TABLE
         -- PK
         ID_blacklist INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_blacklist),
-
         -- values
         Token VARCHAR(256) NOT NULL
     );

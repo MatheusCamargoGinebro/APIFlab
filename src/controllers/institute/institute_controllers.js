@@ -14,21 +14,25 @@ const jwt = require("jsonwebtoken");
     O====================================O
     |   Funções de controle de Campus    |
     O====================================O
+
+    Funções relacionadas a Campus:
+    - [X] registerCampus;
 */
+
+// O========================================================================================O
 
 // Registrar um campus:
 const registerCampus = async (request, response) => {
     const { campus_name, campus_state } = request.body;
 
     // Verificar se o nome do campus já existe:
-    const checkCampusName = await instituteModels.checkCampusName(campus_name);
+    const checkCampusName = await instituteModels.getCampusByName(campus_name);
 
     if (checkCampusName.status) {
-        // Nome existe
-        return response.status(400).json(checkCampusName);
+        return response
+            .status(400)
+            .json({ status: false, message: "Campus já existe!" });
     }
-
-    // Nome não existe
 
     // Registrar o campus:
     const registerCampus = await instituteModels.registerCampus(
@@ -36,14 +40,50 @@ const registerCampus = async (request, response) => {
         campus_state
     );
 
+    if (registerCampus.status === false) {
+        return response.status(400).json(registerCampus);
+    }
+
     return response.status(200).json(registerCampus);
 };
 
-// ++==========================++ Editar Informações do campus ++==========================++
+// O========================================================================================O
+
+/*
+    O=====================================================O
+    |   Funções de controle relacionadas a editar Campus   |
+    O=====================================================O
+
+    Funções relacionadas a editar Campus:
+    - [] editCampusName;
+    - [] editCampusState;
+*/
+
+// O========================================================================================O
 
 // Editar nome do campus:
 const editCampusName = async (request, response) => {
     const { campus_name, campus_id } = request.body;
+
+    // Verificar se o nome do campus já existe:
+    const checkCampusName = await instituteModels.getCampusByName(campus_name);
+
+    if (checkCampusName.status) {
+        return response
+            .status(400)
+            .json({ status: false, message: "Nome do campus já existe!" });
+    }
+
+    // Verificar se o campus existe:
+    const checkCampusID = await instituteModels.checkCampusID(campus_id);
+
+    if (!checkCampusID.status) {
+        return response
+            .status(400)
+            .json({ status: false, message: "Campus informado não existe!" });
+    }
+
+    /* const { campus_name, campus_id } = request.body;
 
     // Verificar se o campus existe:
     const checkCampusID = await instituteModels.checkCampusID(campus_id);
@@ -91,7 +131,7 @@ const editCampusName = async (request, response) => {
         return response.status(400).json(editCampusName);
     }
 
-    return response.status(200).json(editCampusName);
+    return response.status(200).json(editCampusName); */
 };
 
 // Editar Estado do campus:
@@ -139,6 +179,8 @@ const editCampusState = async (request, response) => {
 
     return response.status(200).json(editCampusState);
 };
+
+// O========================================================================================O
 
 // ++==========================++ Editar administradores do campus ++==========================++
 
