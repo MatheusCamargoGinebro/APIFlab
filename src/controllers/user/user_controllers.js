@@ -45,6 +45,7 @@ const checkMailCode = async (mail, code) => {
     return true;
 };
 
+
 // Função para enviar um código de confirmação de email:
 const sendMailCode = async (req, res) => {
     const email = req.body.email;
@@ -78,10 +79,7 @@ const sendMailCode = async (req, res) => {
             text: "Seu código de confirmação é: " + code,
         })
         .catch((error) => {
-            res.status(500).json({
-                status: false,
-                message: "Erro ao enviar email de confirmação" + error,
-            });
+            return res.status(500).json({ status: false, message: "Houve algum erro interno", error: error });
         });
 
     // Salvando o código no banco de dados:
@@ -140,7 +138,7 @@ const userRegister = async (req, res) => {
     }
 
     // Verifica se o campus existe:
-    const campusCheck = await campusModels.checkCampusID(id_campus);
+    const campusCheck = await campusModels.getCampusByID(id_campus);
 
     if (campusCheck.status === false) {
         return res.status(400).json({

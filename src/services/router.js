@@ -68,71 +68,71 @@ setInterval(tokenControllers.clearMailCodeList, 86400000);
 
 // +==========================+ Registro de usuário +==========================+ // OK
 router.post(
-    "/user/register",
-    userMiddlewares.user_name,
-    userMiddlewares.user_email,
-    userMiddlewares.user_password,
-    userMiddlewares.user_tipo,
-    userMiddlewares.user_id_campus,
-    userMiddlewares.user_mail_code,
-    userControllers.userRegister
+  "/user/register",
+  userMiddlewares.user_name,
+  userMiddlewares.user_email,
+  userMiddlewares.user_password,
+  userMiddlewares.user_tipo,
+  userMiddlewares.user_id_campus,
+  userMiddlewares.user_mail_code,
+  userControllers.userRegister
 );
 
 // +==========================+ Enviar código de verificação por email +==========================+ // OK
 router.post(
-    "/user/sendmailcode",
-    userMiddlewares.user_email,
-    userControllers.sendMailCode
+  "/user/sendmailcode",
+  userMiddlewares.user_email,
+  userControllers.sendMailCode
 );
 
 // +==========================+ Logar como usuário +==========================+ // OK
 router.post(
-    "/user/login",
-    userMiddlewares.user_email,
-    userMiddlewares.user_password,
-    userControllers.userLogin
+  "/user/login",
+  userMiddlewares.user_email,
+  userMiddlewares.user_password,
+  userControllers.userLogin
 );
 
 // +==========================+ Deslogar +==========================+ // OK
 router.post(
-    "/user/logout",
-    tokenMiddlewares.CheckToken,
-    userControllers.userLogout
+  "/user/logout",
+  tokenMiddlewares.CheckToken,
+  userControllers.userLogout
 );
 
 // +==========================+ Editar Informações do usuário +==========================+ // OK
 
 // -==========================- Editar nome -==========================- // OK
 router.put(
-    "/user/edit/name",
-    tokenMiddlewares.CheckToken,
-    userMiddlewares.user_name,
-    userControllers.editUserName
+  "/user/edit/name",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.user_name,
+  userControllers.editUserName
 );
 
 // -==========================- Editar email -==========================- // OK
 router.put(
-    "/user/edit/email",
-    tokenMiddlewares.CheckToken,
-    userMiddlewares.user_email,
-    userMiddlewares.user_mail_code,
-    userControllers.editUserEmail
+  "/user/edit/email",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.user_email,
+  userMiddlewares.user_mail_code,
+  userControllers.editUserEmail
 );
 
 // -==========================- Editar senha -==========================- // OK
 router.put(
-    "/user/edit/password",
-    tokenMiddlewares.CheckToken,
-    userMiddlewares.user_password,
-    userControllers.editUserPassword
+  "/user/edit/password",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.user_password,
+  userControllers.editUserPassword
 );
 
 // -==========================- Editar foto de perfil -==========================- // OK
 router.put(
-    "/user/edit/picture",
-    tokenMiddlewares.CheckToken,
-    userMiddlewares.profile_picture,
-    userControllers.editUserProfilePicture
+  "/user/edit/picture",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.profile_picture,
+  userControllers.editUserProfilePicture
 );
 
 // -=====================================================- Controle de institutos -=====================================================-
@@ -150,50 +150,50 @@ router.put(
 
 // -==========================- Registrar instituto -==========================- // OK
 router.post(
-    "/institute/register",
-    instituteMiddlewares.campus_name,
-    instituteMiddlewares.campus_state,
-    instituteControllers.registerCampus
+  "/institute/register",
+  instituteMiddlewares.campus_name,
+  instituteMiddlewares.campus_state,
+  instituteControllers.registerCampus
 );
 
 // -==========================-  administradores -==========================-
 
 // -==========================- Adicionar administrador ao instituto -==========================-
 router.put(
-    "/institute/admin/",
-    tokenMiddlewares.CheckToken,
-    instituteMiddlewares.id_campus,
-    instituteMiddlewares.user_id,
-    instituteControllers.addAdminUser
+  "/institute/admin/",
+  tokenMiddlewares.CheckToken,
+  instituteMiddlewares.id_campus,
+  instituteMiddlewares.user_id,
+  instituteControllers.addAdminUser
 );
 
 // -==========================- Remover administrador do instituto -==========================-
 router.delete(
-    "/institute/admin/",
-    tokenMiddlewares.CheckToken,
-    instituteMiddlewares.id_campus,
-    instituteMiddlewares.user_id,
-    instituteControllers.removeAdminUser
+  "/institute/admin/",
+  tokenMiddlewares.CheckToken,
+  instituteMiddlewares.id_campus,
+  instituteMiddlewares.user_id,
+  instituteControllers.removeAdminUser
 );
 
 // +==========================+ Editar informações do instituto +==========================+
 
 // -==========================- Editar nome -==========================-
 router.put(
-    "/institute/edit/name",
-    tokenMiddlewares.CheckToken,
-    instituteMiddlewares.campus_name,
-    instituteMiddlewares.id_campus,
-    instituteControllers.editCampusName
+  "/institute/edit/name",
+  tokenMiddlewares.CheckToken,
+  instituteMiddlewares.campus_name,
+  instituteMiddlewares.id_campus,
+  instituteControllers.editCampusName
 );
 
 // -==========================- Editar estado -==========================-
 router.put(
-    "/institute/edit/state",
-    tokenMiddlewares.CheckToken,
-    instituteMiddlewares.campus_state,
-    instituteMiddlewares.id_campus,
-    instituteControllers.editCampusState
+  "/institute/edit/state",
+  tokenMiddlewares.CheckToken,
+  instituteMiddlewares.campus_state,
+  instituteMiddlewares.id_campus,
+  instituteControllers.editCampusState
 );
 
 // -=====================================================- Controle de laboratório -=====================================================-
@@ -212,12 +212,12 @@ router.put(
     [-] Deletar laboratório;
 */
 
-router.post(
-    "/lab/register",
-    /* tokenMiddlewares.CheckToken, */
-    labMiddlewares.checkLabName,
-    labControllers.registerLab
-);
+/* router.post(
+  "/lab/register",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabName,
+  labControllers.registerLab
+); */
 
 // -=====================================================- Controle de elementos -=====================================================-
 /*

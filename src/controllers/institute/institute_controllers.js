@@ -6,6 +6,7 @@
 
 // Importando o modelo de institutos:
 const instituteModels = require("../../models/institute/institute_models");
+const userModels = require("../../models/user/user_models");
 const jwt = require("jsonwebtoken");
 
 // O========================================================================================O
@@ -55,8 +56,8 @@ const registerCampus = async (request, response) => {
     O=====================================================O
 
     Funções relacionadas a editar Campus:
-    - [] editCampusName;
-    - [] editCampusState;
+    - [X] editCampusName;
+    - [X] editCampusState;
 */
 
 // O========================================================================================O
@@ -71,7 +72,7 @@ const editCampusName = async (request, response) => {
     if (checkCampusName.status) {
         return response
             .status(400)
-            .json({ status: false, message: "Nome do campus já existe!" });
+            .json({ status: false, message: "Nome do campus já encontrado!" });
     }
 
     // Verificar se o campus existe:
@@ -80,7 +81,7 @@ const editCampusName = async (request, response) => {
     if (checkCampusID.status === false) {
         return response
             .status(400)
-            .json({ status: false, message: "Campus informado não existe!" });
+            .json({ status: false, message: "Campus informado não encontrado!" });
     }
 
     // Verifica privilégios do usuário:
@@ -96,7 +97,9 @@ const editCampusName = async (request, response) => {
         });
     }
 
-    if (user.CampusAdminLevel !== 3 || user.ID_campus !== campus_id) {
+    console.log(user.userData.CampusAdminLevel);
+
+    if (user.userData.CampusAdminLevel !== 3 || user.userData.ID_campus !== campus_id) {
         return response.status(400).json({
             status: false,
             message: "Usuário não tem permissão para editar o campus!",
@@ -130,7 +133,7 @@ const editCampusState = async (request, response) => {
     if (checkCampusID.status === false) {
         return response
             .status(400)
-            .json({ status: false, message: "Campus informado não existe!" });
+            .json({ status: false, message: "Campus informado não encontrado!" });
     }
 
     // Verifica privilégios do usuário:
@@ -146,7 +149,7 @@ const editCampusState = async (request, response) => {
         });
     }
 
-    if (user.CampusAdminLevel !== 3 || user.ID_campus !== campus_id) {
+    if (user.userData.CampusAdminLevel !== 3 || user.userData.ID_campus !== campus_id) {
         return response.status(400).json({
             status: false,
             message: "Usuário não tem permissão para editar o campus!",
@@ -190,7 +193,7 @@ const addAdminUser = async (request, response) => {
     if (checkCampusID.status === false) {
         return response
             .status(400)
-            .json({ status: false, message: "Campus informado não existe!" });
+            .json({ status: false, message: "Campus informado não encontrado!" });
     }
 
     // Verificar se o usuário existe:
@@ -199,11 +202,11 @@ const addAdminUser = async (request, response) => {
     if (checkUserID.status === false) {
         return response
             .status(400)
-            .json({ status: false, message: "Usuário informado não existe!" });
+            .json({ status: false, message: "Usuário informado não encontrado!" });
     }
 
     // Verificar se o usuário já é administrador do campus:
-    if (checkUserID.CampusAdminLevel > 1) {
+    if (checkUserID.userData.CampusAdminLevel > 1) {
         return response.status(400).json({
             status: false,
             message: "Usuário já é administrador do campus!",
@@ -222,7 +225,7 @@ const addAdminUser = async (request, response) => {
         });
     }
 
-    if (user.CampusAdminLevel !== 3 || user.ID_campus !== campus_id) {
+    if (user.userData.CampusAdminLevel !== 3 || user.userData.ID_campus !== campus_id) {
         return response.status(400).json({
             status: false,
             message: "Usuário não tem permissão para editar o campus!",
@@ -253,7 +256,7 @@ const removeAdminUser = async (request, response) => {
     if (checkCampusID.status === false) {
         return response
             .status(400)
-            .json({ status: false, message: "Campus informado não existe!" });
+            .json({ status: false, message: "Campus informado não encontrado!" });
     }
 
     // Verificar se o usuário existe:
@@ -262,18 +265,18 @@ const removeAdminUser = async (request, response) => {
     if (checkUserID.status === false) {
         return response
             .status(400)
-            .json({ status: false, message: "Usuário informado não existe!" });
+            .json({ status: false, message: "Usuário informado não encontrado!" });
     }
 
     // Verificar se o usuário é administrador do campus:
-    if (checkUserID.CampusAdminLevel < 2) {
+    if (checkUserID.userData.CampusAdminLevel < 2) {
         return response.status(400).json({
             status: false,
             message: "Usuário não é administrador do campus!",
         });
     }
 
-    if (checkUserID.CampusAdminLevel === 3) {
+    if (checkUserID.userData.CampusAdminLevel === 3) {
         return response.status(400).json({
             status: false,
             message: "Não é possível remover o administrador principal!",
@@ -292,7 +295,7 @@ const removeAdminUser = async (request, response) => {
         });
     }
 
-    if (user.CampusAdminLevel !== 3 || user.ID_campus !== campus_id) {
+    if (user.userData.CampusAdminLevel !== 3 || user.userData.ID_campus !== campus_id) {
         return response.status(400).json({
             status: false,
             message: "Usuário não tem permissão para editar o campus!",
