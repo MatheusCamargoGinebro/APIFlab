@@ -141,42 +141,6 @@ const id_campus = (request, response, next) => {
         });
     }
 
-    if (request.body.campus_id < 1) {
-        return response.status(400).send({
-            message: "ID do campus deve ser maior que 0",
-            error_at: "campus_id",
-        });
-    }
-
-    next();
-};
-
-const user_id = async (request, response, next) => {
-    if (
-        request.body.user_id === undefined ||
-        request.body.user_id === null ||
-        !request.body.user_id
-    ) {
-        return response.status(400).send({
-            message: "ID do usuário é obrigatório",
-            error_at: "user_id",
-        });
-    }
-
-    if (typeof request.body.user_id !== "number") {
-        return response.status(400).send({
-            message: "ID do usuário deve ser um número",
-            error_at: "user_id",
-        });
-    }
-
-    if (request.body.user_id < 1) {
-        return response.status(400).send({
-            message: "ID do usuário deve ser maior que 0",
-            error_at: "user_id",
-        });
-    }
-
     next();
 };
 
@@ -184,6 +148,5 @@ module.exports = {
     campus_name,
     campus_state,
     id_campus,
-    user_id,
 };
 // O============================================================================================O

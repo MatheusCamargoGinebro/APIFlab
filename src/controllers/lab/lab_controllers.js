@@ -110,7 +110,7 @@ const CreateLab = async (req, res) => {
 
 // Função para editar o nome do laboratório:
 const EditLabName = async (req, res) => {
-    const { lab_id, name } = req.body;
+    const { lab_id, sala } = req.body;
 
     // Verificando se o usuário existe:
     const token = req.headers["x-access-token"];
@@ -146,7 +146,7 @@ const EditLabName = async (req, res) => {
     }
 
     // Verificando se o novo nome já existe:
-    const GetLabByName = await labModels.GetLabByName(name);
+    const GetLabByName = await labModels.GetLabByName(sala);
 
     if (GetLabByName.status === true) {
         return res.status(400).json({
@@ -156,7 +156,7 @@ const EditLabName = async (req, res) => {
     }
 
     // Editando o nome do laboratório:
-    const EditLabName = await labModels.EditLabName(lab_id, name);
+    const EditLabName = await labModels.EditLabName(lab_id, sala);
 
     if (EditLabName.status === false) {
         return res.status(400).json({

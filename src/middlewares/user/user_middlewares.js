@@ -7,6 +7,27 @@
 // O============================================================================================O
 
 // Função de verificação do campo Nome:
+const user_id = (request, response, next) => {
+    if (
+        request.body.user_id === undefined ||
+        request.body.user_id === null ||
+        !request.body.user_id
+    ) {
+        return response
+            .status(400)
+            .send({ message: "ID é obrigatório", error_at: "user_id" });
+    }
+
+    if (typeof request.body.user_id !== "number") {
+        return response.status(400).send({
+            message: "ID deve ser um número",
+            error_at: "user_id",
+        });
+    }
+
+    next();
+};
+
 const user_name = (request, response, next) => {
     if (
         request.body.nome === undefined ||
@@ -241,38 +262,6 @@ const user_tipo = (request, response, next) => {
 
 // O============================================================================================O
 
-// Função de verificação do campo ID do Campus:
-const user_id_campus = (request, response, next) => {
-    if (
-        request.body.id_campus === undefined ||
-        request.body.id_campus === null ||
-        !request.body.id_campus
-    ) {
-        return response.status(400).send({
-            message: "ID do campus é obrigatório",
-            error_at: "id_campus",
-        });
-    }
-
-    if (typeof request.body.id_campus !== "number") {
-        return response.status(400).send({
-            message: "ID do campus deve ser um número",
-            error_at: "id_campus",
-        });
-    }
-
-    if (request.body.id_campus < 1) {
-        return response.status(400).send({
-            message: "ID do campus deve ser maior que 0",
-            error_at: "id_campus",
-        });
-    }
-
-    next();
-};
-
-// O============================================================================================O
-
 // Função de verificação do código recebido para confirmação de email:
 const user_mail_code = (request, response, next) => {
     const code = request.body.code;
@@ -323,11 +312,11 @@ const profile_picture = (request, response, next) => {
 
 // Exportação dos módulos:
 module.exports = {
+    user_id,
     user_name,
     user_email,
     user_password,
     user_tipo,
-    user_id_campus,
     user_mail_code,
     profile_picture,
 };

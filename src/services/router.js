@@ -89,7 +89,7 @@ router.post(
   userMiddlewares.user_email,
   userMiddlewares.user_password,
   userMiddlewares.user_tipo,
-  userMiddlewares.user_id_campus,
+  instituteMiddlewares.id_campus,
   userMiddlewares.user_mail_code,
   userControllers.userRegister
 );
@@ -175,7 +175,7 @@ router.put(
   "/institute/admin/",
   tokenMiddlewares.CheckToken,
   instituteMiddlewares.id_campus,
-  instituteMiddlewares.user_id,
+  userMiddlewares.user_id,
   instituteControllers.addAdminUser
 );
 
@@ -184,7 +184,7 @@ router.delete(
   "/institute/admin/",
   tokenMiddlewares.CheckToken,
   instituteMiddlewares.id_campus,
-  instituteMiddlewares.user_id,
+  userMiddlewares.user_id,
   instituteControllers.removeAdminUser
 );
 

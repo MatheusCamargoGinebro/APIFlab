@@ -54,27 +54,50 @@ const checkSala = (request, response, next) => {
 
 const checkCapacidade = (request, response, next) => {
     if (
-        request.body.capacidade === undefined ||
-        request.body.capacidade === null ||
-        !request.body.capacidade
+        request.body.capacity === undefined ||
+        request.body.capacity === null ||
+        !request.body.capacity
     ) {
         return response.status(400).send({
             message: "Capacidade é obrigatória",
-            error_at: "capacidade",
+            error_at: "capacity",
         });
     }
 
-    if (typeof request.body.capacidade !== "number") {
+    if (typeof request.body.capacity !== "number") {
         return response.status(400).send({
             message: "Capacidade deve ser um número",
-            error_at: "capacidade",
+            error_at: "capacity",
         });
     }
 
-    if (request.body.capacidade < 1) {
+    if (request.body.capacity < 1) {
         return response.status(400).send({
             message: "A capacidade deve ser de pelo menos 1 pessoa",
-            error_at: "capacidade",
+            error_at: "capacity",
+        });
+    }
+
+    next();
+};
+
+const checkLabId = async (request, response, next) => {
+    if (
+        request.params.lab_id === undefined ||
+        request.params.lab_id === null ||
+        request.params.lab_id === "" ||
+        !request.params.lab_id
+    ) {
+        return response.status(400).send({
+            message: "ID do laboratório é obrigatório",
+            error_at: "lab_id",
+        });
+    }
+
+    if (typeof request.params.lab_id !== "number") {
+        return response.status(400).send({
+            message: "ID do laboratório deve ser um número",
+            error_at: "lab_id",
         });
     }
 
@@ -82,4 +105,7 @@ const checkCapacidade = (request, response, next) => {
 };
 
 module.exports = {
+    checkSala,
+    checkCapacidade,
+    checkLabId,
 };

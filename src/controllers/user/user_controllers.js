@@ -115,7 +115,7 @@ const sendMailCode = async (req, res) => {
 
 // Função para registrar um novo usuário, com verificação de código de email criptografia de senha:
 const userRegister = async (req, res) => {
-    const { nome, email, senha, tipo, id_campus, code } = req.body;
+    const { nome, email, senha, tipo, campus_id, code } = req.body;
 
     // Verifica se o código de confirmação é válido:
     const mailCodeCheck = await checkMailCode(email, code);
@@ -138,7 +138,7 @@ const userRegister = async (req, res) => {
     }
 
     // Verifica se o campus existe:
-    const campusCheck = await campusModels.getCampusByID(id_campus);
+    const campusCheck = await campusModels.getCampusByID(campus_id);
 
     if (campusCheck.status === false) {
         return res.status(400).json({
@@ -175,7 +175,7 @@ const userRegister = async (req, res) => {
     );
 
     // Verificando quantos usuários já estão cadastrados no campus para definir o nível de adminstração do usuário:
-    const usersInCampus = await userModels.getUsersByCampus(id_campus);
+    const usersInCampus = await userModels.getUsersByCampus(campus_id);
     const CampusAdminLevel = usersInCampus.status === false ? 3 : 1;
 
     const status = await userModels.registerUser(
@@ -184,7 +184,7 @@ const userRegister = async (req, res) => {
         hashedPassword,
         tipo,
         salt,
-        id_campus,
+        campus_id,
         CampusAdminLevel
     );
 
