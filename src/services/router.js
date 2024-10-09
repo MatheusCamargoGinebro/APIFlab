@@ -1,18 +1,52 @@
+/*
+  O======================================================O
+  |    Arquivo de configuração das rotas da aplicação    |
+  O======================================================O
+*/
+
+// O========================================================================================O
+
+// Importando o módulo de roteamento do express:
 const express = require("express");
 const router = express.Router();
 module.exports = router;
 
+// O========================================================================================O
+
+/*
+  O=================================================O
+  |    Importação dos controllers e middlewares    |
+  O=================================================O
+*/
+
+// O========================================================================================O
+
+// Importando os controllers e middlewares de usuários:
 const userControllers = require("../controllers/user/user_controllers");
 const userMiddlewares = require("../middlewares/user/user_middlewares");
 
+// Importando os controllers e middlewares de tokens:
 const tokenMiddlewares = require("../middlewares/token/token_middlewares");
 const tokenControllers = require("../controllers/token/token_controllers");
 
+// Importando os controllers e middlewares de institutos:
 const instituteMiddlewares = require("../middlewares/institute/institute_middlewares");
 const instituteControllers = require("../controllers/institute/institute_controllers");
 
+// Importando os controllers e middlewares de laboratórios:
 const labMiddlewares = require("../middlewares/lab/lab_middlewares");
 const labControllers = require("../controllers/lab/lab_controllers");
+
+
+// O========================================================================================O
+
+/*
+  O===========================================O
+  |    Configuração de sistemas de limpeza    |
+  O===========================================O
+*/
+
+// O========================================================================================O
 
 // A cada 30seg, limpar a blacklist de tokens:
 setInterval(tokenControllers.clearBlackList, 1800000);
@@ -20,53 +54,35 @@ setInterval(tokenControllers.clearBlackList, 1800000);
 // A cada 24h, limpar os códigos de verificação de email:
 setInterval(tokenControllers.clearMailCodeList, 86400000);
 
-// Rotas:
+// O========================================================================================O
+
 /*
-  -- Laboratório:
-    - Registrar laboratório
-    - Editar informações do laboratório
-    - Deletar laboratório
-    - Listar
-      - Listar laboratórios por instituto
-      - Listar laboratórios em que o usuário é responsável
-      - Listar laboratórios em que o usuário possui acesso
-      - Listar reservas do laboratório
-      - Listar elementos do laboratório
-      - Listar equipamentos do laboratório
-    - Reservar horário no laboratório
-      - Verificar disponibilidade
-      - Reservar elemento para ser utilizado no horário
-      - Reservar equipamento para ser utilizado no horário
-      - Cancelar reserva
+  O==================================================O
+  |    Configuração de rotas de usuários e tokens    |
+  O==================================================O
 
-  -- Equipamento:
-    - Registrar equipamento em laboratório
-    - Editar informações do equipamento
-    - Deletar equipamento
-    - Listar reservas do equipamento
-
-  -- Elemento:
-    - Registrar elemento em laboratório
-    - Editar informações do elemento
-    - Deletar elemento
-    - Listar reservas do elemento
-*/
-
-// -=====================================================- Controle de usuários -=====================================================-
-/*
   Usuário:
-    [X] Registrar usuário
-    [X] Enviar código de verificação por email
-    [X] Logar como usuário
-    [X] Editar Informações do usuário
-      [X] Editar nome
-      [X] Editar email
-      [X] Editar senha
-      [X] Editar foto de perfil
-    [X] Deslogar
+  - [X] Enviar código de verificação por email;
+  - [X] Registrar usuário;
+  - [X] Logar como usuário;
+  - [X] Editar Informações do usuário:
+    - [X] Editar nome;
+    - [X] Editar email;
+    - [X] Editar senha;
+    - [X] Editar foto de perfil;
+  - [X] Deslogar;
 */
 
-// +==========================+ Registro de usuário +==========================+ // OK
+// O========================================================================================O
+
+// Rota de envio de código de verificação por email:
+router.post(
+  "/user/sendmailcode",
+  userMiddlewares.user_email,
+  userControllers.sendMailCode
+);
+
+// Rota de registro de usuário:
 router.post(
   "/user/register",
   userMiddlewares.user_name,
@@ -78,14 +94,7 @@ router.post(
   userControllers.userRegister
 );
 
-// +==========================+ Enviar código de verificação por email +==========================+ // OK
-router.post(
-  "/user/sendmailcode",
-  userMiddlewares.user_email,
-  userControllers.sendMailCode
-);
-
-// +==========================+ Logar como usuário +==========================+ // OK
+// Rota de login de usuário:
 router.post(
   "/user/login",
   userMiddlewares.user_email,
@@ -93,16 +102,14 @@ router.post(
   userControllers.userLogin
 );
 
-// +==========================+ Deslogar +==========================+ // OK
+// Rota de logout de usuário:
 router.post(
   "/user/logout",
   tokenMiddlewares.CheckToken,
   userControllers.userLogout
 );
 
-// +==========================+ Editar Informações do usuário +==========================+ // OK
-
-// -==========================- Editar nome -==========================- // OK
+// Rota de edição do nome de usuário:
 router.put(
   "/user/edit/name",
   tokenMiddlewares.CheckToken,
@@ -110,7 +117,7 @@ router.put(
   userControllers.editUserName
 );
 
-// -==========================- Editar email -==========================- // OK
+// Rotas de edição de email de usuário:
 router.put(
   "/user/edit/email",
   tokenMiddlewares.CheckToken,
@@ -119,7 +126,7 @@ router.put(
   userControllers.editUserEmail
 );
 
-// -==========================- Editar senha -==========================- // OK
+// Rotas de edição de senha de usuário:
 router.put(
   "/user/edit/password",
   tokenMiddlewares.CheckToken,
@@ -127,7 +134,7 @@ router.put(
   userControllers.editUserPassword
 );
 
-// -==========================- Editar foto de perfil -==========================- // OK
+// Rotas de edição de foto de perfil de usuário:
 router.put(
   "/user/edit/picture",
   tokenMiddlewares.CheckToken,
@@ -135,20 +142,27 @@ router.put(
   userControllers.editUserProfilePicture
 );
 
-// -=====================================================- Controle de institutos -=====================================================-
+// O========================================================================================O
+
 /*
+  O==================================================O
+  |    Configuração de rotas de institutos e labs    |
+  O==================================================O
+
   Instituto:
-    [X] Registrar instituto;
-    [] Administradores:
-      [X] Adicionar administrador ao instituto;
-      [X] Remover administrador do instituto;
-    [X] Editar informações do instituto:
-      X] Editar nome;
-      [X] Editar estado;
-    [-] Deletar instituto;
+  - [X] Registrar instituto;
+  - [X] Administradores:
+    - [X] Adicionar administrador ao instituto;
+    - [X] Remover administrador do instituto;
+  - [X] Editar informações do instituto:
+    - [X] Editar nome;
+    - [X] Editar estado;
+  - [~] Deletar instituto;
 */
 
-// -==========================- Registrar instituto -==========================- // OK
+// O========================================================================================O
+
+// Rota de registro de instituto:
 router.post(
   "/institute/register",
   instituteMiddlewares.campus_name,
@@ -156,9 +170,7 @@ router.post(
   instituteControllers.registerCampus
 );
 
-// -==========================-  administradores -==========================-
-
-// -==========================- Adicionar administrador ao instituto -==========================-
+// Rota para adicionar um administrador ao instituto:
 router.put(
   "/institute/admin/",
   tokenMiddlewares.CheckToken,
@@ -167,7 +179,7 @@ router.put(
   instituteControllers.addAdminUser
 );
 
-// -==========================- Remover administrador do instituto -==========================-
+// Rota para remover um administrador do instituto:
 router.delete(
   "/institute/admin/",
   tokenMiddlewares.CheckToken,
@@ -176,9 +188,7 @@ router.delete(
   instituteControllers.removeAdminUser
 );
 
-// +==========================+ Editar informações do instituto +==========================+
-
-// -==========================- Editar nome -==========================-
+// Rota para editar o nome do instituto:
 router.put(
   "/institute/edit/name",
   tokenMiddlewares.CheckToken,
@@ -187,7 +197,7 @@ router.put(
   instituteControllers.editCampusName
 );
 
-// -==========================- Editar estado -==========================-
+// Rota para editar o estado do instituto:
 router.put(
   "/institute/edit/state",
   tokenMiddlewares.CheckToken,
@@ -196,31 +206,37 @@ router.put(
   instituteControllers.editCampusState
 );
 
-// -=====================================================- Controle de laboratório -=====================================================-
+// O========================================================================================O
+
 /*
+  O=============================================O
+  |    Configuração de rotas de laboratórios    |
+  O=============================================O
+
   Laboratório:
-    [] Registrar laboratório;
-    [] Editar informações do laboratório:
-      [] Editar código da sala;
-      [] Editar capacidade;
-    [] Listar:
-      [] Listar laboratórios por instituto;
-      [] Listar laboratórios em que o usuário é responsável;
-      [] Listar laboratórios em que o usuário possui acesso;
-      [] Listar elementos do laboratório;
-      [] Listar equipamentos do laboratório;
-    [-] Deletar laboratório;
+  - [] Registrar laboratório;
+  - [] Editar informações do laboratório:
+    - [] Editar sala;
+    - [] Editar capacidade;
+  - [] Listar:
+    - [] Listar laboratórios por instituto;
+    - [] Listar laboratórios em que o usuário é responsável;
+    - [] Listar laboratórios em que o usuário possui acesso;
+    - [] Listar elementos do laboratório;
+    - [] Listar equipamentos do laboratório;
+  - [~] Deletar laboratório;
+
 */
 
-/* router.post(
-  "/lab/register",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabName,
-  labControllers.registerLab
-); */
+// O========================================================================================O
 
-// -=====================================================- Controle de elementos -=====================================================-
+// O========================================================================================O
+
 /*
+  O==========================================O
+  |    Configuração de rotas de elementos    |
+  O==========================================O
+
   Elemento:
     [] Registrar elemento em laboratório;
     [] Editar informações do elemento:
@@ -237,11 +253,18 @@ router.put(
     [] Deletar elemento;
 */
 
-// -=====================================================- Controle de equipamentos -=====================================================-
+// O========================================================================================O
+
+// O========================================================================================O
+
 /*
+  O=============================================O
+  |    Configuração de rotas de equipamentos    |
+  O=============================================O
+
   Equipamento:
     [] Registrar equipamento em laboratório;
-    [] Editar informações do equipamento: 
+    [] Editar informações do equipamento:
       [] Editar nome;
       [] Editar descrição;
       [] Editar QuantidadeTotal;
@@ -252,3 +275,5 @@ router.put(
       [] Listar reservas do equipamento;
     [] Deletar equipamento;
 */
+
+// O========================================================================================O

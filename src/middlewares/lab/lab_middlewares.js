@@ -4,7 +4,9 @@
     O==========================================================O
 */
 
-const checkLabName = (request, response, next) => {
+// O============================================================================================O
+
+const checkSala = (request, response, next) => {
     if (
         request.body.sala === undefined ||
         request.body.sala === null ||
@@ -48,6 +50,36 @@ const checkLabName = (request, response, next) => {
     next();
 };
 
+// O============================================================================================O
+
+const checkCapacidade = (request, response, next) => {
+    if (
+        request.body.capacidade === undefined ||
+        request.body.capacidade === null ||
+        !request.body.capacidade
+    ) {
+        return response.status(400).send({
+            message: "Capacidade é obrigatória",
+            error_at: "capacidade",
+        });
+    }
+
+    if (typeof request.body.capacidade !== "number") {
+        return response.status(400).send({
+            message: "Capacidade deve ser um número",
+            error_at: "capacidade",
+        });
+    }
+
+    if (request.body.capacidade < 1) {
+        return response.status(400).send({
+            message: "A capacidade deve ser de pelo menos 1 pessoa",
+            error_at: "capacidade",
+        });
+    }
+
+    next();
+};
+
 module.exports = {
-    checkLabName,
 };

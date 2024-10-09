@@ -49,6 +49,7 @@ CREATE TABLE
         PRIMARY KEY (ID_lab),
         -- Values
         Sala varchar(16),
+        Capacidade INT NOT NULL,
         -- FK
         ID_campus INT NOT NULL,
         FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
@@ -79,8 +80,11 @@ CREATE TABLE
         PRIMARY KEY (ID_hor),
         -- values
         Tipo INT CHECK (Tipo IN (1, 2)),
+        -- 1 = Prioritário
+        -- 2 = Pode ser dividido com outra reserva
         Inicio TIMESTAMP NOT NULL,
         Fim TIMESTAMP NOT NULL,
+        Status BOOLEAN NOT NULL,
         -- FK
         ID_lab INT NOT NULL,
         FOREIGN KEY (ID_lab) REFERENCES laboratorios (ID_lab),
