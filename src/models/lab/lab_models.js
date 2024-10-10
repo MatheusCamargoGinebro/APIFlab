@@ -236,34 +236,10 @@ const GetLabsByUserId = async (ID_usuario) => {
     }
 };
 
-// Função de get de todos os membros de um laboratório no banco de dados:
-const GetLabMembers = async (ID_lab) => {
-    const query = "SELECT * FROM userlab WHERE ID_lab = ? AND AdminLevel = 1";
-    const [results] = await connection.execute(query, [ID_lab]);
-
-    if (results.length > 0) {
-        return { status: true, data: results[0] };
-    } else {
-        return { status: false, data: null };
-    }
-};
-
-// Função de get de todos os administradores de um laboratório no banco de dados:
-const GetLabAdmins = async (ID_lab) => {
-    const query = "SELECT * FROM userlab WHERE ID_lab = ? AND AdminLevel >= 2";
-    const [results] = await connection.execute(query, [ID_lab]);
-
-    if (results.length > 0) {
-        return { status: true, data: results[0] };
-    } else {
-        return { status: false, data: null };
-    }
-};
-
-// Função de get do responsável por um laboratório no banco de dados:
-const GetLabResponsible = async (ID_lab) => {
-    const query = "SELECT * FROM userlab WHERE ID_lab = ? AND AdminLevel = 3";
-    const [results] = await connection.execute(query, [ID_lab]);
+// Função de get de todos os laboratórios de um usuário com determinado nível de acesso:
+const getLabByUserLevel = async (ID_usuario, level) => {
+    const query = "SELECT * FROM userlab WHERE ID_usuario = ? AND AdminLevel = ?";
+    const [results] = await connection.execute(query, [ID_usuario, level]);
 
     if (results.length > 0) {
         return { status: true, data: results[0] };
@@ -294,9 +270,7 @@ module.exports = {
     GetLabUsers,
     GetLabUser,
     GetLabsByUserId,
-    GetLabMembers,
-    GetLabAdmins,
-    GetLabResponsible,
+    getLabByUserLevel,
 };
 
 // O========================================================================================O

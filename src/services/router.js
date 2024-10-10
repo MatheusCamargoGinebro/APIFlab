@@ -215,15 +215,13 @@ router.put(
 
   Laboratório:
   - [X] Registrar laboratório;
-  - [] Editar informações do laboratório:
-    - [] Editar sala;
-    - [] Editar capacidade;
+  - [X] Editar informações do laboratório:
+    - [X] Editar sala;
+    - [X] Editar capacidade;
   - [] Listar:
     - [] Listar laboratórios por instituto;
-    - [] Listar laboratórios em que o usuário é responsável;
+    - [] Listar laboratórios em que o usuário é de determinado nível;
     - [] Listar laboratórios em que o usuário possui acesso;
-    - [] Listar elementos do laboratório;
-    - [] Listar equipamentos do laboratório;
   - [~] Deletar laboratório;
 
 */
@@ -255,7 +253,6 @@ router.put("/lab/edit/capacidade",
   labControllers.EditLabCapacity
 );
 
-// ------+------------------------------+------
 
 
 

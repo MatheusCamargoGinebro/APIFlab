@@ -400,6 +400,23 @@ const removeAdmin = async (req, res) => {
 
 // O========================================================================================O
 
+/*
+    O================================================================O
+    |   Funções de controle relacionadas a leitura de laboratórios   |
+    O================================================================O
+
+    Funções relacionadas a leitura de laboratórios:
+    - [] GetLabs; // Laboratórios em que o usuário está relacionado
+    - [] GetLabOfUserResponsability; // Laboratórios em que o usuário possui determinado nível de acesso
+*/
+
+// O========================================================================================O
+
+//
+
+
+// O========================================================================================O
+
 module.exports = {
     /* Create */
     CreateLab,
