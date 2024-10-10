@@ -97,8 +97,6 @@ const editCampusName = async (request, response) => {
         });
     }
 
-    console.log(user.userData.CampusAdminLevel);
-
     if (user.userData.CampusAdminLevel !== 3 || user.userData.ID_campus !== campus_id) {
         return response.status(400).json({
             status: false,

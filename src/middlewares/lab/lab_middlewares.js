@@ -83,10 +83,10 @@ const checkCapacidade = (request, response, next) => {
 
 const checkLabId = async (request, response, next) => {
     if (
-        request.params.lab_id === undefined ||
-        request.params.lab_id === null ||
-        request.params.lab_id === "" ||
-        !request.params.lab_id
+        request.body.lab_id === undefined ||
+        request.body.lab_id === null ||
+        request.body.lab_id === "" ||
+        !request.body.lab_id
     ) {
         return response.status(400).send({
             message: "ID do laboratório é obrigatório",
@@ -94,7 +94,7 @@ const checkLabId = async (request, response, next) => {
         });
     }
 
-    if (typeof request.params.lab_id !== "number") {
+    if (typeof request.body.lab_id !== "number") {
         return response.status(400).send({
             message: "ID do laboratório deve ser um número",
             error_at: "lab_id",

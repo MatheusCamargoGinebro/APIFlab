@@ -214,7 +214,7 @@ router.put(
   O=============================================O
 
   Laboratório:
-  - [] Registrar laboratório;
+  - [X] Registrar laboratório;
   - [] Editar informações do laboratório:
     - [] Editar sala;
     - [] Editar capacidade;
@@ -229,6 +229,36 @@ router.put(
 */
 
 // O========================================================================================O
+
+// Rota de registro de laboratório:
+router.post("/lab/register",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkSala,
+  labMiddlewares.checkCapacidade,
+  instituteMiddlewares.id_campus,
+  labControllers.CreateLab
+);
+
+// Rota de edição de sala de laboratório:
+router.put("/lab/edit/sala",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkSala,
+  labMiddlewares.checkLabId,
+  labControllers.EditLabName
+);
+
+// Rota de edição de capacidade de laboratório:
+router.put("/lab/edit/capacidade",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkCapacidade,
+  labMiddlewares.checkLabId,
+  labControllers.EditLabCapacity
+);
+
+// ------+------------------------------+------
+
+
+
 
 // O========================================================================================O
 

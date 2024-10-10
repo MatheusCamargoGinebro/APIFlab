@@ -28,9 +28,9 @@ const CreateLab = async (Sala, Capacidade, ID_campus) => {
     const [results] = await connection.execute(query, [Sala, Capacidade, ID_campus]);
 
     if (results.affectedRows > 0) {
-        return { status: true, message: "Laboratório cadastrado com sucesso!" };
+        return { status: true, message: "Laboratório cadastrado com sucesso!", labID: results.insertId };
     } else {
-        return { status: false, message: "Erro ao cadastrar laboratório!" };
+        return { status: false, message: "Erro ao cadastrar laboratório!", labID: null };
     }
 };
 
@@ -185,9 +185,9 @@ const GetLabById = async (ID_lab) => {
 };
 
 // Função de get de um laboratório pelo nome no banco de dados:
-const GetLabByName = async (Sala) => {
-    const query = "SELECT * FROM laboratorios WHERE Sala = ?";
-    const [results] = await connection.execute(query, [Sala]);
+const GetLabByName = async (Sala, campus_id) => {
+    const query = "SELECT * FROM laboratorios WHERE Sala = ? AND ID_campus = ?";
+    const [results] = await connection.execute(query, [Sala, campus_id]);
 
     if (results.length > 0) {
         return { status: true, data: results[0] };

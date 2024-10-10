@@ -17,14 +17,14 @@ const jwt = require("jsonwebtoken");
     |   Funções de control relacionadas a inserção de laboratórios    |
     O=================================================================O
 
-    - [] CreateLab;
+    - [X] CreateLab;
 */
 
 // O========================================================================================O
 
 // Função para criar um laboratório:
 const CreateLab = async (req, res) => {
-    const { Sala, Capacidade, campus_id } = req.body;
+    const { sala, capacity, campus_id } = req.body;
 
     // Verificando se o usuário tem permissão para criar um laboratório:
     const token = req.headers["x-access-token"];
@@ -39,10 +39,10 @@ const CreateLab = async (req, res) => {
         });
     }
 
-    if (getUserByID.userData.CampusAdminLevel === 1 || getUserByID.userData.tipo === 1) {
+    if (getUserByID.userData.CampusAdminLevel === 1 || getUserByID.userData.tipo === 1 || getUserByID.userData.ID_campus !== campus_id) {
         return res.status(400).json({
             status: false,
-            message: "Usuário não tem permissão para criar um laboratório!"
+            message: "Usuário não tem permissão para criar o laboratório!"
         });
     }
 
@@ -57,7 +57,7 @@ const CreateLab = async (req, res) => {
     }
 
     // Verificando se o laboratório já existe:
-    const GetLabByName = await labModels.GetLabByName(Sala);
+    const GetLabByName = await labModels.GetLabByName(sala, campus_id);
 
     if (GetLabByName.status === true) {
         return res.status(400).json({
@@ -67,7 +67,7 @@ const CreateLab = async (req, res) => {
     }
 
     // Criando o laboratório:
-    const CreateLab = await labModels.CreateLab(Sala, Capacidade, campus_id);
+    const CreateLab = await labModels.CreateLab(sala, capacity, campus_id);
 
     if (CreateLab.status === false) {
         return res.status(400).json({
@@ -101,9 +101,6 @@ const CreateLab = async (req, res) => {
 
     - [] EditLabName;
     - [] EditLabCapacity;
-    - [] Admins:
-        - [] AddAdmin;
-        - [] RemoveAdmin;
 */
 
 // O========================================================================================O
@@ -138,7 +135,7 @@ const EditLabName = async (req, res) => {
     // Verificando permissão do usuário:
     const GetLabUser = await labModels.GetLabUser(lab_id, userID);
 
-    if (GetLabUser.status === false || GetLabUser.userData.AdminLevel === 1 || GetUserByID.userData.tipo === 1) {
+    if (GetLabUser.status === false || GetLabUser.data.AdminLevel === 1 || GetUserByID.userData.Tipo === 1 || GetUserByID.userData.ID_campus !== GetLabByID.data.ID_campus) {
         return res.status(400).json({
             status: false,
             message: "Usuário não tem permissão para editar o laboratório!"
@@ -146,7 +143,7 @@ const EditLabName = async (req, res) => {
     }
 
     // Verificando se o novo nome já existe:
-    const GetLabByName = await labModels.GetLabByName(sala);
+    const GetLabByName = await labModels.GetLabByName(sala, GetLabByID.data.ID_campus);
 
     if (GetLabByName.status === true) {
         return res.status(400).json({
@@ -203,7 +200,7 @@ const EditLabCapacity = async (req, res) => {
     // Verificando permissão do usuário:
     const GetLabUser = await labModels.GetLabUser(lab_id, userID);
 
-    if (GetLabUser.status === false || GetLabUser.userData.AdminLevel === 1 || GetUserByID.userData.tipo === 1) {
+    if (GetLabUser.status === false || GetLabUser.data.AdminLevel === 1 || GetUserByID.userData.Tipo === 1 || GetUserByID.userData.ID_campus !== GetLabByID.data.ID_campus) {
         return res.status(400).json({
             status: false,
             message: "Usuário não tem permissão para editar o laboratório!"
@@ -226,7 +223,18 @@ const EditLabCapacity = async (req, res) => {
     });
 };
 
-// +------------------------------------------------------------------------------------------+
+// O========================================================================================O
+
+/*
+    O==================================================================O
+    |   Funções de control relacionadas a adição e remoção de admins   |
+    O==================================================================O
+
+    - [] addAdmin;
+    - [] removeAdmin;
+*/
+
+// O========================================================================================O
 
 // Função para adicionar um administrador ao laboratório:
 const addAdmin = async (req, res) => {
@@ -258,7 +266,7 @@ const addAdmin = async (req, res) => {
     // Verificando permissão do usuário:
     const GetLabUser = await labModels.GetLabUser(lab_id, userID);
 
-    if (GetLabUser.status === false || GetLabUser.userData.AdminLevel !== 3 || GetUserByID.userData.tipo === 1) {
+    if (GetLabUser.status === false || GetLabUser.userData.AdminLevel !== 3 || GetUserByID.userData.tipo === 1 || GetUserByID.userData.campus_id !== GetLabByID.labData.campus_id) {
         return res.status(400).json({
             status: false,
             message: "Usuário não tem permissão para adicionar um administrador!"
@@ -340,10 +348,10 @@ const removeAdmin = async (req, res) => {
     // Verificando permissão do usuário:
     const GetLabUser = await labModels.GetLabUser(lab_id, userID);
 
-    if (GetLabUser.status === false || GetLabUser.userData.AdminLevel !== 3 || GetUserByID.userData.tipo === 1) {
+    if (GetLabUser.status === false || GetLabUser.userData.AdminLevel !== 3 || GetUserByID.userData.tipo === 1 || GetUserByID.userData.campus_id !== GetLabByID.labData.campus_id) {
         return res.status(400).json({
             status: false,
-            message: "Usuário não tem permissão para remover um administrador!"
+            message: "Usuário não tem permissão para remover o administrador!"
         });
     }
 
