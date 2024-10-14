@@ -37,6 +37,9 @@ const instituteControllers = require("../controllers/institute/institute_control
 const labMiddlewares = require("../middlewares/lab/lab_middlewares");
 const labControllers = require("../controllers/lab/lab_controllers");
 
+// Importando os controllers e middlewares de elementos:
+const elementMiddlewares = require("../middlewares/element/element_middlewares");
+const elementControllers = require("../controllers/element/element_controllers");
 
 // O========================================================================================O
 
@@ -301,6 +304,7 @@ router.get("/lab/list/level",
 
   Elemento:
     [] Registrar elemento em laboratório;
+    [] Remover elemento de laboratório;
     [] Editar informações do elemento:
       [] Editar nome;
       [] Editar quantidade;
@@ -311,11 +315,99 @@ router.get("/lab/list/level",
       [] editar imagem;
     [] Listar:
       [] Listar elementos de determinado laboratório;
-      [] Listar reservas do elemento;
-    [] Deletar elemento;
 */
 
 // O========================================================================================O
+
+// Rota de registro de elemento:
+router.post("/element/register",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkNome,
+  elementMiddlewares.checkQuantidade,
+  elementMiddlewares.checkPesoMolecular,
+  elementMiddlewares.checkNumeroCAS,
+  elementMiddlewares.checkNumeroEC,
+  elementMiddlewares.checkEstadoFisico,
+  elementControllers.createElement,
+);
+
+// Rota de remoção de elemento:
+router.delete("/element/remove",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementControllers.removeElement,
+);
+
+// Rota de edição de nome de elemento:
+router.put("/element/edit/name",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkNome,
+  elementControllers.editName,
+);
+
+// Rota de edição de quantidade de elemento:
+router.put("/element/edit/quantity",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkQuantidade,
+  elementControllers.editQuantity,
+);
+
+// Rota de edição de peso molecular de elemento:
+router.put("/element/edit/molarMass",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkPesoMolecular,
+  elementControllers.editMolarMass,
+);
+
+// Rota de edição de número CAS de elemento:
+router.put("/element/edit/cas",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkNumeroCAS,
+  elementControllers.editCasNumber,
+);
+
+// Rota de edição de número EC de elemento:
+router.put("/element/edit/ec",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkNumeroEC,
+  elementControllers.editEcNumber,
+);
+
+// Rota de edição de estado físico de elemento:
+router.put("/element/edit/physicalstate",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkEstadoFisico,
+  elementControllers.editPhysicalState,
+);
+
+// Rota de edição de imagem de elemento:
+router.put("/element/edit/image",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  elementMiddlewares.checkElementID,
+  elementMiddlewares.checkImage,
+  elementControllers.editImage,
+);
+
+// Rota de listagem de elementos de determinado laboratório:
+router.get("/element/list",
+  labMiddlewares.checkLabId,
+  elementControllers.getElementsByLabId,
+);
 
 // O========================================================================================O
 
@@ -334,7 +426,6 @@ router.get("/lab/list/level",
       [] Editar imagem;
     [] Listar:
       [] Listar equipamentos de determinado laboratório;
-      [] Listar reservas do equipamento;
     [] Deletar equipamento;
 */
 

@@ -208,7 +208,7 @@ const GetElementById = async (elementId) => {
     const [result] = await connection.execute(query, data);
 
     if (result.length > 0) {
-        return { status: true, data: result };
+        return { status: true, data: result[0] };
     } else {
         return { status: false, message: "Elemento químico não encontrado!" };
     };

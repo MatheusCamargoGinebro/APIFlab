@@ -202,7 +202,7 @@ const GetLabsByCampus = async (ID_campus) => {
     const [results] = await connection.execute(query, [ID_campus]);
 
     if (results.length > 0) {
-        return { status: true, data: results[0] };
+        return { status: true, data: results };
     } else {
         return { status: false, data: null };
     }
@@ -216,7 +216,7 @@ const GetLabUsers = async (ID_lab) => {
     const [results] = await connection.execute(query, [ID_lab]);
 
     if (results.length > 0) {
-        return { status: true, data: results[0] };
+        return { status: true, data: results };
     } else {
         return { status: false, data: null };
     }
