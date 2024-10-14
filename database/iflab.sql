@@ -235,7 +235,7 @@ VALUES
         '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
         '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
         2,
-        1,
+        2,
         1
     ),
     (
@@ -260,6 +260,6 @@ VALUES
     (3, 3, 1) /* Admin é usuário responsável do lab1 */,
     (3, 3, 2) /* Admin é usuário responsável do lab2 */,
     (3, 2, 1) /* Professor é usuário responsável do lab1 */,
-    (2, 2, 2) /*  Professor é usuário responsável do lab2 */,
+    (2, 2, 2) /*  Professor é usuário administrador do lab2 */,
     (1, 1, 1) /* Aluno é usuário membro do lab1 */,
     (1, 1, 2) /* Aluno é usuário membro do lab2 */;
