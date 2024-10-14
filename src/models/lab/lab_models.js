@@ -132,17 +132,17 @@ const RemoveAdmin = async (ID_lab, ID_usuario) => {
     O============================================================O
  
     Funções de gets de laboratórios no banco de dados:
-    - [] GetAllLabs;
-    - [] GetLabById;
-    - [] GetLabByName;
-    - [] GetLabsByCampus;
-    - [] Ler usuários de um laboratório:
-        - [] GetLabUsers;
-        - [] GetLabUser;
-        - [] GetLabsByUserId;
-        - [] GetLabMembers;
-        - [] GetLabAdmins;
-        - [] GetLabResponsible;
+    - [X] GetAllLabs;
+    - [X] GetLabById;
+    - [X] GetLabByName;
+    - [X] GetLabsByCampus;
+    - [X] Ler usuários de um laboratório:
+        - [X] GetLabUsers;
+        - [X] GetLabUser;
+        - [X] GetLabsByUserId;
+        - [X] GetLabMembers;
+        - [X] GetLabAdmins;
+        - [X] GetLabResponsible;
 
 */
 

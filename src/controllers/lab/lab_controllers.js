@@ -17,6 +17,7 @@ const jwt = require("jsonwebtoken");
     |   Funções de control relacionadas a inserção de laboratórios    |
     O=================================================================O
 
+    Funções relacionadas a inserção de laboratórios:
     - [X] CreateLab;
     - [X] CreateLabUser;
 */
@@ -172,6 +173,7 @@ const CreateLabUser = async (req, res) => {
     |   Funções de control relacionadas a edição de laboratórios      |
     O=================================================================O
 
+    Funções relacionadas a edição de laboratórios:	
     - [X] EditLabName;
     - [X] EditLabCapacity;
 */
@@ -303,6 +305,7 @@ const EditLabCapacity = async (req, res) => {
     |   Funções de control relacionadas a adição e remoção de admins   |
     O==================================================================O
 
+    Funções relacionadas a adição e remoção de administradores:
     - [X] addAdmin;
     - [X] removeAdmin;
 */
@@ -479,8 +482,8 @@ const removeAdmin = async (req, res) => {
     O================================================================O
 
     Funções relacionadas a leitura de laboratórios:
-    - [] GetLabs; // Laboratórios em que o usuário está relacionado
-    - [] GetLabByUserLevel; // Laboratórios em que o usuário possui determinado nível de acesso
+    - [X] GetLabs; // Laboratórios em que o usuário está relacionado
+    - [X] GetLabByUserLevel; // Laboratórios em que o usuário possui determinado nível de acesso
 */
 
 // O========================================================================================O

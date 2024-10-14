@@ -103,7 +103,7 @@ CREATE TABLE
         -- values
         Nome VARCHAR(128) NOT NULL,
         Quantidade DECIMAL(10, 3) NOT NULL,
-        Descricao TEXT NOT NULL,
+        Descricao TEXT,
         Peso_molecular DECIMAL(10, 3) NOT NULL,
         numero_cas VARCHAR(32) NOT NULL,
         numero_ec VARCHAR(32) NOT NULL,
