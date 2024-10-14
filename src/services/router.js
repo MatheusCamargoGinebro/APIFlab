@@ -215,13 +215,16 @@ router.put(
 
   Laboratório:
   - [X] Registrar laboratório;
+  - [ ] Adicionar usuário ao laboratório;
   - [X] Editar informações do laboratório:
     - [X] Editar sala;
     - [X] Editar capacidade;
+  - [] Administradores:
+    - [] Adicionar administrador ao laboratório;
+    - [] Remover administrador do laboratório;
   - [] Listar:
-    - [] Listar laboratórios por instituto;
-    - [] Listar laboratórios em que o usuário é de determinado nível;
     - [] Listar laboratórios em que o usuário possui acesso;
+    - [] Listar laboratórios em que o usuário possui tal nível de acesso;
   - [~] Deletar laboratório;
 
 */
@@ -233,8 +236,14 @@ router.post("/lab/register",
   tokenMiddlewares.CheckToken,
   labMiddlewares.checkSala,
   labMiddlewares.checkCapacidade,
-  instituteMiddlewares.id_campus,
   labControllers.CreateLab
+);
+
+router.post("/lab/adduser",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.user_id,
+  labMiddlewares.checkLabId,
+  labControllers.CreateLabUser
 );
 
 // Rota de edição de sala de laboratório:
@@ -253,8 +262,34 @@ router.put("/lab/edit/capacidade",
   labControllers.EditLabCapacity
 );
 
+// Rota de adicionar administrador ao laboratório:
+router.put("/lab/edit/admin",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.user_id,
+  labMiddlewares.checkLabId,
+  labControllers.addAdmin
+);
 
+// Rota de remover administrador do laboratório:
+router.delete("/lab/edit/admin",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.user_id,
+  labMiddlewares.checkLabId,
+  labControllers.removeAdmin
+);
 
+// Rota de listar laboratórios em que o usuário possui acesso:
+router.get("/lab/list/all",
+  tokenMiddlewares.CheckToken,
+  labControllers.GetLabs
+);
+
+// Rota de listar laboratórios em que o usuário possui tal nível de acesso:
+router.get("/lab/list/level",
+  tokenMiddlewares.CheckToken,
+  userMiddlewares.adminLevel,
+  labControllers.GetLabByUserLevel
+);
 
 
 // O========================================================================================O

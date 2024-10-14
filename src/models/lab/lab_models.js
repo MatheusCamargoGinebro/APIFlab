@@ -66,11 +66,11 @@ const RemoveUser = async (ID_lab, ID_usuario) => {
     O================================================================O
  
     Funções de edição de laboratórios no banco de dados:
-    - [] EditLabName;
-    - [] EditLabCapacity;
-    - [] Editar permissões de usuário em laboratório:
-        - [] AddAdmin;
-        - [] RemoveAdmin;
+    - [X] EditLabName;
+    - [X] EditLabCapacity;
+    - [X] Editar permissões de usuário em laboratório:
+        - [X] AddAdmin;
+        - [X] RemoveAdmin;
  
 */
 
@@ -230,19 +230,19 @@ const GetLabsByUserId = async (ID_usuario) => {
     const [results] = await connection.execute(query, [ID_usuario]);
 
     if (results.length > 0) {
-        return { status: true, data: results[0] };
+        return { status: true, data: results };
     } else {
         return { status: false, data: null };
     }
 };
 
 // Função de get de todos os laboratórios de um usuário com determinado nível de acesso:
-const getLabByUserLevel = async (ID_usuario, level) => {
+const GetLabByUserLevel = async (ID_usuario, level) => {
     const query = "SELECT * FROM userlab WHERE ID_usuario = ? AND AdminLevel = ?";
     const [results] = await connection.execute(query, [ID_usuario, level]);
 
     if (results.length > 0) {
-        return { status: true, data: results[0] };
+        return { status: true, data: results };
     } else {
         return { status: false, data: null };
     }
@@ -270,7 +270,7 @@ module.exports = {
     GetLabUsers,
     GetLabUser,
     GetLabsByUserId,
-    getLabByUserLevel,
+    GetLabByUserLevel,
 };
 
 // O========================================================================================O

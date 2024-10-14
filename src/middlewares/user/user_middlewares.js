@@ -28,6 +28,35 @@ const user_id = (request, response, next) => {
     next();
 };
 
+const adminLevel = (request, response, next) => {
+    if (
+        request.body.adminLevel === undefined ||
+        request.body.adminLevel === null ||
+        !request.body.adminLevel
+    ) {
+        return response
+            .status(400)
+            .send({ message: "Nível de administração é obrigatório", error_at: "adminLevel" });
+    }
+
+    if (typeof request.body.adminLevel !== "number") {
+        return response.status(400).send({
+            message: "Nível de administrador deve ser um número",
+            error_at: "adminLevel",
+        });
+    }
+
+    if (request.body.adminLevel < 1 || request.body.adminLevel > 3) {
+        return response.status(400).send({
+            message: "Nível de administrador deve ser 1, 2 ou 3",
+            error_at: "adminLevel",
+        });
+    }
+
+    next();
+};
+
+
 const user_name = (request, response, next) => {
     if (
         request.body.nome === undefined ||
@@ -313,6 +342,7 @@ const profile_picture = (request, response, next) => {
 // Exportação dos módulos:
 module.exports = {
     user_id,
+    adminLevel,
     user_name,
     user_email,
     user_password,
