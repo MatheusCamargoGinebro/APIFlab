@@ -218,16 +218,16 @@ router.put(
 
   Laboratório:
   - [X] Registrar laboratório;
-  - [ ] Adicionar usuário ao laboratório;
+  - [X] Adicionar usuário ao laboratório;
   - [X] Editar informações do laboratório:
     - [X] Editar sala;
     - [X] Editar capacidade;
-  - [] Administradores:
-    - [] Adicionar administrador ao laboratório;
-    - [] Remover administrador do laboratório;
-  - [] Listar:
-    - [] Listar laboratórios em que o usuário possui acesso;
-    - [] Listar laboratórios em que o usuário possui tal nível de acesso;
+  - [X] Administradores:
+    - [X] Adicionar administrador ao laboratório;
+    - [X] Remover administrador do laboratório;
+  - [X] Listar:
+    - [X] Listar laboratórios em que o usuário possui acesso;
+    - [X] Listar laboratórios em que o usuário possui tal nível de acesso;
   - [~] Deletar laboratório;
 
 */
