@@ -103,13 +103,12 @@ CREATE TABLE
         -- values
         Nome VARCHAR(128) NOT NULL,
         Quantidade DECIMAL(10, 3) NOT NULL,
+        Descricao TEXT NOT NULL,
         Peso_molecular DECIMAL(10, 3) NOT NULL,
-        numero_cas VARCHAR(32) NOT NULL UNIQUE,
-        numero_ec VARCHAR(32) NOT NULL UNIQUE,
+        numero_cas VARCHAR(32) NOT NULL,
+        numero_ec VARCHAR(32) NOT NULL,
         estado_fisico INT CHECK (estado_fisico IN (1, 2, 3)),
         imagem LONGTEXT,
-        -- Image
-        image LONGTEXT,
         -- FK
         ID_lab INT NOT NULL,
         FOREIGN KEY (ID_lab) REFERENCES laboratorios (ID_lab)

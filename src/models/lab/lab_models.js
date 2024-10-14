@@ -15,9 +15,9 @@ const connection = require("../../utils/connection");
     O=================================================================O
 
     Funções de inserção de laboratórios no banco de dados:
-    - [] CreateLab;
-    - [] AddUser;
-    - [] RemoveUser;
+    - [X] CreateLab;
+    - [X] AddUser;
+    - [X] RemoveUser;
 */
 
 // O========================================================================================O
