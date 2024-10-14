@@ -202,3 +202,64 @@ CREATE TABLE
         -- values
         Token VARCHAR(256) NOT NULL
     );
+
+-- =========================================== Inserts para facilitar a vida ===========================================
+INSERT INTO
+    campus (Nome, Estado)
+VALUES
+    ('Campus I', 'SP');
+
+INSERT INTO
+    usuarios (
+        Nome,
+        Email,
+        Senha,
+        Salt,
+        Tipo,
+        CampusAdminLevel,
+        ID_campus
+    )
+VALUES
+    (
+        'Aluno',
+        'aluno@aluno.ifsp.edu.br',
+        '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
+        '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
+        1,
+        1,
+        1
+    ),
+    (
+        'Professor',
+        'professor@ifsp.edu.br',
+        '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
+        '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
+        2,
+        1,
+        1
+    ),
+    (
+        'Outro',
+        'admin@ifsp.edu.br',
+        '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
+        '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
+        3,
+        3,
+        1
+    );
+
+INSERT INTO
+    laboratorios (Sala, Capacidade, ID_campus)
+VALUES
+    ('Sala 1', 20, 1),
+    ('Sala 2', 30, 1);
+
+INSERT INTO
+    userlab (AdminLevel, ID_usuario, ID_lab)
+VALUES
+    (3, 3, 1) /* Admin é usuário responsável do lab1 */,
+    (3, 3, 2) /* Admin é usuário responsável do lab2 */,
+    (3, 2, 1) /* Professor é usuário responsável do lab1 */,
+    (2, 2, 2) /*  Professor é usuário responsável do lab2 */,
+    (1, 1, 1) /* Aluno é usuário membro do lab1 */,
+    (1, 1, 2) /* Aluno é usuário membro do lab2 */;
