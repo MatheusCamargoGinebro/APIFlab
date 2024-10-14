@@ -84,6 +84,8 @@ CREATE TABLE
         -- 2 = Pode ser dividido com outra reserva
         Inicio TIMESTAMP NOT NULL,
         Fim TIMESTAMP NOT NULL,
+        -- Valor default: false
+        Finished BOOLEAN NOT NULL DEFAULT FALSE,
         Status BOOLEAN NOT NULL,
         -- FK
         ID_lab INT NOT NULL,
