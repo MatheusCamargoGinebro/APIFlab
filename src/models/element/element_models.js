@@ -15,15 +15,15 @@ const connection = require("../../utils/connection");
     O=======================================================================O
 
     Funções de models relacionadas a inserção de elementos químicos:
-    - [] CreateElement;
-    - [] RemoveElement;
+    - [X] CreateElement;
+    - [X] RemoveElement;
 */
 
 // O========================================================================================O
 
 // Função para criar um elemento químico:
 const CreateElement = async (nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem, id_lab) => {
-    const query = `INSERT INTO elementos (nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, image, ID_lab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO elementos (nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem, ID_lab) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     const data = [nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem, id_lab];
 
     const [result] = await connection.execute(query, data);
@@ -37,7 +37,7 @@ const CreateElement = async (nome, quantidade, descricao, peso_molecular, numero
 
 // Função para remover um elemento químico:
 const RemoveElement = async (elementId) => {
-    const query = `DELETE FROM elementos WHERE id = ?`;
+    const query = `DELETE FROM elementos WHERE ID_elem = ?`;
     const data = [elementId];
 
     const [result] = await connection.execute(query, data);
@@ -57,21 +57,21 @@ const RemoveElement = async (elementId) => {
     O======================================================================O
  
     Funções de models relacionadas a edição de elementos químicos:
-    - [] EditName;
-    - [] EditQuantity;
-    - [] EditDescription;
-    - [] EditMolarMass;
-    - [] EditCasNumber;
-    - [] EditEcNumber;
-    - [] EditPhysicalState;
-    - [] EditImage;
+    - [X] EditName;
+    - [X] EditQuantity;
+    - [X] EditDescription;
+    - [X] EditMolarMass;
+    - [X] EditCasNumber;
+    - [X] EditEcNumber;
+    - [X] EditPhysicalState;
+    - [X] EditImage;
 */
 
 // O========================================================================================O
 
 // Função para editar o nome de um elemento químico:
 const EditName = async (elementId, name) => {
-    const query = `UPDATE elementos SET nome = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET nome = ? WHERE ID_elem = ?`;
     const data = [name, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -85,7 +85,7 @@ const EditName = async (elementId, name) => {
 
 // Função para editar a quantidade de um elemento químico:
 const EditQuantity = async (elementId, quantity) => {
-    const query = `UPDATE elementos SET quantidade = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET quantidade = ? WHERE ID_elem = ?`;
     const data = [quantity, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -99,7 +99,7 @@ const EditQuantity = async (elementId, quantity) => {
 
 // Função para editar a descrição de um elemento químico:
 const EditDescription = async (elementId, description) => {
-    const query = `UPDATE elementos SET descricao = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET descricao = ? WHERE ID_elem = ?`;
     const data = [description, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -113,7 +113,7 @@ const EditDescription = async (elementId, description) => {
 
 // Função para editar o peso molecular de um elemento químico:
 const EditMolarMass = async (elementId, molarMass) => {
-    const query = `UPDATE elementos SET peso_molecular = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET peso_molecular = ? WHERE ID_elem = ?`;
     const data = [molarMass, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -127,7 +127,7 @@ const EditMolarMass = async (elementId, molarMass) => {
 
 // Função para editar o número CAS de um elemento químico:
 const EditCasNumber = async (elementId, casNumber) => {
-    const query = `UPDATE elementos SET numero_cas = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET numero_cas = ? WHERE ID_elem = ?`;
     const data = [casNumber, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -141,7 +141,7 @@ const EditCasNumber = async (elementId, casNumber) => {
 
 // Função para editar o número EC de um elemento químico:
 const EditEcNumber = async (elementId, ecNumber) => {
-    const query = `UPDATE elementos SET numero_ec = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET numero_ec = ? WHERE ID_elem = ?`;
     const data = [ecNumber, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -155,7 +155,7 @@ const EditEcNumber = async (elementId, ecNumber) => {
 
 // Função para editar o estado físico de um elemento químico:
 const EditPhysicalState = async (elementId, physicalState) => {
-    const query = `UPDATE elementos SET estado_fisico = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET estado_fisico = ? WHERE ID_elem = ?`;
     const data = [physicalState, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -171,7 +171,7 @@ const EditPhysicalState = async (elementId, physicalState) => {
 
 // Função para editar a imagem de um elemento químico:
 const EditImage = async (elementId, image) => {
-    const query = `UPDATE elementos SET image = ? WHERE id = ?`;
+    const query = `UPDATE elementos SET imagem = ? WHERE ID_elem = ?`;
     const data = [image, elementId];
 
     const [result] = await connection.execute(query, data);
@@ -191,18 +191,18 @@ const EditImage = async (elementId, image) => {
     O====================================================================O
  
     Funções de models relacionadas a busca de elementos químicos:
-    - [] GetElementById;
-    - [] GetElementsByLabId;
-    - [] GetElementByName;
-    - [] GetElementByCasNumber;
-    - [] GetElementByEcNumber;
+    - [X] GetElementById;
+    - [X] GetElementsByLabId;
+    - [X] GetElementByName;
+    - [X] GetElementByCasNumber;
+    - [X] GetElementByEcNumber;
 */
 
 // O========================================================================================O
 
 // Função para buscar um elemento químico pelo ID:
 const GetElementById = async (elementId) => {
-    const query = `SELECT * FROM elementos WHERE id = ?`;
+    const query = `SELECT * FROM elementos WHERE ID_elem = ?`;
     const data = [elementId];
 
     const [result] = await connection.execute(query, data);

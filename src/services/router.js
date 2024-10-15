@@ -40,6 +40,7 @@ const labControllers = require("../controllers/lab/lab_controllers");
 // Importando os controllers e middlewares de elementos:
 const elementMiddlewares = require("../middlewares/element/element_middlewares");
 const elementControllers = require("../controllers/element/element_controllers");
+const e = require("express");
 
 // O========================================================================================O
 
@@ -325,10 +326,12 @@ router.post("/element/register",
   labMiddlewares.checkLabId,
   elementMiddlewares.checkNome,
   elementMiddlewares.checkQuantidade,
+  elementMiddlewares.checkDescricao,
   elementMiddlewares.checkPesoMolecular,
   elementMiddlewares.checkNumeroCAS,
   elementMiddlewares.checkNumeroEC,
   elementMiddlewares.checkEstadoFisico,
+  elementMiddlewares.checkImage,
   elementControllers.createElement,
 );
 

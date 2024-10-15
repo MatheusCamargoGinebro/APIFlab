@@ -10,7 +10,7 @@ CREATE TABLE
         -- PK
         ID_campus INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_campus),
-        -- values
+        -- -- values
         -- Informações de contato:
         Nome VARCHAR(128) NOT NULL,
         Estado VARCHAR(2) NOT NULL

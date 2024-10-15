@@ -19,8 +19,8 @@ const JWT = require("jsonwebtoken");
     O============================================================================O
 
     Funções de controllers relacionadas a inserção de elementos químicos:
-    - [] CreateElement;
-    - [] RemoveElement;
+    - [X] CreateElement;
+    - [X] RemoveElement;
 */
 
 // O========================================================================================O
@@ -71,6 +71,18 @@ const createElement = async (req, res) => {
     // Cria o elemento químico:
     const { nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem } = req.body;
 
+    console.log("nome: ", nome);
+    console.log("quantidade: ", quantidade);
+    console.log("descricao: ", descricao);
+    console.log("peso_molecular: ", peso_molecular);
+    console.log("numero_cas: ", numero_cas);
+    console.log("numero_ec: ", numero_ec);
+    console.log("estado_fisico: ", estado_fisico);
+    console.log("imagem: ", imagem);
+    console.log("lab_id: ", lab_id);
+
+
+
     const CreateElement = await elementsModels.CreateElement(nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem, lab_id);
 
     if (CreateElement.status === false) {
@@ -116,7 +128,9 @@ const removeElement = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    console.log("GetElementById: ", GetElementById);
+
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -150,14 +164,14 @@ const removeElement = async (req, res) => {
     O===============================================================================O
  
     Funções de controllers relacionadas a atualização de elementos químicos:
-    - [] EditName;
-    - [] EditQuantity;
-    - [] EditDescription;
-    - [] EditMolarMass;
-    - [] EditCasNumber;
-    - [] EditEcNumber;
-    - [] EditPhysicalState;
-    - [] EditImage;
+    - [X] EditName;
+    - [X] EditQuantity;
+    - [X] EditDescription;
+    - [X] EditMolarMass;
+    - [X] EditCasNumber;
+    - [X] EditEcNumber;
+    - [X] EditPhysicalState;
+    - [X] EditImage;
 */
 
 // O========================================================================================O
@@ -187,7 +201,7 @@ const editName = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -241,7 +255,7 @@ const editQuantity = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -295,7 +309,7 @@ const editDescription = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -349,7 +363,7 @@ const editMolarMass = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -403,7 +417,7 @@ const editCasNumber = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -457,7 +471,7 @@ const editEcNumber = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -511,7 +525,7 @@ const editPhysicalState = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -565,7 +579,7 @@ const editImage = async (req, res) => {
         });
     }
 
-    const GetLabUser = await labModels.GetLabUser(GetElementById.data.LabID, userID);
+    const GetLabUser = await labModels.GetLabUser(GetElementById.data.ID_lab, userID);
 
     if (GetLabUser.status === false || GetLabUser.data.AdminLevel < 2) {
         return res.status(401).json({
@@ -598,11 +612,11 @@ const editImage = async (req, res) => {
     O=========================================================================O
  
     Funções de controllers relacionadas a busca de elementos químicos:
-    - [] GetElementById;
-    - [] GetElementsByLabId;
-    - [] GetElementByName;
-    - [] GetElementByCasNumber;
-    - [] GetElementByEcNumber;
+    - [X] GetElementById;
+    - [X] GetElementsByLabId;
+    - [X] GetElementByName;
+    - [X] GetElementByCasNumber;
+    - [X] GetElementByEcNumber;
 */
 
 // O========================================================================================O

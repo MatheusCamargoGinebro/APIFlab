@@ -7,11 +7,13 @@
 // O============================================================================================O
 
 const checkElementID = (request, response, next) => {
+
+    console.log(request.body.element_id);
     if (
-        request.params.element_id === undefined ||
-        request.params.element_id === null ||
-        request.params.element_id === "" ||
-        !request.params.element_id
+        request.body.element_id === undefined ||
+        request.body.element_id === null ||
+        request.body.element_id === "" ||
+        !request.body.element_id
     ) {
         return response.status(400).send({
             message: "ID do elemento é obrigatório",
@@ -19,7 +21,7 @@ const checkElementID = (request, response, next) => {
         });
     }
 
-    if (typeof request.params.element_id !== "number") {
+    if (typeof request.body.element_id !== "number") {
         return response.status(400).send({
             message: "ID do elemento deve ser um número",
             error_at: "element_id",
@@ -108,10 +110,7 @@ const checkDescricao = (request, response, next) => {
         request.body.descricao === "" ||
         !request.body.descricao
     ) {
-        return response.status(400).send({
-            message: "Descrição do elemento é obrigatória",
-            error_at: "descricao",
-        });
+        request.body.descricao = "Sem descrição";
     }
 
     if (typeof request.body.descricao !== "string") {
@@ -290,21 +289,18 @@ const checkEstadoFisico = (request, response, next) => {
 
 const checkImage = (request, response, next) => {
     if (
-        request.body.image === undefined ||
-        request.body.image === null ||
-        request.body.image === "" ||
-        !request.body.image
+        request.body.imagem === undefined ||
+        request.body.imagem === null ||
+        request.body.imagem === "" ||
+        !request.body.imagem
     ) {
-        return response.status(400).send({
-            message: "Imagem do elemento é obrigatória",
-            error_at: "image",
-        });
+        request.body.imagem = "";
     }
 
-    if (typeof request.body.image !== "string") {
+    if (typeof request.body.imagem !== "string") {
         return response.status(400).send({
             message: "Imagem do elemento deve ser uma string",
-            error_at: "image",
+            error_at: "imagem",
         });
     }
 
