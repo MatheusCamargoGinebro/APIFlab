@@ -1,14 +1,14 @@
 <mxfile host="65bd71144e">
     <diagram name="Página-1" id="k0K56xFF2GUSqC4ekMbd">
-        <mxGraphModel dx="7268" dy="2226" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="3575" dy="150" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="160" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=24;container=0;" vertex="1" parent="1">
+                <mxCell id="160" value="" style="rounded=0;whiteSpace=wrap;html=1;fontSize=24;container=0;" parent="1" vertex="1">
                     <mxGeometry x="-3300" y="335.5" width="3720" height="1869" as="geometry"/>
                 </mxCell>
                 <mxCell id="iV3qStHiX3I9z14rUc0y-1" value="" style="whiteSpace=wrap;html=1;rounded=0;container=0;strokeWidth=4;fillColor=default;" parent="1" vertex="1">
-                    <mxGeometry x="-3140" y="430" width="3400" height="1220" as="geometry"/>
+                    <mxGeometry x="-3115" y="420" width="3400" height="1220" as="geometry"/>
                 </mxCell>
                 <mxCell id="3" value="&lt;font style=&quot;font-size: 48px;&quot;&gt;Casos de uso IFLab&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=64;container=0;fontColor=#0F0F0F;fontStyle=0" parent="1" vertex="1">
                     <mxGeometry x="-1665" y="440" width="450" height="90" as="geometry"/>
@@ -64,9 +64,9 @@
                     <mxGeometry x="-2370" y="1260" width="360" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="70" value="Finalizar qualquer sessão" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fontSize=32;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;fillColor=#3B690E;fontColor=#ffffff;strokeColor=#000000;strokeWidth=4;" parent="1" vertex="1">
-                    <mxGeometry x="-1937.5" y="1110" width="390" height="130" as="geometry"/>
+                    <mxGeometry x="-1970" y="1120" width="390" height="130" as="geometry"/>
                 </mxCell>
-                <mxCell id="71" style="html=1;entryX=0.697;entryY=1.015;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeWidth=5;fontSize=25;endArrow=none;endFill=0;startSize=6;endSize=2;elbow=vertical;exitX=0.5;exitY=0;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;entryPerimeter=0;" parent="1" source="15" target="70" edge="1">
+                <mxCell id="71" style="html=1;entryX=0.737;entryY=0.941;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeWidth=5;fontSize=25;endArrow=none;endFill=0;startSize=6;endSize=2;elbow=vertical;exitX=0.5;exitY=0;exitDx=0;exitDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;entryPerimeter=0;" parent="1" source="15" target="70" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="73" value="&amp;lt;&amp;lt;Extend&amp;gt;&amp;gt;" style="html=1;verticalAlign=bottom;labelBackgroundColor=default;endArrow=classic;endFill=1;dashed=1;strokeWidth=5;fontSize=24;startSize=6;endSize=2;elbow=vertical;entryX=1;entryY=1;entryDx=0;entryDy=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;startArrow=none;startFill=0;" parent="1" source="70" target="47" edge="1">
@@ -219,7 +219,7 @@
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="155" style="edgeStyle=none;html=1;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=24;startArrow=none;startFill=0;endArrow=none;endFill=0;strokeWidth=4;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="18" target="62">
+                <mxCell id="155" style="edgeStyle=none;html=1;entryX=0;entryY=1;entryDx=0;entryDy=0;fontSize=24;startArrow=none;startFill=0;endArrow=none;endFill=0;strokeWidth=4;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="18" target="62" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="144" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;labelBackgroundColor=default;strokeWidth=5;fontSize=20;endArrow=none;endFill=0;startSize=6;endSize=2;elbow=vertical;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" source="133" target="15" edge="1">
@@ -231,7 +231,7 @@
                 <mxCell id="21" style="edgeStyle=none;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=8;fontSize=24;endSize=2;startSize=6;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;" parent="1" source="15" target="18" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="162" value="" style="group;strokeWidth=8;fontColor=#1A37F0;" vertex="1" connectable="0" parent="1">
+                <mxCell id="162" value="" style="group;strokeWidth=8;fontColor=#1A37F0;" parent="1" vertex="1" connectable="0">
                     <mxGeometry x="-288" y="1830" width="280" height="280" as="geometry"/>
                 </mxCell>
                 <mxCell id="8" value="" style="whiteSpace=wrap;html=1;aspect=fixed;shadow=0;glass=0;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;strokeWidth=4;fillColor=#E6E6E6;" parent="162" vertex="1">
@@ -240,7 +240,7 @@
                 <mxCell id="9" value="&lt;b&gt;Admin Campus&lt;br&gt;(Nível = 3)&lt;/b&gt;" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;aspect=fixed;fontSize=24;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;strokeColor=#0F0F0F;fillColor=#FFFFFF;strokeWidth=3;fontColor=#0F0F0F;" parent="162" vertex="1">
                     <mxGeometry x="91.53846153846155" y="10.769230769230717" width="96.92307692307692" height="193.84615384615384" as="geometry"/>
                 </mxCell>
-                <mxCell id="163" value="" style="group;strokeWidth=4;fillColor=#E6E6E6;fontColor=#1A37F0;strokeColor=#000000;fontStyle=1" vertex="1" connectable="0" parent="1">
+                <mxCell id="163" value="" style="group;strokeWidth=4;fillColor=#E6E6E6;fontColor=#1A37F0;strokeColor=#000000;fontStyle=1" parent="1" vertex="1" connectable="0">
                     <mxGeometry x="-1590" y="1830" width="280" height="280" as="geometry"/>
                 </mxCell>
                 <mxCell id="15" value="" style="whiteSpace=wrap;html=1;aspect=fixed;shadow=0;glass=0;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;strokeWidth=4;fillColor=#E6E6E6;" parent="163" vertex="1">
@@ -249,7 +249,7 @@
                 <mxCell id="16" value="Admin Labs&lt;br&gt;(Nível = 2)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;aspect=fixed;fontSize=24;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;strokeColor=#0F0F0F;strokeWidth=3;fillColor=#FFFFFF;fontColor=#0F0F0F;fontStyle=1" parent="163" vertex="1">
                     <mxGeometry x="91.53846153846143" y="10.769230769230717" width="96.92307692307692" height="193.84615384615384" as="geometry"/>
                 </mxCell>
-                <mxCell id="164" value="" style="group;strokeWidth=4;fontColor=#1A37F0;" vertex="1" connectable="0" parent="1">
+                <mxCell id="164" value="" style="group;strokeWidth=4;fontColor=#1A37F0;" parent="1" vertex="1" connectable="0">
                     <mxGeometry x="-2878" y="1830" width="280" height="280" as="geometry"/>
                 </mxCell>
                 <mxCell id="18" value="" style="whiteSpace=wrap;html=1;aspect=fixed;shadow=0;glass=0;rounded=0;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;connectable=1;container=0;strokeWidth=4;fillColor=#E6E6E6;" parent="164" vertex="1">
