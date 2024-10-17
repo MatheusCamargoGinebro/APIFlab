@@ -40,7 +40,10 @@ const labControllers = require("../controllers/lab/lab_controllers");
 // Importando os controllers e middlewares de elementos:
 const elementMiddlewares = require("../middlewares/element/element_middlewares");
 const elementControllers = require("../controllers/element/element_controllers");
-const e = require("express");
+
+// Importando os controllers e middlewares de equipamentos:
+const equipmentMiddlewares = require("../middlewares/equipment/equipment_middlewares");
+const equipmentControllers = require("../controllers/equipment/equipment_controllers");
 
 // O========================================================================================O
 
@@ -304,18 +307,18 @@ router.get("/lab/list/level",
   O==========================================O
 
   Elemento:
-    [] Registrar elemento em laboratório;
-    [] Remover elemento de laboratório;
-    [] Editar informações do elemento:
-      [] Editar nome;
-      [] Editar quantidade;
-      [] Editar peso molecular;
-      [] Editar numero_cas;
-      [] Editar numero_ec;
-      [] Editar estado_fisico;
-      [] editar imagem;
-    [] Listar:
-      [] Listar elementos de determinado laboratório;
+  - [X] Registrar elemento em laboratório;
+  - [X] Remover elemento de laboratório;
+  - [X] Editar informações do elemento:
+    - [X] Editar nome;
+    - [X] Editar quantidade;
+    - [X] Editar peso molecular;
+    - [X] Editar numero_cas;
+    - [X] Editar numero_ec;
+    - [X] Editar estado_fisico;
+    - [X] editar imagem;
+  - [X] Listar:
+    - [X] Listar elementos de determinado laboratório;
 */
 
 // O========================================================================================O
@@ -421,6 +424,7 @@ router.get("/element/list",
 
   Equipamento:
     [] Registrar equipamento em laboratório;
+    [] Deletar equipamento;
     [] Editar informações do equipamento:
       [] Editar nome;
       [] Editar descrição;
@@ -429,7 +433,79 @@ router.get("/element/list",
       [] Editar imagem;
     [] Listar:
       [] Listar equipamentos de determinado laboratório;
-    [] Deletar equipamento;
 */
+
+// O========================================================================================O
+
+// Rota de registro de equipamento:
+router.post("/equipment/register",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentName,
+  equipmentMiddlewares.checkEquipmentDescription,
+  equipmentMiddlewares.checkEquipmentQuantity,
+  equipmentMiddlewares.checkEquipmentQuality,
+  equipmentMiddlewares.checkEquipmentImage,
+  equipmentControllers.createEquipment,
+);
+
+// Rota de remoção de equipamento:
+router.delete("/equipment/remove",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentID,
+  equipmentControllers.removeEquipment,
+);
+
+// Rota de edição de nome de equipamento:
+router.put("/equipment/edit/name",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentID,
+  equipmentMiddlewares.checkEquipmentName,
+  equipmentControllers.editName,
+);
+
+// Rota de edição de descrição de equipamento:
+router.put("/equipment/edit/description",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentID,
+  equipmentMiddlewares.checkEquipmentDescription,
+  equipmentControllers.editDescription,
+);
+
+// Rota de edição de quantidade total de equipamento:
+router.put("/equipment/edit/quantity",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentID,
+  equipmentMiddlewares.checkEquipmentQuantity,
+  equipmentControllers.editTotalQuantity,
+);
+
+// Rota de edição de qualidade de equipamento:
+router.put("/equipment/edit/quality",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentID,
+  equipmentMiddlewares.checkEquipmentQuality,
+  equipmentControllers.editQuality,
+);
+
+// Rota de edição de imagem de equipamento:
+router.put("/equipment/edit/image",
+  tokenMiddlewares.CheckToken,
+  labMiddlewares.checkLabId,
+  equipmentMiddlewares.checkEquipmentID,
+  equipmentMiddlewares.checkEquipmentImage,
+  equipmentControllers.editImage,
+);
+
+// Rota de listagem de equipamentos de determinado laboratório:
+router.get("/equipment/list",
+  labMiddlewares.checkLabId,
+  equipmentControllers.getEquipmentsByLabId,
+);
 
 // O========================================================================================O

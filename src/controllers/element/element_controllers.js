@@ -1,6 +1,6 @@
 /*
     O======================================================O
-    |    Funções de controlers relacionadas a elementos    |
+    |    Funções de controllers relacionadas a elementos    |
     O======================================================O
 
 */
@@ -70,18 +70,6 @@ const createElement = async (req, res) => {
 
     // Cria o elemento químico:
     const { nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem } = req.body;
-
-    console.log("nome: ", nome);
-    console.log("quantidade: ", quantidade);
-    console.log("descricao: ", descricao);
-    console.log("peso_molecular: ", peso_molecular);
-    console.log("numero_cas: ", numero_cas);
-    console.log("numero_ec: ", numero_ec);
-    console.log("estado_fisico: ", estado_fisico);
-    console.log("imagem: ", imagem);
-    console.log("lab_id: ", lab_id);
-
-
 
     const CreateElement = await elementsModels.CreateElement(nome, quantidade, descricao, peso_molecular, numero_cas, numero_ec, estado_fisico, imagem, lab_id);
 

@@ -150,6 +150,14 @@ const CreateLabUser = async (req, res) => {
         });
     }
 
+    // Verificando se o campus do usuário é o mesmo do laboratório:
+    if (GetNewUserData.userData.ID_campus !== GetLabByID.data.ID_campus) {
+        return res.status(400).json({
+            status: false,
+            message: "Usuário não pertence ao mesmo campus do laboratório!"
+        });
+    }
+
     // Adicionando o usuário ao laboratório:
     const AddUser = await labModels.AddUser(lab_id, user_id, 1);
 
@@ -172,7 +180,7 @@ const CreateLabUser = async (req, res) => {
     O=================================================================O
     |   Funções de control relacionadas a edição de laboratórios      |
     O=================================================================O
-
+ 
     Funções relacionadas a edição de laboratórios:	
     - [X] EditLabName;
     - [X] EditLabCapacity;
@@ -304,7 +312,7 @@ const EditLabCapacity = async (req, res) => {
     O==================================================================O
     |   Funções de control relacionadas a adição e remoção de admins   |
     O==================================================================O
-
+ 
     Funções relacionadas a adição e remoção de administradores:
     - [X] addAdmin;
     - [X] removeAdmin;
@@ -480,7 +488,7 @@ const removeAdmin = async (req, res) => {
     O================================================================O
     |   Funções de controle relacionadas a leitura de laboratórios   |
     O================================================================O
-
+ 
     Funções relacionadas a leitura de laboratórios:
     - [X] GetLabs; // Laboratórios em que o usuário está relacionado
     - [X] GetLabByUserLevel; // Laboratórios em que o usuário possui determinado nível de acesso

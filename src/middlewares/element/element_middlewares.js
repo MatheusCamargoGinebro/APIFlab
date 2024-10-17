@@ -7,8 +7,6 @@
 // O============================================================================================O
 
 const checkElementID = (request, response, next) => {
-
-    console.log(request.body.element_id);
     if (
         request.body.element_id === undefined ||
         request.body.element_id === null ||
