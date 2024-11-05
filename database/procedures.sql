@@ -611,5 +611,3 @@ WHERE
     usuarios.ID_usuario = p_ID_usuario;
 
 END $$ DELIMITER;
-
--- =========================================== Triggers =========================================== --
