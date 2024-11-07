@@ -1,3 +1,4 @@
+-- O==============================================================O --
 /*
 #
 |   O============================O    
@@ -22,6 +23,7 @@
 |    - [x] GetUserByID
 |    - [x] GetUserByEmail
 |    - [x] GetUserByName
+|    - [x] Login
 #    
  */
 -- O==============================================================O --
@@ -296,6 +298,28 @@ FROM
     usuarios
 WHERE
     usuarios.Nome = p_Name;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+
+-- Verificar se login é válido:
+DROP PROCEDURE IF EXISTS Login;
+
+DELIMITER $$
+CREATE PROCEDURE Login (IN p_Email VARCHAR(256), IN p_Senha VARCHAR(256)) BEGIN
+SELECT
+    usuarios.ID_usuario AS userID,
+    usuarios.Nome AS userName,
+    usuarios.Email AS userEmail,
+    usuarios.profilePic AS userImage,
+    usuarios.Tipo AS userType,
+    usuarios.CampusAdminLevel AS campusAdminLevel
+FROM
+    usuarios
+WHERE
+    usuarios.Email = p_Email
+    AND usuarios.Senha = p_Senha;
 
 END $$ DELIMITER;
 

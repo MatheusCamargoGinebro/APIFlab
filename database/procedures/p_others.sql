@@ -9,6 +9,7 @@
 |    - [x] CreateMailCode
 |    - [x] GetMailCode
 |    - [x] DeleteMailCode
+|    - [x] ClearMailCodes
 #    
  */
 -- O==============================================================O --
@@ -51,4 +52,29 @@ WHERE
 
 END $$ DELIMITER;
 
+-- O==============================================================O --
+-- Limpar tabela de códigos de e-mail:
+DROP PROCEDURE IF EXISTS ClearMailCodes;
+
+DELIMITER $$
+CREATE PROCEDURE ClearMailCodes () BEGIN
+DELETE FROM email_codes;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+/*
+#
+|   O==============================O    
+|   |    Procedures - Blacklist    |    
+|   O==============================O    
+#
+#    Procedures:
+|   - [x] AddToBlacklist
+|   - [x] GetFromBlacklist
+|   - [x] GetAllBlacklist
+|   - [x] RemoveFromBlacklist
+|   - [x] RemoveAllBlacklist
+#    
+ */
 -- O==============================================================O --

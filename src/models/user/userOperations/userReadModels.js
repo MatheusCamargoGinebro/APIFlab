@@ -79,7 +79,21 @@ const getUsersByCampus = async (ID_campus) => {
 
 // O====================================================================================O
 
+// Função para realizar login:
+const login = async (email, senha) => {
+  const query = "CALL Login(?, ?);";
+  const [result] = await execute(query, [email, senha]);
+
+  if (result.length > 0) {
+    return { status: true, userData: result[0] };
+  } else {
+    return { status: false, userData: null };
+  }
+};
+
+// O====================================================================================O
+
 // Exportando funções:
-export { getUserByID, getUserByEmail, getUserByName, getUsersByCampus };
+export { getUserByID, getUserByEmail, getUserByName, getUsersByCampus, login };
 
 // O====================================================================================O

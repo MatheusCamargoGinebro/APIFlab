@@ -8,6 +8,7 @@
     - [X] SaveMailCode;
     - [X] GetMailCode;
     - [X] DeleteMailCode;
+    - [X] ClearMailCodeList;
 */
 // O====================================================================================O
 
@@ -65,6 +66,20 @@ const deleteMailCode = async (email) => {
   }
 };
 
+// O====================================================================================O
+
+// Função para limpar a tabela de códigos de email:
+const clearMailCodeList = async () => {
+  const query = "CALL ClearMailCodes();";
+
+  await connection.execute(query);
+
+  return { status: true, message: "Códigos de verificação de email deletados" };
+};
+
+// O====================================================================================O
+
 // Exportando funções de códigos de email:
-export default { saveMailCode, getMailCode, deleteMailCode };
+export default { saveMailCode, getMailCode, deleteMailCode, clearMailCodeList };
+
 // O====================================================================================O
