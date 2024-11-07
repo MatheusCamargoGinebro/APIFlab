@@ -187,28 +187,6 @@ CREATE TABLE IF NOT EXISTS
         FOREIGN KEY (ID_hor) REFERENCES Horarios (ID_hor)
     );
 
--- ========================================= Codigos de inserção de dados com triggers ========================================= --
-/*
-DELIMITER $$
-CREATE TRIGGER decrementa_elemento AFTER INSERT ON Reserva_elemento FOR EACH ROW BEGIN
-UPDATE Elementos
-SET
-Quantidade = Quantidade - NEW.Quantidade
-WHERE
-ID_elem = NEW.ID_elem;
-
-END;
-
-DELIMITER $$
-CREATE TRIGGER decrementa_equipamento AFTER INSERT ON Reserva_equipamento FOR EACH ROW BEGIN
-UPDATE Equipamentos
-SET
-QuantidadeDisponivel = QuantidadeDisponivel - NEW.Quantidade
-WHERE
-ID_equip = NEW.ID_equip;
-
-END;
- */
 -- =========================================== Email Confirmation Code ===========================================
 CREATE TABLE IF NOT EXISTS
     email_codes (
