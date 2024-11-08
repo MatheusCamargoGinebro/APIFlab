@@ -11,6 +11,7 @@
 |    - Lab:
 |    - [x] CreateLab
 |    - [x] RelateUserLab
+|    - [x] UnrelateUserLab
 |    - Inventory:
 |    - [x] CreateElement
 |    - [x] DeleteElement
@@ -110,6 +111,19 @@ INSERT INTO
     userlab (AdminLevel, ID_usuario, ID_lab)
 VALUES
     (p_AdminLevel, p_ID_usuario, p_ID_lab);
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Desrelacionar usuário com laboratório
+DROP PROCEDURE IF EXISTS UnrelateUserLab;
+
+DELIMITER $$
+CREATE PROCEDURE UnrelateUserLab (IN p_ID_usuario INT, IN p_ID_lab INT) BEGIN
+DELETE FROM userlab
+WHERE
+    ID_usuario = p_ID_usuario
+    AND ID_lab = p_ID_lab;
 
 END $$ DELIMITER;
 

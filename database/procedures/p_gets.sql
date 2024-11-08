@@ -6,9 +6,14 @@
 |   O============================O    
 #
 #    Procedures:
+|    - Campus:
+|    - [x] GetCampus
 |    - Labs:
 |    - [x] GetLabsByUser
 |    - [x] GetLabByID
+|    - [x] GetLabByName
+|    - [x] GetAllLabUsers
+|    - [x] GetLabUsersByLevel
 |    - Schedule:
 |    - [x] GetSchedulesByLab
 |    - [x] GetScheduleByID
@@ -25,6 +30,43 @@
 |    - [x] GetUserByName
 |    - [x] Login
 #    
+ */
+-- O==============================================================O --
+/*
+#
+|   O==============O
+|   |    Campus    |
+|   O==============O
+#
+|   - GetCampus
+#
+ */
+-- O==============================================================O --
+-- Ler todos os campus:
+DROP PROCEDURE IF EXISTS GetCampus;
+
+DELIMITER $$
+CREATE PROCEDURE GetCampus () BEGIN
+SELECT
+    *
+FROM
+    campus;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+/*
+#
+|   O===========O
+|   |    Lab    |
+|   O===========O
+#
+|   - GetLabsByUser
+|   - GetLabByID
+|   - GetLabByName
+|   - GetAllLabUsers
+|   - GetLabUsersByLevel
+#
  */
 -- O==============================================================O --
 -- Ler todos os laboratórios em que um usuário tenha relação:
@@ -69,6 +111,79 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- Ler laboratório por nome:
+DROP PROCEDURE IF EXISTS GetLabByName;
+
+DELIMITER $$
+CREATE PROCEDURE GetLabByName (IN p_labName VARCHAR(256)) BEGIN
+SELECT
+    laboratorios.ID_lab AS labID,
+    laboratorios.Sala AS labName,
+    laboratorios.Capacidade AS capacity,
+    laboratorios.ID_campus AS campusID
+FROM
+    laboratorios
+WHERE
+    laboratorios.Sala = p_labName;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler todos os usuários de um laboratório:
+DROP PROCEDURE IF EXISTS GetAllLabUsers;
+
+DELIMITER $$
+CREATE PROCEDURE GetAllLabUsers (IN p_ID_lab INT) BEGIN
+SELECT DISTINCT
+    usuarios.ID_usuario AS userID,
+    usuarios.Nome AS userName,
+    usuarios.Email AS userEmail,
+    usuarios.profilePic AS userImage,
+    usuarios.Tipo AS userType,
+    usuarios.CampusAdminLevel AS campusAdminLevel,
+    userlab.AdminLevel AS userLevel
+FROM
+    usuarios
+    JOIN userlab ON usuarios.ID_usuario = userlab.ID_usuario
+WHERE
+    userlab.ID_lab = p_ID_lab;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler usuários de um laboratório por nível:
+DROP PROCEDURE IF EXISTS GetLabUsersByLevel;
+
+DELIMITER $$
+CREATE PROCEDURE GetLabUsersByLevel (IN p_ID_lab INT, IN p_level INT) BEGIN
+SELECT DISTINCT
+    usuarios.ID_usuario AS userID,
+    usuarios.Nome AS userName,
+    usuarios.Email AS userEmail,
+    usuarios.profilePic AS userImage,
+    usuarios.Tipo AS userType,
+    usuarios.CampusAdminLevel AS campusAdminLevel
+FROM
+    usuarios
+    JOIN userlab ON usuarios.ID_usuario = userlab.ID_usuario
+WHERE
+    userlab.ID_lab = p_ID_lab
+    AND userlab.AdminLevel = p_level;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+/*
+#
+|   O================O
+|   |    Schedule    |
+|   O================O
+#
+|   - GetSchedulesByLab
+|   - GetScheduleByID
+#
+ */
+-- O==============================================================O --
 -- Ler todas os horários de um laboratório:
 DROP PROCEDURE IF EXISTS GetSchedulesByLab;
 
@@ -106,6 +221,19 @@ WHERE
 
 END $$ DELIMITER;
 
+-- O==============================================================O --
+/*
+#
+|   O=================O
+|   |    Inventory    |
+|   O=================O
+#
+|   - GetElementsByLab
+|   - GetElementByID
+|   - GetEquipmentsByLab
+|   - GetEquipmentByID
+#
+ */
 -- O==============================================================O --
 -- Ler todos os elementos de um laboratório:
 DROP PROCEDURE IF EXISTS GetElementsByLab;
@@ -200,6 +328,21 @@ WHERE
 
 END $$ DELIMITER;
 
+-- O==============================================================O --
+/*
+#
+|   O=============O
+|   |    Users    |
+|   O=============O
+#
+|   - GetUsersByLab
+|   - GetUsersByCampus
+|   - GetUserByID
+|   - GetUserByEmail
+|   - GetUserByName
+|   - Login
+#
+ */
 -- O==============================================================O --
 -- Ler todos os usuários de um laboratório:
 DROP PROCEDURE IF EXISTS GetUsersByLab;
@@ -302,7 +445,6 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
-
 -- Verificar se login é válido:
 DROP PROCEDURE IF EXISTS Login;
 
