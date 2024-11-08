@@ -13,7 +13,9 @@
 |    - [x] RelateUserLab
 |    - Inventory:
 |    - [x] CreateElement
+|    - [x] DeleteElement
 |    - [x] CreateEquipment
+|    - [x] DeleteEquipment
 |    - Schedule:
 |    - [x] CreateSchedule
 |    - [x] ReserveElement
@@ -161,6 +163,22 @@ VALUES
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- Deletar elemento
+DROP PROCEDURE IF EXISTS DeleteElement;
+
+DELIMITER $$
+CREATE PROCEDURE DeleteElement (IN p_ID_elem INT) BEGIN
+DELETE FROM reserva_elemento
+WHERE
+    ID_elem = p_ID_elem;
+
+DELETE FROM elementos
+WHERE
+    ID_elem = p_ID_elem;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
 -- Criar equipamento
 DROP PROCEDURE IF EXISTS CreateEquipment;
 
@@ -197,6 +215,22 @@ VALUES
         p_SupervisorLevel,
         p_ID_lab
     );
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Deletar equipamento
+DROP PROCEDURE IF EXISTS DeleteEquipment;
+
+DELIMITER $$
+CREATE PROCEDURE DeleteEquipment (IN p_ID_equip INT) BEGIN
+DELETE FROM reserva_equipamento
+WHERE
+    ID_equip = p_ID_equip;
+
+DELETE FROM equipamentos
+WHERE
+    ID_equip = p_ID_equip;
 
 END $$ DELIMITER;
 

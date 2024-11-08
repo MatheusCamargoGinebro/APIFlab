@@ -7,7 +7,11 @@
 
     Funções relacionadas a usuários:
     - [X] RegisterUser;
-    - [X] EditUser;
+    - [X] EditUserName;
+    - [X] EditUserEmail;
+    - [X] EditUserPassword;
+    - [X] EditUserType;
+    - [X] EditUserLevel;
     - [X] EditUserLabLevel;
 */
 
@@ -46,37 +50,93 @@ const registerUser = async (newUser) => {
 
 // O====================================================================================O
 
-// Função para editar informações do usuário:
-const EditUser = async (userID, newUserData) => {
-  const {
-    newName,
-    newEmail,
-    newPassword,
-    newSalt,
-    newProfilePicture,
-    newType,
-    newLevel,
-  } = newUserData;
-
+// Função para editar o nome de um usuário:
+const EditUserName = async (userID, newName) => {
   // Editando no banco de dados:
-  const query = "CALL EditUser(?, ?, ?, ?, ?, ?);";
-  const [result] = await execute(query, [
-    userID,
-    newName,
-    newEmail,
-    newPassword,
-    newSalt,
-    newProfilePicture,
-    newType,
-    newLevel,
-  ]);
+  const query = "CALL EditUserName(?, ?);";
+  const [result] = await execute(query, [userID, newName]);
 
   if (result.affectedRows > 0) {
-    return { status: true, message: "Informações de usuário atualizadas" };
+    return { status: true, message: "Nome atualizado" };
+  } else {
+    return { status: false, message: "Erro ao atualizar nome" };
+  }
+};
+
+// O====================================================================================O
+
+// Função para editar o email de um usuário:
+const EditUserEmail = async (userID, newEmail) => {
+  // Editando no banco de dados:
+  const query = "CALL EditUserEmail(?, ?);";
+  const [result] = await execute(query, [userID, newEmail]);
+
+  if (result.affectedRows > 0) {
+    return { status: true, message: "Email atualizado" };
+  } else {
+    return { status: false, message: "Erro ao atualizar email" };
+  }
+};
+
+// O====================================================================================O
+
+// Função para editar a senha de um usuário:
+const EditUserPassword = async (userID, newPassword) => {
+  // Editando no banco de dados:
+  const query = "CALL EditUserPassword(?, ?);";
+  const [result] = await execute(query, [userID, newPassword]);
+
+  if (result.affectedRows > 0) {
+    return { status: true, message: "Senha atualizada" };
+  } else {
+    return { status: false, message: "Erro ao atualizar senha" };
+  }
+};
+
+// O====================================================================================O
+
+// Função para editar o tipo de usuário:
+const EditUserType = async (userID, newType) => {
+  // Editando no banco de dados:
+  const query = "CALL EditUserType(?, ?);";
+  const [result] = await execute(query, [userID, newType]);
+
+  if (result.affectedRows > 0) {
+    return { status: true, message: "Tipo atualizada" };
+  } else {
+    return { status: false, message: "Erro ao atualizar Tipo" };
+  }
+};
+
+// O====================================================================================O
+
+// Função para editar o nível de um usuário:
+const EditUserLevel = async (userID, newLevel) => {
+  // Editando no banco de dados:
+  const query = "CALL EditUserLevel(?, ?);";
+  const [result] = await execute(query, [userID, newLevel]);
+
+  if (result.affectedRows > 0) {
+    return { status: true, message: "Nível atualizado" };
+  } else {
+    return { status: false, message: "Erro ao atualizar nível" };
+  }
+};
+
+// O====================================================================================O
+
+// Função para editar o nível de administração de um usuário:
+const EditUserAdminLevel = async (userID, newAdminLevel) => {
+  // Editando no banco de dados:
+  const query = "CALL EditUserCampusAdminLevel(?, ?);";
+  const [result] = await execute(query, [userID, newAdminLevel]);
+
+  if (result.affectedRows > 0) {
+    return { status: true, message: "Nível de administração atualizado" };
   } else {
     return {
       status: false,
-      message: "Erro ao atualizar informações de usuário",
+      message: "Erro ao atualizar nível de administração",
     };
   }
 };
@@ -84,7 +144,7 @@ const EditUser = async (userID, newUserData) => {
 // O====================================================================================O
 
 // Função para editar o nível de laboratório de um usuário:
-const EditUserLevel = async (userID, LabID, newLevel) => {
+const EditUserLabLevel = async (userID, LabID, newLevel) => {
   // Editando no banco de dados:
   const query = "CALL EditUserLevel(?, ?);";
   const [result] = await execute(query, [userID, LabID, newLevel]);
@@ -99,6 +159,15 @@ const EditUserLevel = async (userID, LabID, newLevel) => {
 // O====================================================================================O
 
 // Exportando funções:
-module.exports = { registerUser, EditUser, EditUserLevel };
+export {
+  registerUser,
+  EditUserName,
+  EditUserEmail,
+  EditUserPassword,
+  EditUserType,
+  EditUserLevel,
+  EditUserAdminLevel,
+  EditUserLabLevel,
+};
 
 // O====================================================================================O
