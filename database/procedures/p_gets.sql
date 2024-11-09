@@ -7,7 +7,9 @@
 #
 #    Procedures:
 |    - Campus:
-|    - [x] GetCampus
+|    - [x] GetAllCampus
+|    - [x] GetCampusByID
+|    - [x] GetCampusByName
 |    - Labs:
 |    - [x] GetLabsByUser
 |    - [x] GetLabByID
@@ -38,19 +40,51 @@
 |   |    Campus    |
 |   O==============O
 #
-|   - GetCampus
+|   - GetAllCampus
+|   - GetCampusByID
+|   - GetCampusByName
 #
  */
 -- O==============================================================O --
 -- Ler todos os campus:
-DROP PROCEDURE IF EXISTS GetCampus;
+DROP PROCEDURE IF EXISTS GetAllCampus;
 
 DELIMITER $$
-CREATE PROCEDURE GetCampus () BEGIN
+CREATE PROCEDURE GetAllCampus () BEGIN
 SELECT
     *
 FROM
     campus;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler campus por ID:
+DROP PROCEDURE IF EXISTS GetCampusByID;
+
+DELIMITER $$
+CREATE PROCEDURE GetCampusByID (IN p_ID_campus INT) BEGIN
+SELECT
+    *
+FROM
+    campus
+WHERE
+    campus.ID_campus = p_ID_campus;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler campus por nome:
+DROP PROCEDURE IF EXISTS GetCampusByName;
+
+DELIMITER $$
+CREATE PROCEDURE GetCampusByName (IN p_campusName VARCHAR(128)) BEGIN
+SELECT
+    *
+FROM
+    campus
+WHERE
+    campus.Nome = p_campusName;
 
 END $$ DELIMITER;
 

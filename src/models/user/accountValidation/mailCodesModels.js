@@ -15,6 +15,8 @@
 // Importando conexão com o banco de dados:
 import { execute } from "../../utils/connection";
 
+// O====================================================================================O
+
 // Função para salvar o código de confirmação de email no banco de dados:
 const saveMailCode = async (MailCode) => {
   const { email, code } = MailCode;
