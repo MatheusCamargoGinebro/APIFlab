@@ -7,6 +7,8 @@
 
     Funções relacionadas a criar institutos:
     - [X] registerCampus;
+    - [X] editCampusName;
+    - [X] editCampusState;
 */
 
 // O========================================================================================O
@@ -37,18 +39,6 @@ const registerCampus = async (newCampus) => {
     };
   }
 };
-
-// O========================================================================================O
-
-/*
-      O====================================================O
-      |   Funções de edição relacionadas aos institutos    |
-      O====================================================O
-  
-      Funções relacionadas a edição de institutos:
-      - [X] editCampusName;
-      - [X] editCampusState;
-  */
 
 // O========================================================================================O
 
