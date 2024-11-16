@@ -11,7 +11,7 @@
     - [X] EditUserPassword;
     - [X] EditUserPic;
     - [X] EditUserType;
-    - [X] EditUserCampusLevel; 
+    - [X] EditUserCampusLevel;
 */
 
 // O========================================================================================O

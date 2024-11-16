@@ -7,10 +7,10 @@
 
     Funções de inserção de laboratórios no banco de dados:
     - [X] CreateLab;
+    - [X] RelateUserLab;
     - [X] RemoveUser;
     - [X] EditLabName;
     - [X] EditLabCapacity;
-    - [X] RelateUserLab;
     - [X] EditUserLevel;
 */
 
@@ -22,16 +22,11 @@ import { execute } from "../../database/connection";
 // O========================================================================================O
 
 // Função de inserção de laboratórios no banco de dados:
-const CreateLab = async (newLab, responsibleUserID) => {
+const CreateLab = async (newLab, userId) => {
   const { Sala, Capacidade, ID_campus } = newLab;
 
   const query = "CALL CreateLab(?, ?, ?, ?)";
-  const [results] = await execute(query, [
-    Sala,
-    Capacidade,
-    ID_campus,
-    responsibleUserID,
-  ]);
+  const [results] = await execute(query, [Sala, Capacidade, ID_campus, userId]);
 
   if (results.affectedRows > 0) {
     return {
@@ -42,6 +37,26 @@ const CreateLab = async (newLab, responsibleUserID) => {
     return {
       status: false,
       message: "Erro ao cadastrar laboratório!",
+    };
+  }
+};
+
+// O========================================================================================O
+
+// Função para adicionar um usuário a um laboratório no banco de dados:
+const RelateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
+  const query = "CALL RelateUserLab(?, ?, ?)";
+  const [results] = await execute(query, [ID_usuario, ID_lab, AdminLevel]);
+
+  if (results.affectedRows > 0) {
+    return {
+      status: true,
+      message: "Usuário adicionado ao laboratório com sucesso!",
+    };
+  } else {
+    return {
+      status: false,
+      message: "Erro ao adicionar usuário ao laboratório!",
     };
   }
 };
@@ -97,26 +112,6 @@ const EditLabCapacity = async (ID_lab, newCapacity) => {
     return {
       status: false,
       message: "Erro ao editar capacidade do laboratório!",
-    };
-  }
-};
-
-// O========================================================================================O
-
-// Função para adicionar um usuário a um laboratório no banco de dados:
-const RelateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
-  const query = "CALL RelateUserLab(?, ?, ?)";
-  const [results] = await execute(query, [ID_usuario, ID_lab, AdminLevel]);
-
-  if (results.affectedRows > 0) {
-    return {
-      status: true,
-      message: "Usuário adicionado ao laboratório com sucesso!",
-    };
-  } else {
-    return {
-      status: false,
-      message: "Erro ao adicionar usuário ao laboratório!",
     };
   }
 };
