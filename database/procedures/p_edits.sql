@@ -36,7 +36,6 @@
 |    - [x] EditEquipmentName
 |    - [x] EditEquipmentDescription
 |    - [x] EditEquipmentTotalQuantity
-|    - [x] EditEquipmentAvailableQuantity
 |    - [x] EditEquipmentQuality
 |    - [x] EditEquipmentImage
 |    - [x] EditEquipmentSupervisorLevel
@@ -451,20 +450,6 @@ CREATE PROCEDURE EditEquipmentTotalQuantity (IN p_ID_equip INT, IN p_QuantidadeT
 UPDATE equipamentos
 SET
     QuantidadeTotal = p_QuantidadeTotal
-WHERE
-    ID_equip = p_ID_equip;
-
-END $$ DELIMITER;
-
--- O==============================================================O --
--- Editar quantidade disponível do equipamento
-DROP PROCEDURE IF EXISTS EditEquipmentAvailableQuantity;
-
-DELIMITER $$
-CREATE PROCEDURE EditEquipmentAvailableQuantity (IN p_ID_equip INT, IN p_QuantidadeDisponivel INT) BEGIN
-UPDATE equipamentos
-SET
-    QuantidadeDisponivel = p_QuantidadeDisponivel
 WHERE
     ID_equip = p_ID_equip;
 
