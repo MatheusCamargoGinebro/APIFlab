@@ -24,11 +24,10 @@ import { execute } from "../../utils/connection";
 
 // Função para registrar um usuário no banco de dados:
 const registerUser = async (newUser) => {
-  const { nome, email, senha, tipo, salt, ID_campus, CampusAdminLevel } =
+  const { nome, email, senha, tipo, salt, campusId, CampusAdminLevel } =
     newUser;
 
   // Salvando no banco de dados:
-  //const query = "INSERT INTO usuarios (Nome, Email, Senha, Tipo, Salt, ID_campus, CampusAdminLevel) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
   const query = "CALL CreateUser(?, ?, ?, ?, ?, ?, ?);";
   const [result] = await execute(query, [
@@ -37,7 +36,7 @@ const registerUser = async (newUser) => {
     senha,
     salt,
     tipo,
-    ID_campus,
+    campusId,
     CampusAdminLevel,
   ]);
 

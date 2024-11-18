@@ -9,7 +9,7 @@
     - [X] GetUserByID;
     - [X] GetUserByEmail;
     - [X] GetUserByName;
-    - [X] GetUserbyCampus;
+    - [X] getUsersByCampus;
 */
 
 // O====================================================================================O
@@ -66,7 +66,6 @@ const getUserByName = async (username) => {
 
 // Função para pegar todos os usuários de um campus:
 const getUsersByCampus = async (ID_campus) => {
-  // const query = "SELECT * FROM usuarios WHERE ID_campus = ?;";
   const query = "CALL GetUsersByCampus(?);";
   const [result] = await execute(query, [ID_campus]);
 
