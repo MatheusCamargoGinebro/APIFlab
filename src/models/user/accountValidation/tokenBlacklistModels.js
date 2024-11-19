@@ -95,7 +95,7 @@ const RemoveAllBlacklist = async () => {
 // O====================================================================================O
 
 // Exportando funções de manipulação da conta do usuário:
-export {
+export default {
   AddToBlacklist,
   GetFromBlacklist,
   GetAllBlacklist,

@@ -61,6 +61,6 @@ const getCampusByName = async (campus_name) => {
 // O========================================================================================O
 
 // Exportando funções:
-export { getAllCampus, getCampusByID, getCampusByName };
+export default { getAllCampus, getCampusByID, getCampusByName };
 
 // O========================================================================================O

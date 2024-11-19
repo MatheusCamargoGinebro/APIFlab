@@ -159,7 +159,7 @@ const EditUserLabLevel = async (userID, LabID, newLevel) => {
 // O====================================================================================O
 
 // Exportando funções:
-export {
+export default {
   registerUser,
   EditUserName,
   EditUserEmail,

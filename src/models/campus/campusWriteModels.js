@@ -83,6 +83,6 @@ const editCampusState = async (ID_campus, newName) => {
 // O========================================================================================O
 
 // Exportando funções:
-export { registerCampus, editCampusName, editCampusState };
+export default { registerCampus, editCampusName, editCampusState };
 
 // O========================================================================================O

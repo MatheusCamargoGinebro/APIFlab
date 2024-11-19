@@ -18,7 +18,7 @@
 // O========================================================================================O
 
 // Importação de módulos:
-const { execute } = require("../database/database");
+import { execute } from "../database/database";
 
 // O========================================================================================O
 
@@ -206,7 +206,7 @@ const EditSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
 // O========================================================================================O
 
 // Exportação dos módulos:
-module.exports = {
+export default {
   CreateEquipment,
   RemoveEquipment,
   EditName,

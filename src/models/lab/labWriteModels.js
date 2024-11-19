@@ -144,7 +144,7 @@ const EditUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
 // O========================================================================================O
 
 // Exportando funções:
-export {
+export default {
   CreateLab,
   RemoveUser,
   EditLabName,

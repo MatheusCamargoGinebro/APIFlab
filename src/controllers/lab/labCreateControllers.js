@@ -171,6 +171,6 @@ const CreateLabUser = async (req, res) => {
 
 // O========================================================================================O
 
-export { CreateLab, CreateLabUser };
+export default { CreateLab, CreateLabUser };
 
 // O========================================================================================O

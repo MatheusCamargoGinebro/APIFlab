@@ -67,6 +67,6 @@ const checkUserToManipulate = async (userId, labId, allowedLevel) => {
 
 // O========================================================================================O
 
-export { checkUserToCreate, checkUserToManipulate };
+export default { checkUserToCreate, checkUserToManipulate };
 
 // O========================================================================================O

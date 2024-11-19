@@ -143,7 +143,7 @@ const GetLabUserRelation = async (ID_lab, ID_usuario) => {
 // O========================================================================================O
 
 // Exportando funções:
-export {
+export default {
   GetLabById,
   GetLabByName,
   GetLabsByUser,

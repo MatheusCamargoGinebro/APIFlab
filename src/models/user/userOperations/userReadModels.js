@@ -93,6 +93,12 @@ const login = async (email, senha) => {
 // O====================================================================================O
 
 // Exportando funções:
-export { getUserByID, getUserByEmail, getUserByName, getUsersByCampus, login };
+export default {
+  getUserByID,
+  getUserByEmail,
+  getUserByName,
+  getUsersByCampus,
+  login,
+};
 
 // O====================================================================================O
