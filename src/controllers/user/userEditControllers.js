@@ -45,7 +45,6 @@ const editUserName = async (req, res) => {
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
-  const userId = JWT.decode(token).userId;
 
   const { newName } = req.body;
 
@@ -174,11 +173,17 @@ const editUserPassword = async (req, res) => {
 
   const result = await UserWrite.EditUserPassword(userId, hashedPassword, salt);
 
-  if (result.status === true) {
-    return res.status(200).json(result);
-  } else {
-    return res.status(400).json(result);
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Não foi possível alterar a senha.",
+    });
   }
+
+  return res.status(200).json({
+    status: true,
+    message: "Senha alterada.",
+  });
 };
 
 // O========================================================================================O

@@ -14,9 +14,6 @@
 
 // Importando módulos:
 
-// Módulo de Token JWT:
-import JWT from "jsonwebtoken";
-
 // Módulo dos Models Read de usuário:
 import UserRead from "../../models/user/userOperations/userReadModels";
 
