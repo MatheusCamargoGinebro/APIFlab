@@ -40,10 +40,10 @@ const checkUserToCreate = async (userId) => {
 // Função para verificar se o usuário tem permissão para manipular um laboratório:
 const checkUserToManipulate = async (userId, labId, allowedLevel) => {
   // Recuperando informações do usuário:
-  const user = await UserRead.GetUserByID(userId);
+  const user = await UserRead.getUserByID(userId);
 
   // Recuperando informações do laboratório:
-  const lab = await LabRead.GetLabByID(labId);
+  const lab = await LabRead.GetLabById(labId);
 
   // Verificando se o usuário e o laboratório existem:
   if (user.status === false || lab.status === false) {
