@@ -25,7 +25,7 @@ import LabRead from "../../models/lab/labReadModels";
 // Função para verificar se o usuário tem permissão para criar um laboratório:
 const checkUserToCreate = async (userId) => {
   // Recuperando o nível de administração do usuário no campus:
-  const user = await UserRead.GetUserByID(userId);
+  const user = await UserRead.getUserByID(userId);
 
   // Verificando se o usuário existe e se ele tem permissão para criar um laboratório:
   if (user.status === false || user.userData.campusAdminLevel < 2) {
