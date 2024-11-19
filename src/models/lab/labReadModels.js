@@ -11,6 +11,7 @@
     - [X] GetLabsByUser;
     - [X] GetAllLabUsers;
     - [X] GetLabUsersByLevel;
+    - [X] GetLabUserRelation;
 
 */
 
@@ -121,6 +122,26 @@ const GetLabUsersByLevel = async (ID_lab, level) => {
 
 // O========================================================================================O
 
+// Função para buscar a relação entre um usuário e um laboratório no banco de dados:
+const GetLabUserRelation = async (ID_lab, ID_usuario) => {
+  const query = "CALL GetLabUserRelation(?, ?)";
+  const [results] = await execute(query, [ID_lab, ID_usuario]);
+
+  if (results.length > 0) {
+    return {
+      status: true,
+      relation: results[0],
+    };
+  } else {
+    return {
+      status: false,
+      message: "Relação não encontrada!",
+    };
+  }
+};
+
+// O========================================================================================O
+
 // Exportando funções:
 export {
   GetLabById,
@@ -128,6 +149,7 @@ export {
   GetLabsByUser,
   GetAllLabUsers,
   GetLabUsersByLevel,
+  GetLabUserRelation,
 };
 
 // O========================================================================================O

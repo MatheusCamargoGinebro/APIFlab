@@ -10,8 +10,9 @@
     - [X] EditUserName;
     - [X] EditUserEmail;
     - [X] EditUserPassword;
+    - [X] EditUserPic;
     - [X] EditUserType;
-    - [X] EditUserLevel;
+    - [X] EditUserAdminLevel;
     - [X] EditUserLabLevel;
 */
 
@@ -94,6 +95,21 @@ const EditUserPassword = async (userID, newPassword) => {
 
 // O====================================================================================O
 
+// Função para editar a foto de perfil de um usuário:
+const EditUserPic = async (userID, newPic) => {
+  // Editando no banco de dados:
+  const query = "CALL EditUserPic(?, ?);";
+  const [result] = await execute(query, [userID, newPic]);
+
+  if (result.affectedRows > 0) {
+    return { status: true, message: "Foto de perfil atualizada" };
+  } else {
+    return { status: false, message: "Erro ao atualizar foto de perfil" };
+  }
+};
+
+// O====================================================================================O
+
 // Função para editar o tipo de usuário:
 const EditUserType = async (userID, newType) => {
   // Editando no banco de dados:
@@ -104,21 +120,6 @@ const EditUserType = async (userID, newType) => {
     return { status: true, message: "Tipo atualizada" };
   } else {
     return { status: false, message: "Erro ao atualizar Tipo" };
-  }
-};
-
-// O====================================================================================O
-
-// Função para editar o nível de um usuário:
-const EditUserLevel = async (userID, newLevel) => {
-  // Editando no banco de dados:
-  const query = "CALL EditUserLevel(?, ?);";
-  const [result] = await execute(query, [userID, newLevel]);
-
-  if (result.affectedRows > 0) {
-    return { status: true, message: "Nível atualizado" };
-  } else {
-    return { status: false, message: "Erro ao atualizar nível" };
   }
 };
 
@@ -145,7 +146,7 @@ const EditUserAdminLevel = async (userID, newAdminLevel) => {
 // Função para editar o nível de laboratório de um usuário:
 const EditUserLabLevel = async (userID, LabID, newLevel) => {
   // Editando no banco de dados:
-  const query = "CALL EditUserLevel(?, ?);";
+  const query = "CALL EditUserLabLevel(?, ?, ?);";
   const [result] = await execute(query, [userID, LabID, newLevel]);
 
   if (result.affectedRows > 0) {
@@ -163,8 +164,8 @@ export {
   EditUserName,
   EditUserEmail,
   EditUserPassword,
+  EditUserPic,
   EditUserType,
-  EditUserLevel,
   EditUserAdminLevel,
   EditUserLabLevel,
 };

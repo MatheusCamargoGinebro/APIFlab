@@ -16,6 +16,7 @@
 |    - [x] GetLabByName
 |    - [x] GetAllLabUsers
 |    - [x] GetLabUsersByLevel
+|    - [x] GetLabUserRelation
 |    - Schedule:
 |    - [x] GetSchedulesByLab
 |    - [x] GetScheduleByID
@@ -100,6 +101,7 @@ END $$ DELIMITER;
 |   - GetLabByName
 |   - GetAllLabUsers
 |   - GetLabUsersByLevel
+|   - GetLabUserRelation
 #
  */
 -- O==============================================================O --
@@ -203,6 +205,25 @@ FROM
 WHERE
     userlab.ID_lab = p_ID_lab
     AND userlab.AdminLevel = p_level;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler relação entre usuário e laboratório:
+DROP PROCEDURE IF EXISTS GetLabUserRelation;
+
+DELIMITER $$
+CREATE PROCEDURE GetLabUserRelation (IN p_ID_lab INT, IN p_ID_usuario INT) BEGIN
+
+SELECT
+    userlab.ID_lab AS labID,
+    userlab.ID_usuario AS userID,
+    userlab.AdminLevel AS userLevel
+FROM
+    userlab
+WHERE
+    userlab.ID_lab = p_ID_lab
+    AND userlab.ID_usuario = p_ID_usuario;
 
 END $$ DELIMITER;
 
