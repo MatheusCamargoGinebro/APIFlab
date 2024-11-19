@@ -30,6 +30,9 @@ import UserRead from "../../models/user/userOperations/userReadModels";
 // Módulo dos Models de verificação de código de email:
 import MailCodeModels from "../../models/user/accountValidation/mailCodesModels";
 
+// Módulo dos Models de verificação de código de email:
+import MailCodeModels from "../../models/user/accountValidation/mailCodesModels";
+
 // Módulo de tratamento de senhas:
 import passwordTreat from "../../utils/password_treatment";
 
@@ -41,6 +44,7 @@ const editUserName = async (req, res) => {
 
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
   const userId = JWT.decode(token).userId;
 
   const { newName } = req.body;
