@@ -6,8 +6,8 @@
     O============================================================================O
 
     Lista de funções:
-    - [] checkUserToCreate;    
-    - [] checkUserToManipulate;
+    - [x] checkUserToCreate;    
+    - [x] checkUserToManipulate;
 */
 
 // O========================================================================================O
@@ -46,7 +46,6 @@ const checkUserToManipulate = async (userId, labId, allowedLevel) => {
   const lab = await LabRead.GetLabByID(labId);
 
   // Verificando se o usuário e o laboratório existem:
-
   if (user.status === false || lab.status === false) {
     return { status: false };
   }

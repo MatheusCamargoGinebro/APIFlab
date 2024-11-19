@@ -151,7 +151,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS GetLabByName;
 
 DELIMITER $$
-CREATE PROCEDURE GetLabByName (IN p_labName VARCHAR(256)) BEGIN
+CREATE PROCEDURE GetLabByName (IN p_labName VARCHAR(256), IN p_ID_campus INT) BEGIN
 SELECT
     laboratorios.ID_lab AS labID,
     laboratorios.Sala AS labName,
@@ -160,7 +160,7 @@ SELECT
 FROM
     laboratorios
 WHERE
-    laboratorios.Sala = p_labName;
+    laboratorios.Sala = p_labName AND laboratorios.ID_campus = p_ID_campus;
 
 END $$ DELIMITER;
 
@@ -451,7 +451,8 @@ SELECT
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
     usuarios.Tipo AS userType,
-    usuarios.CampusAdminLevel AS campusAdminLevel
+    usuarios.CampusAdminLevel AS campusAdminLevel,
+    usuarios.ID_campus AS campusId
 FROM
     usuarios
 WHERE

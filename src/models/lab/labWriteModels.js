@@ -32,6 +32,7 @@ const CreateLab = async (newLab, userId) => {
     return {
       status: true,
       message: "Laboratório cadastrado com sucesso!",
+      labId: results.insertId,
     };
   } else {
     return {

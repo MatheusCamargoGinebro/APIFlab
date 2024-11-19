@@ -43,9 +43,9 @@ const GetLabById = async (ID_lab) => {
 // O========================================================================================O
 
 // Função para buscar um laboratório pelo nome no banco de dados:
-const GetLabByName = async (labName) => {
-  const query = "CALL GetLabByName(?)";
-  const [results] = await execute(query, [labName]);
+const GetLabByName = async (labName, campusId) => {
+  const query = "CALL GetLabByName(?, ?)";
+  const [results] = await execute(query, [labName, campusId]);
 
   if (results.length > 0) {
     return {
