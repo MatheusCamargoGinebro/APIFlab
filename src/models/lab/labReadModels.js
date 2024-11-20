@@ -11,6 +11,7 @@
     - [X] GetLabsByUser;
     - [X] GetAllLabUsers;
     - [X] GetLabUsersByLevel;
+    - [X] GetLabsByUserLevel;
     - [X] GetLabUserRelation;
 
 */
@@ -122,6 +123,26 @@ const GetLabUsersByLevel = async (ID_lab, level) => {
 
 // O========================================================================================O
 
+// Função para buscar laboratórios de um usuário por nível no banco de dados:
+const GetLabsByUserLevel = async (ID_usuario, level) => {
+  const query = "CALL GetLabsByUserLevel(?, ?)";
+  const [results] = await execute(query, [ID_usuario, level]);
+
+  if (results.length > 0) {
+    return {
+      status: true,
+      labs: results,
+    };
+  } else {
+    return {
+      status: false,
+      message: "Laboratórios não encontrados!",
+    };
+  }
+};
+
+// O========================================================================================O
+
 // Função para buscar a relação entre um usuário e um laboratório no banco de dados:
 const GetLabUserRelation = async (ID_lab, ID_usuario) => {
   const query = "CALL GetLabUserRelation(?, ?)";
@@ -149,6 +170,7 @@ export default {
   GetLabsByUser,
   GetAllLabUsers,
   GetLabUsersByLevel,
+  GetLabsByUserLevel,
   GetLabUserRelation,
 };
 

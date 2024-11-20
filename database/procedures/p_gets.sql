@@ -16,6 +16,7 @@
 |    - [x] GetLabByName
 |    - [x] GetAllLabUsers
 |    - [x] GetLabUsersByLevel
+|    - [x] GetLabsByUserLevel
 |    - [x] GetLabUserRelation
 |    - Schedule:
 |    - [x] GetSchedulesByLab
@@ -102,6 +103,7 @@ END $$ DELIMITER;
 |   - GetAllLabUsers
 |   - GetLabUsersByLevel
 |   - GetLabUserRelation
+|   - GetLabsByUserLevel
 #
  */
 -- O==============================================================O --
@@ -204,6 +206,27 @@ FROM
     JOIN userlab ON usuarios.ID_usuario = userlab.ID_usuario
 WHERE
     userlab.ID_lab = p_ID_lab
+    AND userlab.AdminLevel = p_level;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+
+-- Ler laboratórios de um usuário por nível:
+DROP PROCEDURE IF EXISTS GetLabsByUserLevel;
+
+DELIMITER $$
+CREATE PROCEDURE GetLabsByUserLevel (IN p_ID_usuario INT, IN p_level INT) BEGIN
+SELECT DISTINCT
+    laboratorios.ID_lab AS labId,
+    laboratorios.Sala AS labName,
+    laboratorios.Capacidade AS capacity,
+    laboratorios.ID_campus AS campusId
+FROM
+    laboratorios
+    JOIN userlab ON laboratorios.ID_lab = userlab.ID_lab
+WHERE
+    userlab.ID_usuario = p_ID_usuario
     AND userlab.AdminLevel = p_level;
 
 END $$ DELIMITER;
