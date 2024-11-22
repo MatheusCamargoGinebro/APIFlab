@@ -6,8 +6,8 @@
     O=================================================================O
  
     Funções relacionadas a edição de laboratórios:	
-    - [X] EditLabName;
-    - [X] EditLabCapacity;
+    - [X] editLabName;
+    - [X] editLabCapacity;
     - [X] addAdmin;
     - [X] removeAdmin;
 */
@@ -31,7 +31,7 @@ import labPermissionChecks from "./labPermissionChecks";
 // O========================================================================================O
 
 // Função para editar o nome do laboratório:
-const EditLabName = async (req, res) => {
+const editLabName = async (req, res) => {
   /*-----------------------------------------------------*/
   const { labId, labName } = req.body;
 
@@ -58,7 +58,7 @@ const EditLabName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o laboratório já existe:
-  const GetLabByName = await labRead.GetLabByName(
+  const GetLabByName = await labRead.getLabByName(
     labName,
     checkUserToManipulate.labData.campusID
   );
@@ -73,7 +73,7 @@ const EditLabName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o nome do laboratório:
-  const EditLabName = await labWrite.EditLabName(labId, labName);
+  const EditLabName = await labWrite.editLabName(labId, labName);
 
   if (EditLabName.status === false) {
     return res.status(400).json({
@@ -93,7 +93,7 @@ const EditLabName = async (req, res) => {
 // O========================================================================================O
 
 // Função para editar a capacidade do laboratório:
-const EditLabCapacity = async (req, res) => {
+const editLabCapacity = async (req, res) => {
   /*-----------------------------------------------------*/
   const { lab_id, capacity } = req.body;
 
@@ -121,7 +121,7 @@ const EditLabCapacity = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando a capacidade do laboratório:
-  const EditLabCapacity = await labWrite.EditLabCapacity(lab_id, capacity);
+  const EditLabCapacity = await labWrite.editLabCapacity(lab_id, capacity);
 
   if (EditLabCapacity.status === false) {
     return res.status(400).json({
@@ -197,7 +197,7 @@ const addAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Adicionando o usuário como administrador:
-  const AddAdmin = await labWrite.EditUserLabLevel(newUserId, labId, 2);
+  const AddAdmin = await labWrite.editUserLabLevel(newUserId, labId, 2);
 
   if (AddAdmin.status === false) {
     return res.status(400).json({
@@ -270,7 +270,7 @@ const removeAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Removendo o usuário como administrador:
-  const RemoveAdmin = await labWrite.EditUserLabLevel(newUserId, labId, 1);
+  const RemoveAdmin = await labWrite.editUserLabLevel(newUserId, labId, 1);
 
   if (RemoveAdmin.status === false) {
     return res.status(400).json({
@@ -290,6 +290,6 @@ const removeAdmin = async (req, res) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { EditLabName, EditLabCapacity, addAdmin, removeAdmin };
+export default { editLabName, editLabCapacity, addAdmin, removeAdmin };
 
 // O========================================================================================O

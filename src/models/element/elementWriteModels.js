@@ -6,18 +6,18 @@
     O=======================================================================O
 
     Funções de models relacionadas a inserção de elementos químicos:
-    - [X] CreateElement;
-    - [X] RemoveElement;
-    - [X] EditName;
-    - [X] EditQuantity;
-    - [X] EditDescription;
-    - [X] EditMolarMass;
-    - [X] EditCasNumber;
-    - [X] EditEcNumber;
-    - [X] EditPhysicalState;
-    - [X] EditImage;
-    - [X] EditElementExpiration;
-    - [X] EditElementSupervisorLevel;
+    - [X] createElement;
+    - [X] removeElement;
+    - [X] editName;
+    - [X] editQuantity;
+    - [X] editDescription;
+    - [X] editMolarMass;
+    - [X] editCasNumber;
+    - [X] editEcNumber;
+    - [X] editPhysicalState;
+    - [X] editImage;
+    - [X] editElementExpiration;
+    - [X] editElementSupervisorLevel;
 */
 
 // O========================================================================================O
@@ -28,7 +28,7 @@ import { execute } from "../../utils/connection";
 // O========================================================================================O
 
 // Função para criar um elemento químico:
-const CreateElement = async (newElement) => {
+const createElement = async (newElement) => {
   const {
     nome,
     quantidade,
@@ -69,7 +69,7 @@ const CreateElement = async (newElement) => {
 // O========================================================================================O
 
 // Função para remover um elemento químico:
-const RemoveElement = async (elementId) => {
+const removeElement = async (elementId) => {
   const query = "CALL DeleteElement(?);";
   const data = [elementId];
 
@@ -85,7 +85,7 @@ const RemoveElement = async (elementId) => {
 // O========================================================================================O
 
 // Função para editar o nome de um elemento químico:
-const EditName = async (elementId, name) => {
+const editName = async (elementId, name) => {
   const query = "CALL EditElementName(?, ?);";
   const data = [elementId, name];
 
@@ -107,7 +107,7 @@ const EditName = async (elementId, name) => {
 // O========================================================================================O
 
 // Função para editar a quantidade de um elemento químico:
-const EditQuantity = async (elementId, quantity) => {
+const editQuantity = async (elementId, quantity) => {
   const query = "CALL EditElementQuantity(?, ?);";
   const data = [elementId, quantity];
 
@@ -129,7 +129,7 @@ const EditQuantity = async (elementId, quantity) => {
 // O========================================================================================O
 
 // Função para editar a descrição de um elemento químico:
-const EditDescription = async (elementId, description) => {
+const editDescription = async (elementId, description) => {
   const query = "CALL EditElementDescription(?, ?);";
   const data = [elementId, description];
 
@@ -151,7 +151,7 @@ const EditDescription = async (elementId, description) => {
 // O========================================================================================O
 
 // Função para editar o peso molecular de um elemento químico:
-const EditMolarMass = async (elementId, molarMass) => {
+const editMolarMass = async (elementId, molarMass) => {
   const query = "CALL EditElementMolWeight(?, ?);";
   const data = [elementId, molarMass];
 
@@ -173,7 +173,7 @@ const EditMolarMass = async (elementId, molarMass) => {
 // O========================================================================================O
 
 // Função para editar o número CAS de um elemento químico:
-const EditCasNumber = async (elementId, casNumber) => {
+const editCasNumber = async (elementId, casNumber) => {
   const query = "CALL EditElementCAS(?, ?);";
   const data = [elementId, casNumber];
 
@@ -195,7 +195,7 @@ const EditCasNumber = async (elementId, casNumber) => {
 // O========================================================================================O
 
 // Função para editar o número EC de um elemento químico:
-const EditEcNumber = async (elementId, ecNumber) => {
+const editEcNumber = async (elementId, ecNumber) => {
   const query = "CALL EditElementEC(?, ?);";
   const data = [elementId, ecNumber];
 
@@ -217,7 +217,7 @@ const EditEcNumber = async (elementId, ecNumber) => {
 // O========================================================================================O
 
 // Função para editar o estado físico de um elemento químico:
-const EditPhysicalState = async (elementId, physicalState) => {
+const editPhysicalState = async (elementId, physicalState) => {
   const query = "CALL EditElementPhysicalState(?, ?);";
   const data = [elementId, physicalState];
 
@@ -239,7 +239,7 @@ const EditPhysicalState = async (elementId, physicalState) => {
 // O========================================================================================O
 
 // Função para editar a imagem de um elemento químico:
-const EditImage = async (elementId, image) => {
+const editImage = async (elementId, image) => {
   const query = "CALL EditElementImage(?, ?);";
   const data = [elementId, image];
 
@@ -260,7 +260,7 @@ const EditImage = async (elementId, image) => {
 
 // O========================================================================================O
 
-const EditElementExpiration = async (elementId, expirationDate) => {
+const editElementExpiration = async (elementId, expirationDate) => {
   const query = "CALL EditElementExpiration(?, ?);";
   const data = [elementId, expirationDate];
 
@@ -281,7 +281,7 @@ const EditElementExpiration = async (elementId, expirationDate) => {
 
 // O========================================================================================O
 
-const EditElementSupervisorLevel = async (elementId, supervisorLevel) => {
+const editElementSupervisorLevel = async (elementId, supervisorLevel) => {
   const query = "CALL EditElementSupervisorLevel(?, ?);";
   const data = [elementId, supervisorLevel];
 
@@ -304,18 +304,18 @@ const EditElementSupervisorLevel = async (elementId, supervisorLevel) => {
 
 // Exportando módulos:
 export default {
-  CreateElement,
-  RemoveElement,
-  EditName,
-  EditQuantity,
-  EditDescription,
-  EditMolarMass,
-  EditCasNumber,
-  EditEcNumber,
-  EditPhysicalState,
-  EditImage,
-  EditElementExpiration,
-  EditElementSupervisorLevel,
+  createElement,
+  removeElement,
+  editName,
+  editQuantity,
+  editDescription,
+  editMolarMass,
+  editCasNumber,
+  editEcNumber,
+  editPhysicalState,
+  editImage,
+  editElementExpiration,
+  editElementSupervisorLevel,
 };
 
 // O========================================================================================O

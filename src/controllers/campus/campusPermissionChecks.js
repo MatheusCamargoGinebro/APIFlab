@@ -22,7 +22,7 @@ import UserRead from "../../models/user/userOperations/userReadModels";
 // Função para verificar se o usuário tem permissão para editar um campus:
 const checkUserToEdit = async (userId) => {
   // Recuperando o nível de administração do usuário no campus:
-  const user = await UserRead.getUserByID(userId);
+  const user = await UserRead.getUserById(userId);
 
   // Verificando se o usuário existe e se ele tem permissão para editar um campus:
   if (user.status === false || user.userData.campusAdminLevel < 3) {
@@ -40,7 +40,7 @@ const checkUserToEdit = async (userId) => {
 // Função para verificar se o usuário tem relação com o campus:
 const checkUserCampusRelation = async (userId, campusId) => {
   // Recuperando o nível de administração do usuário no campus:
-  const user = await UserRead.getUserByID(userId);
+  const user = await UserRead.getUserById(userId);
 
   // Verificando se o usuário existe e se ele tem relação com o campus:
   if (user.status === false || user.userData.campusId !== campusId) {

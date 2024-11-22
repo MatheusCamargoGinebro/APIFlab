@@ -6,12 +6,12 @@
     O=================================================================O
 
     Funções de inserção de laboratórios no banco de dados:
-    - [X] CreateLab;
-    - [X] RelateUserLab;
-    - [X] RemoveUser;
-    - [X] EditLabName;
-    - [X] EditLabCapacity;
-    - [X] EditUserLevel;
+    - [X] createLab;
+    - [X] relateUserLab;
+    - [X] removeUser;
+    - [X] editLabName;
+    - [X] editLabCapacity;
+    - [X] editUserLabLevel;
 */
 
 // O========================================================================================O
@@ -22,7 +22,7 @@ import { execute } from "../../database/connection";
 // O========================================================================================O
 
 // Função de inserção de laboratórios no banco de dados:
-const CreateLab = async (newLab, userId) => {
+const createLab = async (newLab, userId) => {
   const { Sala, Capacidade, ID_campus } = newLab;
 
   const query = "CALL CreateLab(?, ?, ?, ?)";
@@ -45,7 +45,7 @@ const CreateLab = async (newLab, userId) => {
 // O========================================================================================O
 
 // Função para adicionar um usuário a um laboratório no banco de dados:
-const RelateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
+const relateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
   const query = "CALL RelateUserLab(?, ?, ?)";
   const [results] = await execute(query, [ID_usuario, ID_lab, AdminLevel]);
 
@@ -65,7 +65,7 @@ const RelateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
 // O========================================================================================O
 
 // Função para remover um usuário de um laboratório no banco de dados:
-const RemoveUser = async (ID_lab, ID_usuario) => {
+const removeUser = async (ID_lab, ID_usuario) => {
   const query = "CALL UnrelateUserLab(?, ?)";
   const [results] = await execute(query, [ID_usuario, ID_lab]);
 
@@ -85,7 +85,7 @@ const RemoveUser = async (ID_lab, ID_usuario) => {
 // O========================================================================================O
 
 // Função de edição do nome do laboratório no banco de dados:
-const EditLabName = async (ID_lab, NewName) => {
+const editLabName = async (ID_lab, NewName) => {
   const query = "CALL EditLabName(?, ?)";
   const [results] = await connection.execute(query, [ID_lab, NewName]);
 
@@ -100,7 +100,7 @@ const EditLabName = async (ID_lab, NewName) => {
 };
 
 // Função de edição da capacidade do laboratório no banco de dados:
-const EditLabCapacity = async (ID_lab, newCapacity) => {
+const editLabCapacity = async (ID_lab, newCapacity) => {
   const query = "CALL EditLabCapacity(?, ?);";
   const [results] = await connection.execute(query, [ID_lab, newCapacity]);
 
@@ -120,7 +120,7 @@ const EditLabCapacity = async (ID_lab, newCapacity) => {
 // O========================================================================================O
 
 // Função para adicionar um administrador a um laboratório no banco de dados:
-const EditUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
+const editUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
   const query = "CALL EditUserLabLevel(?, ?, ?)";
   const [results] = await connection.execute(query, [
     ID_usuario,
@@ -145,11 +145,11 @@ const EditUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
 
 // Exportando funções:
 export default {
-  CreateLab,
-  RemoveUser,
-  EditLabName,
-  EditLabCapacity,
-  RelateUserLab,
-  EditUserLabLevel,
+  createLab,
+  relateUserLab,
+  removeUser,
+  editLabName,
+  editLabCapacity,
+  editUserLabLevel,
 };
 // O========================================================================================O

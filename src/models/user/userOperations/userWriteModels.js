@@ -6,14 +6,14 @@
     O=================================================O
 
     Funções relacionadas a usuários:
-    - [X] RegisterUser;
-    - [X] EditUserName;
-    - [X] EditUserEmail;
-    - [X] EditUserPassword;
-    - [X] EditUserPic;
-    - [X] EditUserType;
-    - [X] EditUserAdminLevel;
-    - [X] EditUserLabLevel;
+    - [X] registerUser;
+    - [X] editUserName;
+    - [X] editUserEmail;
+    - [X] editUserPassword;
+    - [X] editUserPic;
+    - [X] editUserType;
+    - [X] editUserAdminLevel;
+    - [X] editUserLabLevel;
 */
 
 // O====================================================================================O
@@ -51,7 +51,7 @@ const registerUser = async (newUser) => {
 // O====================================================================================O
 
 // Função para editar o nome de um usuário:
-const EditUserName = async (userID, newName) => {
+const editUserName = async (userID, newName) => {
   // Editando no banco de dados:
   const query = "CALL EditUserName(?, ?);";
   const [result] = await execute(query, [userID, newName]);
@@ -66,7 +66,7 @@ const EditUserName = async (userID, newName) => {
 // O====================================================================================O
 
 // Função para editar o email de um usuário:
-const EditUserEmail = async (userID, newEmail) => {
+const editUserEmail = async (userID, newEmail) => {
   // Editando no banco de dados:
   const query = "CALL EditUserEmail(?, ?);";
   const [result] = await execute(query, [userID, newEmail]);
@@ -81,7 +81,7 @@ const EditUserEmail = async (userID, newEmail) => {
 // O====================================================================================O
 
 // Função para editar a senha de um usuário:
-const EditUserPassword = async (userID, newPassword) => {
+const editUserPassword = async (userID, newPassword) => {
   // Editando no banco de dados:
   const query = "CALL EditUserPassword(?, ?);";
   const [result] = await execute(query, [userID, newPassword]);
@@ -96,7 +96,7 @@ const EditUserPassword = async (userID, newPassword) => {
 // O====================================================================================O
 
 // Função para editar a foto de perfil de um usuário:
-const EditUserPic = async (userID, newPic) => {
+const editUserPic = async (userID, newPic) => {
   // Editando no banco de dados:
   const query = "CALL EditUserPic(?, ?);";
   const [result] = await execute(query, [userID, newPic]);
@@ -111,7 +111,7 @@ const EditUserPic = async (userID, newPic) => {
 // O====================================================================================O
 
 // Função para editar o tipo de usuário:
-const EditUserType = async (userID, newType) => {
+const editUserType = async (userID, newType) => {
   // Editando no banco de dados:
   const query = "CALL EditUserType(?, ?);";
   const [result] = await execute(query, [userID, newType]);
@@ -126,7 +126,7 @@ const EditUserType = async (userID, newType) => {
 // O====================================================================================O
 
 // Função para editar o nível de administração de um usuário:
-const EditUserAdminLevel = async (userID, newAdminLevel) => {
+const editUserAdminLevel = async (userID, newAdminLevel) => {
   // Editando no banco de dados:
   const query = "CALL EditUserCampusAdminLevel(?, ?);";
   const [result] = await execute(query, [userID, newAdminLevel]);
@@ -144,7 +144,7 @@ const EditUserAdminLevel = async (userID, newAdminLevel) => {
 // O====================================================================================O
 
 // Função para editar o nível de laboratório de um usuário:
-const EditUserLabLevel = async (userID, LabID, newLevel) => {
+const editUserLabLevel = async (userID, LabID, newLevel) => {
   // Editando no banco de dados:
   const query = "CALL EditUserLabLevel(?, ?, ?);";
   const [result] = await execute(query, [userID, LabID, newLevel]);
@@ -161,13 +161,13 @@ const EditUserLabLevel = async (userID, LabID, newLevel) => {
 // Exportando funções:
 export default {
   registerUser,
-  EditUserName,
-  EditUserEmail,
-  EditUserPassword,
-  EditUserPic,
-  EditUserType,
-  EditUserAdminLevel,
-  EditUserLabLevel,
+  editUserName,
+  editUserEmail,
+  editUserPassword,
+  editUserPic,
+  editUserType,
+  editUserAdminLevel,
+  editUserLabLevel,
 };
 
 // O====================================================================================O

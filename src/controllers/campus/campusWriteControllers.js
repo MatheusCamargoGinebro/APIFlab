@@ -81,7 +81,7 @@ const editCampusName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o usuário tem permissão para editar o campus:
-  const checkUsertoEdit = await campusPermissionChecks.checkUsertoEdit(userId);
+  const checkUsertoEdit = await campusPermissionChecks.checkUserToEdit(userId);
 
   if (checkUsertoEdit.status === false) {
     return res.status(400).json({

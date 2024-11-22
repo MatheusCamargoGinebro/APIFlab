@@ -51,7 +51,7 @@ const editUserName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o nome de usuário já está cadastrado:
-  const nameCheck = await UserRead.GetUserByName(newName);
+  const nameCheck = await UserRead.getUserByName(newName);
 
   if (nameCheck.status === true) {
     return res.status(400).json({
@@ -120,7 +120,7 @@ const editUserEmail = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o email do usuário:
-  const result = await UserWrite.EditUserEmail(userId, newMail);
+  const result = await UserWrite.editUserEmail(userId, newMail);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -171,7 +171,7 @@ const editUserPassword = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  const result = await UserWrite.EditUserPassword(userId, hashedPassword, salt);
+  const result = await UserWrite.editUserPassword(userId, hashedPassword, salt);
 
   if (result.status === false) {
     return res.status(400).json({
@@ -200,7 +200,7 @@ const editUserPic = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando a foto de perfil do usuário:
-  const result = await UserWrite.EditUserPic(userId, newProfilePic);
+  const result = await UserWrite.editUserPic(userId, newProfilePic);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -262,9 +262,9 @@ const editUserCampusLevel = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificar se os usuários existem e são do mesmo campus:
-  const getActorById = await UserRead.getUserByID(userId);
+  const getActorById = await UserRead.getUserById(userId);
 
-  const getUserToEdit = await UserRead.getUserByID(newUserId);
+  const getUserToEdit = await UserRead.getUserById(newUserId);
 
   if (
     getActorById.status === false ||
@@ -280,7 +280,7 @@ const editUserCampusLevel = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editar nível de administração do usuário:
-  const result = await UserWrite.EditUserAdminLevel(newUserId, newCampusLevel);
+  const result = await UserWrite.editUserAdminLevel(newUserId, newCampusLevel);
 
   if (result.status === false) {
     return res.status(500).json({

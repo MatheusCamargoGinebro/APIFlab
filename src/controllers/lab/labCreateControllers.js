@@ -6,8 +6,8 @@
     O=================================================================O
 
     Funções relacionadas a inserção de laboratórios:
-    - [X] CreateLab;
-    - [X] CreateLabUser;
+    - [X] createLab;
+    - [X] createLabUser;
 */
 
 // O========================================================================================O
@@ -29,7 +29,7 @@ import labPermissionChecks from "./labPermissionChecks";
 // O========================================================================================O
 
 // Função para criar um laboratório:
-const CreateLab = async (req, res) => {
+const createLab = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Informações do laboratório:
@@ -56,7 +56,7 @@ const CreateLab = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o laboratório já existe:
-  const GetLabByName = await labRead.GetLabByName(
+  const GetLabByName = await labRead.getLabByName(
     labName,
     checkUserToCreate.userData.campusId
   );
@@ -71,7 +71,7 @@ const CreateLab = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Criando o laboratório:
-  const CreateLab = await labWrite.CreateLab(
+  const CreateLab = await labWrite.createLab(
     {
       Sala: labName,
       Capacidade: capacity,
@@ -90,7 +90,7 @@ const CreateLab = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Relacionando o laboratório com o usuário criador:
-  const RelateUserLab = await labWrite.RelateUserLab(
+  const RelateUserLab = await labWrite.relateUserLab(
     CreateLab.labId,
     userId,
     3
@@ -113,7 +113,7 @@ const CreateLab = async (req, res) => {
 
 // O========================================================================================O
 
-const CreateLabUser = async (req, res) => {
+const createLabUser = async (req, res) => {
   /*-----------------------------------------------------*/
   const { labId, newUserId } = req.body;
 
@@ -140,7 +140,7 @@ const CreateLabUser = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o usuário já pertence ao laboratório:
-  const getNewUserRelation = await labRead.GetLabUserRelation(labId, newUserId);
+  const getNewUserRelation = await labRead.getLabUserRelation(labId, newUserId);
 
   if (getNewUserRelation.status === true) {
     return res.status(400).json({
@@ -152,7 +152,7 @@ const CreateLabUser = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Adicionando o usuário ao laboratório:
-  const AddUser = await labWrite.RelateUserLab(labId, newUserId, 1);
+  const AddUser = await labWrite.relateUserLab(labId, newUserId, 1);
 
   if (AddUser.status === false) {
     return res.status(400).json({
@@ -171,6 +171,6 @@ const CreateLabUser = async (req, res) => {
 
 // O========================================================================================O
 
-export default { CreateLab, CreateLabUser };
+export default { createLab, createLabUser };
 
 // O========================================================================================O

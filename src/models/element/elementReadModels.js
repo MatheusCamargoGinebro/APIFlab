@@ -6,8 +6,8 @@
     O====================================================================O
  
     Funções de models relacionadas a busca de elementos químicos:
-    - [X] GetElementsByLab;
-    - [X] GetElementById;
+    - [X] getElementsByLab;
+    - [X] getElementById;
 */
 
 // O========================================================================================O
@@ -18,7 +18,7 @@ import { execute } from "../../utils/connection";
 // O========================================================================================O
 
 // Função para buscar elementos químicos pelo ID do laboratório:
-const GetElementsByLab = async (ID_lab) => {
+const getElementsByLab = async (ID_lab) => {
   const query = "CALL GetElementsByLab(?);";
   const data = [ID_lab];
 
@@ -34,7 +34,7 @@ const GetElementsByLab = async (ID_lab) => {
 // O========================================================================================O
 
 // Função para buscar um elemento químico pelo ID:
-const GetElementById = async (elementId) => {
+const getElementById = async (elementId) => {
   const query = "GetElementByID(?);";
   const data = [elementId];
 
@@ -51,8 +51,8 @@ const GetElementById = async (elementId) => {
 
 // Exportando funções:
 export default {
-  GetElementsByLab,
-  GetElementById,
+  getElementsByLab,
+  getElementById,
 };
 
 // O========================================================================================O

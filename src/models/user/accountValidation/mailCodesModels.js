@@ -5,10 +5,10 @@
     O=========================================================O
 
     Funções relacionadas a códigos de email:
-    - [X] SaveMailCode;
-    - [X] GetMailCode;
-    - [X] DeleteMailCode;
-    - [X] ClearMailCodeList;
+    - [X] saveMailCode;
+    - [X] getMailCode;
+    - [X] deleteMailCode;
+    - [X] clearMailCodeList;
 */
 // O====================================================================================O
 

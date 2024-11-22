@@ -7,7 +7,7 @@
 
     Funções relacionadas a gets em institutos:
     - [X] getAllCampus;
-    - [X] getCampusByID;
+    - [X] getCampusById;
     - [X] getCampusByName;
 */
 
@@ -33,7 +33,7 @@ const getAllCampus = async () => {
 // O========================================================================================O
 
 // Procure um campus pelo ID:
-const getCampusByID = async (campus_ID) => {
+const getCampusById = async (campus_ID) => {
   const query = "CALL GetCampusByID(?);";
   const [result] = await execute(query, [campus_ID]);
 
@@ -61,6 +61,6 @@ const getCampusByName = async (campus_name) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { getAllCampus, getCampusByID, getCampusByName };
+export default { getAllCampus, getCampusById, getCampusByName };
 
 // O========================================================================================O

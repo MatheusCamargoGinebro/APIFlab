@@ -5,12 +5,11 @@
     O======================================================================O
 
     Funções relacionadas a manipulação da conta do usuário:
-    - [X] AddToBlacklist;
-    - [X] GetFromBlacklist;
-    - [X] GetAllBlacklist;
-    - [X] RemoveFromBlacklist;
-    - [X] RemoveAllBlacklist;
-    
+    - [X] addToBlacklist;
+    - [X] getFromBlacklist;
+    - [X] getAllBlacklist;
+    - [X] removeFromBlacklist;
+    - [X] removeAllBlacklist;    
 */
 // O====================================================================================O
 
@@ -20,7 +19,7 @@ import { execute } from "../../utils/connection";
 // O====================================================================================O
 
 // Função para adicionar token na blacklist:
-const AddToBlacklist = async (token) => {
+const addToBlacklist = async (token) => {
   const query = "CALL AddToBlacklist(?);";
   const [result] = await execute(query, [token]);
 
@@ -37,7 +36,7 @@ const AddToBlacklist = async (token) => {
 // O====================================================================================O
 
 // Função para verificar se o token está na blacklist:
-const GetFromBlacklist = async (token) => {
+const getFromBlacklist = async (token) => {
   const query = "CALL GetFromBlacklist(?);";
   const [result] = await execute(query, [token]);
 
@@ -51,7 +50,7 @@ const GetFromBlacklist = async (token) => {
 // O====================================================================================O
 
 // Função para listar todos os tokens na blacklist:
-const GetAllBlacklist = async () => {
+const getAllBlacklist = async () => {
   const query = "CALL GetAllBlacklist();";
   const [result] = await execute(query);
 
@@ -61,7 +60,7 @@ const GetAllBlacklist = async () => {
 // O====================================================================================O
 
 // Função para remover token da blacklist:
-const RemoveFromBlacklist = async (token) => {
+const removeFromBlacklist = async (token) => {
   const query = "CALL RemoveFromBlacklist(?);";
   const [result] = await execute(query, [token]);
 
@@ -78,7 +77,7 @@ const RemoveFromBlacklist = async (token) => {
 // O====================================================================================O
 
 // Função para remover todos os tokens da blacklist:
-const RemoveAllBlacklist = async () => {
+const removeAllBlacklist = async () => {
   const query = "CALL RemoveAllBlacklist();";
   const [result] = await execute(query);
 
@@ -96,11 +95,11 @@ const RemoveAllBlacklist = async () => {
 
 // Exportando funções de manipulação da conta do usuário:
 export default {
-  AddToBlacklist,
-  GetFromBlacklist,
-  GetAllBlacklist,
-  RemoveFromBlacklist,
-  RemoveAllBlacklist,
+  addToBlacklist,
+  getFromBlacklist,
+  getAllBlacklist,
+  removeFromBlacklist,
+  removeAllBlacklist,
 };
 
 // O====================================================================================O

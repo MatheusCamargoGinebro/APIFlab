@@ -6,8 +6,8 @@
     O================================================================O
  
     Funções relacionadas a leitura de laboratórios:
-    - [X] GetLabs;
-    - [X] GetLabByUserLevel;
+    - [X] getLabs;
+    - [X] getLabByUserLevel;
 */
 
 // O========================================================================================O
@@ -23,7 +23,7 @@ import labRead from "../../models/lab/labReadModels";
 // O========================================================================================O
 
 // Função para listar os laboratórios em que o usuário está relacionado:
-const GetLabs = async (req, res) => {
+const getLabs = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Recuperando Id do usuário:
@@ -33,7 +33,7 @@ const GetLabs = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Listando os laboratórios em que o usuário está relacionado:
-  const GetLabByUser = await labRead.GetLabsByUser(userId);
+  const GetLabByUser = await labRead.getLabsByUser(userId);
 
   if (GetLabByUser.status === false) {
     return res.status(400).json({
@@ -54,7 +54,7 @@ const GetLabs = async (req, res) => {
 // O========================================================================================O
 
 // Função para listar os laboratórios em que o usuário possui determinado nível de acesso:
-const GetLabByUserLevel = async (req, res) => {
+const getLabByUserLevel = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Recuperando Id do usuário:
@@ -66,7 +66,7 @@ const GetLabByUserLevel = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Listando os laboratórios em que o usuário possui determinado nível de acesso:
-  const GetLabByUserLevel = await labRead.GetLabsByUserLevel(
+  const GetLabByUserLevel = await labRead.getLabsByUserLevel(
     userId,
     adminLevel
   );
@@ -90,6 +90,6 @@ const GetLabByUserLevel = async (req, res) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { GetLabs, GetLabByUserLevel };
+export default { getLabs, getLabByUserLevel };
 
 // O========================================================================================O

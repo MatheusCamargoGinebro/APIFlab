@@ -40,7 +40,7 @@ const sendMailCode = async (req, res) => {
   const email = req.body.newMail;
 
   // Verificando se o email existe no banco de dados:
-  const emailCheck = await UserRead.GetUserByEmail(email);
+  const emailCheck = await UserRead.getUserByEmail(email);
 
   if (emailCheck.status === true) {
     return res.status(400).json({
@@ -119,7 +119,7 @@ const userRegister = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o email já está cadastrado:
-  const emailCheck = await UserRead.GetUserByEmail(newMail);
+  const emailCheck = await UserRead.getUserByEmail(newMail);
 
   if (emailCheck.status === true) {
     return res.status(400).json({
@@ -131,7 +131,7 @@ const userRegister = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o nome de usuário já está cadastrado:
-  const nameCheck = await UserRead.GetUserByName(newName);
+  const nameCheck = await UserRead.getUserByName(newName);
 
   if (nameCheck.status === true) {
     return res.status(400).json({
@@ -216,7 +216,7 @@ const userRegister = async (req, res) => {
 // O========================================================================================O
 
 // Função para limpar a lista de códigos de email:
-const ClearMailCodeList = async () => {
+const clearMailCodeList = async () => {
   const result = await MailCodeModels.clearMailCodeList();
 
   return result;
@@ -225,6 +225,6 @@ const ClearMailCodeList = async () => {
 // O========================================================================================O
 
 // Exportação do módulo:
-export default { sendMailCode, userRegister, ClearMailCodeList };
+export default { sendMailCode, userRegister, clearMailCodeList };
 
 // O========================================================================================O

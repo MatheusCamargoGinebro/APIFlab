@@ -6,13 +6,14 @@
     O==========================================================================O
 
     Funções de models relacionadas a inserção de equipamentos químicos:
-    - [X] CreateEquipment;
-    - [X] RemoveEquipment;
-    - [X] EditName;
-    - [X] EditDescription;
-    - [X] EditTotalQuantity;
-    - [X] EditQuality;
-    - [X] EditImage;
+    - [X] createEquipment;
+    - [X] removeEquipment;
+    - [X] editName;
+    - [X] editDescription;
+    - [X] editTotalQuantity;
+    - [X] editQuality;
+    - [X] editImage;
+    - [X] editSupervisorLevel;
 */
 
 // O========================================================================================O
@@ -23,7 +24,7 @@ import { execute } from "../database/database";
 // O========================================================================================O
 
 // Função para criar um equipamento químico:
-const CreateEquipment = async (newEquipment) => {
+const createEquipment = async (newEquipment) => {
   const {
     nome,
     descricao,
@@ -57,7 +58,7 @@ const CreateEquipment = async (newEquipment) => {
 // O========================================================================================O
 
 // Função para remover um equipamento químico:
-const RemoveEquipment = async (equipmentId) => {
+const removeEquipment = async (equipmentId) => {
   const query = "CALL DeleteEquipment(?);";
   const data = [equipmentId];
 
@@ -76,7 +77,7 @@ const RemoveEquipment = async (equipmentId) => {
 // O========================================================================================O
 
 // Função para editar o nome de um equipamento químico:
-const EditName = async (equipmentId, newName) => {
+const editName = async (equipmentId, newName) => {
   const query = "CALL EditEquipmentName(?, ?);";
   const data = [equipmentId, newName];
 
@@ -98,7 +99,7 @@ const EditName = async (equipmentId, newName) => {
 // O========================================================================================O
 
 // Função para editar a descrição de um equipamento químico:
-const EditDescription = async (equipmentId, newDescription) => {
+const editDescription = async (equipmentId, newDescription) => {
   const query = "CALL EditEquipmentDescription(?, ?);";
   const data = [equipmentId, newDescription];
 
@@ -120,7 +121,7 @@ const EditDescription = async (equipmentId, newDescription) => {
 // O========================================================================================O
 
 // Função para editar a quantidade total de um equipamento químico:
-const EditTotalQuantity = async (equipmentId, NewtotalQuantity) => {
+const editTotalQuantity = async (equipmentId, NewtotalQuantity) => {
   const query = "CALL EditEquipmentTotalQuantity(?, ?);";
   const data = [equipmentId, NewtotalQuantity];
 
@@ -142,7 +143,7 @@ const EditTotalQuantity = async (equipmentId, NewtotalQuantity) => {
 // O========================================================================================O
 
 // Função para editar a qualidade de um equipamento químico:
-const EditQuality = async (equipmentId, newQuality) => {
+const editQuality = async (equipmentId, newQuality) => {
   const query = "CALL EditEquipmentQuality(?, ?);";
   const data = [equipmentId, newQuality];
 
@@ -164,7 +165,7 @@ const EditQuality = async (equipmentId, newQuality) => {
 // O========================================================================================O
 
 // Função para editar a imagem de um equipamento químico:
-const EditImage = async (equipmentId, Newimage) => {
+const editImage = async (equipmentId, Newimage) => {
   const query = "CALL EditEquipmentImage(?, ?);";
   const data = [equipmentId, Newimage];
 
@@ -183,7 +184,7 @@ const EditImage = async (equipmentId, Newimage) => {
   }
 };
 
-const EditSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
+const editSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
   const query = "CALL EditEquipmentSupervisorLevel(?, ?);";
   const data = [equipmentId, newSupervisorLevel];
 
@@ -207,14 +208,14 @@ const EditSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
 
 // Exportação dos módulos:
 export default {
-  CreateEquipment,
-  RemoveEquipment,
-  EditName,
-  EditDescription,
-  EditTotalQuantity,
-  EditQuality,
-  EditImage,
-  EditSupervisorLevel,
+  createEquipment,
+  removeEquipment,
+  editName,
+  editDescription,
+  editTotalQuantity,
+  editQuality,
+  editImage,
+  editSupervisorLevel,
 };
 
 // O========================================================================================O

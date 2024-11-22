@@ -6,8 +6,8 @@
     O======================================================================O
  
     Funções de models relacionadas a busca de equipamentos químicos:
-    - [X] GetEquipmentById;
-    - [X] GetEquipmentsByLabId;
+    - [X] getEquipmentById;
+    - [X] getEquipmentsByLabId;
 */
 
 // O========================================================================================O
@@ -18,7 +18,7 @@ import { execute } from "../../database/database";
 // O========================================================================================O
 
 // Função para buscar um equipamento químico pelo ID:
-const GetEquipmentById = async (equipmentId) => {
+const getEquipmentById = async (equipmentId) => {
   const query = "CALL GetEquipmentByID(?);";
   const data = [equipmentId];
 
@@ -34,7 +34,7 @@ const GetEquipmentById = async (equipmentId) => {
 // O========================================================================================O
 
 // Função para buscar equipamentos químicos pelo ID do laboratório:
-const GetEquipmentsByLabId = async (labId) => {
+const getEquipmentsByLabId = async (labId) => {
   const query = "CALL GetEquipmentsByLab(?);";
   const data = [labId];
 
@@ -51,8 +51,8 @@ const GetEquipmentsByLabId = async (labId) => {
 
 // Exportação dos módulos:
 export default {
-  GetEquipmentById,
-  GetEquipmentsByLabId,
+  getEquipmentById,
+  getEquipmentsByLabId,
 };
 
 // O========================================================================================O

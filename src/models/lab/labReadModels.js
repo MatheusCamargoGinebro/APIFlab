@@ -6,14 +6,13 @@
     O============================================================O
  
     Funções de gets de laboratórios no banco de dados:
-    - [X] GetLabById;
-    - [X] GetLabByName;
-    - [X] GetLabsByUser;
-    - [X] GetAllLabUsers;
-    - [X] GetLabUsersByLevel;
-    - [X] GetLabsByUserLevel;
-    - [X] GetLabUserRelation;
-
+    - [X] getLabById;
+    - [X] getLabByName;
+    - [X] getLabsByUser;
+    - [X] getAllLabUsers;
+    - [X] getLabUsersByLevel;
+    - [X] getLabsByUserLevel;
+    - [X] getLabUserRelation;
 */
 
 // O========================================================================================O
@@ -24,7 +23,7 @@ import { execute } from "../../database/connection";
 // O========================================================================================O
 
 // Função para buscar um laboratório pelo ID no banco de dados:
-const GetLabById = async (ID_lab) => {
+const getLabById = async (ID_lab) => {
   const query = "CALL GetLabByID(?)";
   const [results] = await execute(query, [ID_lab]);
 
@@ -44,7 +43,7 @@ const GetLabById = async (ID_lab) => {
 // O========================================================================================O
 
 // Função para buscar um laboratório pelo nome no banco de dados:
-const GetLabByName = async (labName, campusId) => {
+const getLabByName = async (labName, campusId) => {
   const query = "CALL GetLabByName(?, ?)";
   const [results] = await execute(query, [labName, campusId]);
 
@@ -64,7 +63,7 @@ const GetLabByName = async (labName, campusId) => {
 // O========================================================================================O
 
 // Função para buscar laboratórios de um usuário no banco de dados:
-const GetLabsByUser = async (ID_usuario) => {
+const getLabsByUser = async (ID_usuario) => {
   const query = "CALL GetLabsByUser(?)";
   const [results] = await execute(query, [ID_usuario]);
 
@@ -84,7 +83,7 @@ const GetLabsByUser = async (ID_usuario) => {
 // O========================================================================================O
 
 // Função para buscar todos os usuários de um laboratório no banco de dados:
-const GetAllLabUsers = async (ID_lab) => {
+const getAllLabUsers = async (ID_lab) => {
   const query = "CALL GetAllLabUsers(?)";
   const [results] = await execute(query, [ID_lab]);
 
@@ -104,7 +103,7 @@ const GetAllLabUsers = async (ID_lab) => {
 // O========================================================================================O
 
 // Função para buscar usuários de um laboratório por nível no banco de dados:
-const GetLabUsersByLevel = async (ID_lab, level) => {
+const getLabUsersByLevel = async (ID_lab, level) => {
   const query = "CALL GetLabUsersByLevel(?, ?)";
   const [results] = await execute(query, [ID_lab, level]);
 
@@ -124,7 +123,7 @@ const GetLabUsersByLevel = async (ID_lab, level) => {
 // O========================================================================================O
 
 // Função para buscar laboratórios de um usuário por nível no banco de dados:
-const GetLabsByUserLevel = async (ID_usuario, level) => {
+const getLabsByUserLevel = async (ID_usuario, level) => {
   const query = "CALL GetLabsByUserLevel(?, ?)";
   const [results] = await execute(query, [ID_usuario, level]);
 
@@ -144,7 +143,7 @@ const GetLabsByUserLevel = async (ID_usuario, level) => {
 // O========================================================================================O
 
 // Função para buscar a relação entre um usuário e um laboratório no banco de dados:
-const GetLabUserRelation = async (ID_lab, ID_usuario) => {
+const getLabUserRelation = async (ID_lab, ID_usuario) => {
   const query = "CALL GetLabUserRelation(?, ?)";
   const [results] = await execute(query, [ID_lab, ID_usuario]);
 
@@ -165,13 +164,13 @@ const GetLabUserRelation = async (ID_lab, ID_usuario) => {
 
 // Exportando funções:
 export default {
-  GetLabById,
-  GetLabByName,
-  GetLabsByUser,
-  GetAllLabUsers,
-  GetLabUsersByLevel,
-  GetLabsByUserLevel,
-  GetLabUserRelation,
+  getLabById,
+  getLabByName,
+  getLabsByUser,
+  getAllLabUsers,
+  getLabUsersByLevel,
+  getLabsByUserLevel,
+  getLabUserRelation,
 };
 
 // O========================================================================================O

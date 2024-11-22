@@ -6,10 +6,9 @@
     O============================================O
 
     Funções relacionadas a pegar informações de usuários:
-    - [X] GetUserByID;
-    - [X] GetUserByEmail;
-    - [X] GetUserByName;
-    - [X] getUsersByCampus;
+    - [X] getUserById;
+    - [X] getUserByEmail;
+    - [X] getUserByName;
 */
 
 // O====================================================================================O
@@ -20,7 +19,7 @@ import { execute } from "../../utils/connection";
 // O====================================================================================O
 
 // Função para pegar informações do usuário pelo ID:
-const getUserByID = async (ID_usuario) => {
+const getUserById = async (ID_usuario) => {
   // const query = "SELECT * FROM usuarios WHERE ID_usuario = ?;";
   const query = "CALL GetUserByID(?);";
   const [result] = await execute(query, [ID_usuario]);
@@ -94,7 +93,7 @@ const login = async (email, senha) => {
 
 // Exportando funções:
 export default {
-  getUserByID,
+  getUserById,
   getUserByEmail,
   getUserByName,
   getUsersByCampus,

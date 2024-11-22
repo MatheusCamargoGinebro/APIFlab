@@ -25,7 +25,7 @@ import LabRead from "../../models/lab/labReadModels";
 // Função para verificar se o usuário tem permissão para criar um laboratório:
 const checkUserToCreate = async (userId) => {
   // Recuperando o nível de administração do usuário no campus:
-  const user = await UserRead.getUserByID(userId);
+  const user = await UserRead.getUserById(userId);
 
   // Verificando se o usuário existe e se ele tem permissão para criar um laboratório:
   if (user.status === false || user.userData.campusAdminLevel < 2) {
@@ -40,10 +40,10 @@ const checkUserToCreate = async (userId) => {
 // Função para verificar se o usuário tem permissão para manipular um laboratório:
 const checkUserToManipulate = async (userId, labId, allowedLevel) => {
   // Recuperando informações do usuário:
-  const user = await UserRead.getUserByID(userId);
+  const user = await UserRead.getUserById(userId);
 
   // Recuperando informações do laboratório:
-  const lab = await LabRead.GetLabById(labId);
+  const lab = await LabRead.getLabById(labId);
 
   // Verificando se o usuário e o laboratório existem:
   if (user.status === false || lab.status === false) {
@@ -51,7 +51,7 @@ const checkUserToManipulate = async (userId, labId, allowedLevel) => {
   }
 
   // Verificando se o usuário possui a permissão necessária:
-  const userLab = await LabRead.GetLabUserRelation(userId, labId);
+  const userLab = await LabRead.getLabUserRelation(userId, labId);
 
   if (userLab.status === false || userLab.relation.userLevel <= allowedLevel) {
     return { status: false };
