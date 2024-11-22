@@ -28,14 +28,17 @@ import passwordTreat from "../../utils/password_treatment";
 import tokenBlackListModels from "../../models/user/accountValidation/tokenBlacklistModels";
 
 // O========================================================================================O
+
 // Função para realizar o login de um usuário:
 const userLogin = async (req, res) => {
-  const { newMail, newPassword } = req.body;
+  /*-----------------------------------------------------*/
+
+  const { user_email, user_password } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificando se o email existe no banco de dados:
-  const userInfo = await UserRead.getUserByEmail(newMail);
+  const userInfo = await UserRead.getUserByEmail(user_email);
 
   if (userInfo.status === false) {
     return res.status(401).json({
@@ -48,7 +51,7 @@ const userLogin = async (req, res) => {
 
   // Comparando senhas:
   const result = await passwordTreat.comparePasswords(
-    newPassword,
+    user_password,
     userInfo.userData.Salt,
     userInfo.userData.Senha
   );
@@ -63,7 +66,7 @@ const userLogin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Gerando token de autenticação:
-  const token = jwt.sign(
+  const token = JWT.sign(
     { userId: userInfo.userData.ID_usuario },
     process.env.JWT_SECRET,
     {
@@ -71,19 +74,21 @@ const userLogin = async (req, res) => {
     }
   );
 
+  /*-----------------------------------------------------*/
+
   return res.status(200).json({
     auth: true,
     token: token,
     message: "Login efetuado com sucesso!",
   });
-
-  /*-----------------------------------------------------*/
 };
 
 // O========================================================================================O
 
 // Função para realizar o logout de um usuário:
 const userLogout = async (req, res) => {
+  /*-----------------------------------------------------*/
+
   const token = req.headers["x-access-token"];
 
   /*-----------------------------------------------------*/

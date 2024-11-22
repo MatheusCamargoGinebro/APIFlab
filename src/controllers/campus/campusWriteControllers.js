@@ -34,12 +34,12 @@ const registerCampus = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Informações do campus:
-  const { newCampusName, newCampusState } = req.body;
+  const { campus_name, campus_state } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificar se o nome do campus já existe:
-  const checkCampusName = await campusRead.getCampusByName(newCampusName);
+  const checkCampusName = await campusRead.getCampusByName(campus_name);
 
   if (checkCampusName.status === true) {
     return res
@@ -51,8 +51,8 @@ const registerCampus = async (req, res) => {
 
   // Registrar o campus:
   const registerCampus = await campusWrite.registerCampus({
-    campus_name: newCampusName,
-    campus_state: newCampusState,
+    campus_name: campus_name,
+    campus_state: campus_state,
   });
 
   if (registerCampus.status === false) {
@@ -76,12 +76,12 @@ const editCampusName = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do campus:
-  const { newCampusName } = req.body;
+  const { campus_name } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificando se o usuário tem permissão para editar o campus:
-  const checkUsertoEdit = await campusPermissionChecks.checkUserToEdit(userId);
+  const checkUsertoEdit = await campusPermissionChecks.checkUsertoEdit(userId);
 
   if (checkUsertoEdit.status === false) {
     return res.status(400).json({
@@ -93,7 +93,7 @@ const editCampusName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificar se o nome do campus já existe:
-  const checkCampusName = await campusRead.getCampusByName(newCampusName);
+  const checkCampusName = await campusRead.getCampusByName(campus_name);
 
   if (checkCampusName.status === true) {
     return res
@@ -106,7 +106,7 @@ const editCampusName = async (req, res) => {
   // Editar nome do campus:
   const editCampusName = await campusWrite.editCampusName(
     checkUsertoEdit.userData.campusId,
-    newCampusName
+    campus_name
   );
 
   if (editCampusName.status === false) {
@@ -130,7 +130,7 @@ const editCampusState = async (request, response) => {
   const token = request.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
 
-  const { newCampusState } = request.body;
+  const { campus_state } = request.body;
 
   /*-----------------------------------------------------*/
 
@@ -149,7 +149,7 @@ const editCampusState = async (request, response) => {
   // Editar estado do campus:
   const editCampusState = await campusWrite.editCampusState(
     checkUser.userData.campusId,
-    newCampusState
+    campus_state
   );
 
   if (editCampusState.status === false) {

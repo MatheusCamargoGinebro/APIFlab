@@ -158,7 +158,7 @@ const editTotalQuantity = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do equipamento:
-  const { equipment_id, equipment_total_quantity } = req.body;
+  const { equipment_id, equipment_totalQuantity } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -189,7 +189,7 @@ const editTotalQuantity = async (req, res) => {
   // Editando a quantidade total do equipamento químico:
   const editTotalQuantity = await equipmentWrite.editTotalQuantity(
     equipment_id,
-    equipment_total_quantity
+    equipment_totalQuantity
   );
 
   if (editTotalQuantity.status === false) {
@@ -338,7 +338,7 @@ const editSupervisorLevel = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do equipamento:
-  const { equipment_id, equipment_supervisor_level } = req.body;
+  const { equipment_id, equipment_supervisorLevel } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -369,7 +369,7 @@ const editSupervisorLevel = async (req, res) => {
   // Editando o nível de supervisão do equipamento químico:
   const editSupervisorLevel = await equipmentWrite.editSupervisorLevel(
     equipment_id,
-    equipment_supervisor_level
+    equipment_supervisorLevel
   );
 
   if (editSupervisorLevel.status === false) {

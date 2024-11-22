@@ -37,10 +37,10 @@ import passwordTreat from "../../utils/password_treatment";
 
 // Função para enviar um código de confirmação de email:
 const sendMailCode = async (req, res) => {
-  const email = req.body.newMail;
+  const user_email = req.body.user_email;
 
   // Verificando se o email existe no banco de dados:
-  const emailCheck = await UserRead.getUserByEmail(email);
+  const emailCheck = await UserRead.getUserByEmail(user_email);
 
   if (emailCheck.status === true) {
     return res.status(400).json({
@@ -62,7 +62,7 @@ const sendMailCode = async (req, res) => {
   transporter
     .sendMail({
       from: process.env.MAIL_USER,
-      to: email,
+      to: user_email,
       subject: "Confirmação de email",
       text: "Seu código de confirmação é: " + code,
     })
@@ -75,10 +75,13 @@ const sendMailCode = async (req, res) => {
     });
 
   // Deletando código de confirmação antigo (caso haja):
-  await MailCodeModels.deleteMailCode(email);
+  await MailCodeModels.deleteMailCode(user_email);
 
   // Salvando o novo código de confirmação no banco de dados:
-  const result = await MailCodeModels.saveMailCode({ email, code });
+  const result = await MailCodeModels.saveMailCode({
+    email: user_email,
+    code: code,
+  });
 
   if (result.status === true) {
     return res.status(200).json({
@@ -98,14 +101,20 @@ const sendMailCode = async (req, res) => {
 // Função para registrar um novo usuário, com verificação de código de email criptografia de senha:
 const userRegister = async (req, res) => {
   // Dados do corpo da requisição:
-  const { newName, newMail, newPassword, userType, campusId, validationCode } =
-    req.body;
+  const {
+    user_name,
+    user_email,
+    user_password,
+    user_type,
+    user_campusId,
+    validationCode,
+  } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verifica se o código de confirmação é válido:
   const mailCodeCheck = await MailCodeModels.getMailCode(
-    newMail,
+    user_email,
     validationCode
   );
 
@@ -119,7 +128,7 @@ const userRegister = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o email já está cadastrado:
-  const emailCheck = await UserRead.getUserByEmail(newMail);
+  const emailCheck = await UserRead.getUserByEmail(user_email);
 
   if (emailCheck.status === true) {
     return res.status(400).json({
@@ -131,7 +140,7 @@ const userRegister = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o nome de usuário já está cadastrado:
-  const nameCheck = await UserRead.getUserByName(newName);
+  const nameCheck = await UserRead.getUserByName(user_name);
 
   if (nameCheck.status === true) {
     return res.status(400).json({
@@ -143,7 +152,7 @@ const userRegister = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verifica se o instituto existe:
-  const campusCheck = await campusReadModels.getCampusById(campusId);
+  const campusCheck = await campusReadModels.getCampusById(user_campusId);
 
   if (campusCheck.status === false) {
     return res.status(400).json({
@@ -159,14 +168,14 @@ const userRegister = async (req, res) => {
 
   // Criptografando a senha:
   const hashedPassword = await passwordTreat.hashPasswordGenerator(
-    newPassword,
+    user_password,
     salt
   );
 
   /*-----------------------------------------------------*/
 
   // Verificando quantos usuários já estão cadastrados no campus:
-  const usersInCampus = await UserRead.getUsersByCampus(campusId);
+  const usersInCampus = await UserRead.getUsersByCampus(user_campusId);
 
   // Definindo o nível baseado na quantidadee obtida:
   const CampusAdminLevel = usersInCampus.status === false ? 3 : 1;
@@ -175,12 +184,12 @@ const userRegister = async (req, res) => {
 
   // Registrando o usuário:
   const status = await UserWrite.registerUser({
-    nome: newName,
-    email: newMail,
+    nome: user_name,
+    email: user_email,
     senha: hashedPassword,
     salt: salt,
-    tipo: userType,
-    campusId: campusId,
+    tipo: user_type,
+    campusId: user_campusId,
     CampusAdminLevel: CampusAdminLevel,
   });
 
@@ -194,7 +203,7 @@ const userRegister = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Deletando o código de confirmação:
-  const mailCodeDelete = await MailCodeModels.deleteMailCode(newMail);
+  const mailCodeDelete = await MailCodeModels.deleteMailCode(user_email);
 
   if (mailCodeDelete.status === false) {
     return res.status(500).json({

@@ -33,7 +33,7 @@ import labPermissionChecks from "./labPermissionChecks";
 // Função para editar o nome do laboratório:
 const editLabName = async (req, res) => {
   /*-----------------------------------------------------*/
-  const { labId, labName } = req.body;
+  const { lab_id, lab_name } = req.body;
 
   // Recuperando Id do usuário:
   const token = req.headers["x-access-token"];
@@ -44,7 +44,7 @@ const editLabName = async (req, res) => {
   // Verificando se o tal usuário tem permissão para editar o nome do laboratório:
   const checkUserToManipulate = await labPermissionChecks.checkUserToManipulate(
     userId,
-    labId,
+    lab_id,
     3
   );
 
@@ -59,7 +59,7 @@ const editLabName = async (req, res) => {
 
   // Verificando se o laboratório já existe:
   const GetLabByName = await labRead.getLabByName(
-    labName,
+    lab_name,
     checkUserToManipulate.labData.campusID
   );
 
@@ -73,7 +73,7 @@ const editLabName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o nome do laboratório:
-  const EditLabName = await labWrite.editLabName(labId, labName);
+  const EditLabName = await labWrite.editLabName(lab_id, lab_name);
 
   if (EditLabName.status === false) {
     return res.status(400).json({
@@ -95,7 +95,7 @@ const editLabName = async (req, res) => {
 // Função para editar a capacidade do laboratório:
 const editLabCapacity = async (req, res) => {
   /*-----------------------------------------------------*/
-  const { lab_id, capacity } = req.body;
+  const { lab_id, lab_capacity } = req.body;
 
   // Recuperando Id do usuário:
   const token = req.headers["x-access-token"];
@@ -121,7 +121,7 @@ const editLabCapacity = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando a capacidade do laboratório:
-  const EditLabCapacity = await labWrite.editLabCapacity(lab_id, capacity);
+  const EditLabCapacity = await labWrite.editLabCapacity(lab_id, lab_capacity);
 
   if (EditLabCapacity.status === false) {
     return res.status(400).json({
@@ -143,7 +143,7 @@ const editLabCapacity = async (req, res) => {
 // Função para adicionar um administrador ao laboratório:
 const addAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
-  const { labId, newUserId } = req.body;
+  const { lab_id, user_id } = req.body;
 
   // Recuperando Id do usuário:
   const token = req.headers["x-access-token"];
@@ -154,7 +154,7 @@ const addAdmin = async (req, res) => {
   // Verificando se o tal usuário tem permissão para adicionar um administrador ao laboratório:
   const checkUserToManipulate = await labPermissionChecks.checkUserToManipulate(
     userId,
-    labId,
+    lab_id,
     3
   );
 
@@ -169,8 +169,8 @@ const addAdmin = async (req, res) => {
 
   // Verificando se o usuário possui relação com o laboratório:
   const checkUserLabRelation = await labPermissionChecks.checkUserToManipulate(
-    newUserId,
-    labId,
+    user_id,
+    lab_id,
     1
   );
 
@@ -197,7 +197,7 @@ const addAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Adicionando o usuário como administrador:
-  const AddAdmin = await labWrite.editUserLabLevel(newUserId, labId, 2);
+  const AddAdmin = await labWrite.editUserLabLevel(user_id, lab_id, 2);
 
   if (AddAdmin.status === false) {
     return res.status(400).json({
@@ -219,7 +219,7 @@ const addAdmin = async (req, res) => {
 // Função para remover um administrador do laboratório:
 const removeAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
-  const { labId, newUserId } = req.body;
+  const { lab_id, user_id } = req.body;
 
   // Verificando se o usuário existe:
   const token = req.headers["x-access-token"];
@@ -230,7 +230,7 @@ const removeAdmin = async (req, res) => {
   // Verificando se o tal usuário tem permissão para remover um administrador do laboratório:
   const checkUserToManipulate = await labPermissionChecks.checkUserToManipulate(
     userId,
-    labId,
+    lab_id,
     3
   );
 
@@ -245,8 +245,8 @@ const removeAdmin = async (req, res) => {
 
   // Verificando se o usuário possui relação com o laboratório:
   const checkUserLabRelation = await labPermissionChecks.checkUserToManipulate(
-    newUserId,
-    labId,
+    user_id,
+    lab_id,
     1
   );
 
@@ -270,7 +270,7 @@ const removeAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Removendo o usuário como administrador:
-  const RemoveAdmin = await labWrite.editUserLabLevel(newUserId, labId, 1);
+  const RemoveAdmin = await labWrite.editUserLabLevel(user_id, lab_id, 1);
 
   if (RemoveAdmin.status === false) {
     return res.status(400).json({

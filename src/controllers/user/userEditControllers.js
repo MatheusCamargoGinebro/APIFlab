@@ -46,12 +46,12 @@ const editUserName = async (req, res) => {
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
 
-  const { newName } = req.body;
+  const { user_name } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificando se o nome de usuário já está cadastrado:
-  const nameCheck = await UserRead.getUserByName(newName);
+  const nameCheck = await UserRead.getUserByName(user_name);
 
   if (nameCheck.status === true) {
     return res.status(400).json({
@@ -63,7 +63,7 @@ const editUserName = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o nome do usuário:
-  const result = await UserWrite.editUserName(userId, newName);
+  const result = await UserWrite.editUserName(userId, user_name);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -89,13 +89,13 @@ const editUserEmail = async (req, res) => {
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
-  const { newMail, validationCode } = req.body;
+  const { user_email, validationCode } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificando se o código de confirmação é válido:
   const mailCodeCheck = await MailCodeModels.getMailCode(
-    newMail,
+    user_email,
     validationCode
   );
 
@@ -108,7 +108,7 @@ const editUserEmail = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o email já está cadastrado:
-  const emailCheck = await UserRead.getUserByEmail(newMail);
+  const emailCheck = await UserRead.getUserByEmail(user_email);
 
   if (emailCheck.status === true) {
     return res.status(400).json({
@@ -120,7 +120,7 @@ const editUserEmail = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o email do usuário:
-  const result = await UserWrite.editUserEmail(userId, newMail);
+  const result = await UserWrite.editUserEmail(userId, user_email);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -132,7 +132,7 @@ const editUserEmail = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Deletando o código de confirmação:
-  const mailCodeDelete = await MailCodeModels.deleteMailCode(newMail);
+  const mailCodeDelete = await MailCodeModels.deleteMailCode(user_email);
 
   if (mailCodeDelete.status === false) {
     return res.status(500).json({
@@ -158,14 +158,14 @@ const editUserPassword = async (req, res) => {
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
-  const { newPassword } = req.body;
+  const { user_password } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Criptografia da senha:
   const salt = await passwordTreat.saltGenerator();
   const hashedPassword = await passwordTreat.hashPasswordGenerator(
-    newPassword,
+    user_password,
     salt
   );
 
@@ -195,12 +195,12 @@ const editUserPic = async (req, res) => {
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
-  const { newProfilePic } = req.body;
+  const { user_profpic } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Editando a foto de perfil do usuário:
-  const result = await UserWrite.editUserPic(userId, newProfilePic);
+  const result = await UserWrite.editUserPic(userId, user_profpic);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -226,12 +226,12 @@ const editUserType = async (req, res) => {
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
-  const { userType } = req.body;
+  const { user_type } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Editando o tipo de usuário:
-  const result = await userModels.editUserType(userId, userType);
+  const result = await userModels.editUserType(userId, user_type);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -257,14 +257,14 @@ const editUserCampusLevel = async (req, res) => {
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
-  const { newUserId, newCampusLevel } = req.body;
+  const { user_id, user_adminLevel } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificar se os usuários existem e são do mesmo campus:
   const getActorById = await UserRead.getUserById(userId);
 
-  const getUserToEdit = await UserRead.getUserById(newUserId);
+  const getUserToEdit = await UserRead.getUserById(user_id);
 
   if (
     getActorById.status === false ||
@@ -280,7 +280,7 @@ const editUserCampusLevel = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editar nível de administração do usuário:
-  const result = await UserWrite.editUserAdminLevel(newUserId, newCampusLevel);
+  const result = await UserWrite.editUserAdminLevel(user_id, user_adminLevel);
 
   if (result.status === false) {
     return res.status(500).json({

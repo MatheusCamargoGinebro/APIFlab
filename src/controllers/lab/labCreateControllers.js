@@ -33,7 +33,7 @@ const createLab = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Informações do laboratório:
-  const { labName, capacity } = req.body;
+  const { lab_name, lab_capacity } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -57,7 +57,7 @@ const createLab = async (req, res) => {
 
   // Verificando se o laboratório já existe:
   const GetLabByName = await labRead.getLabByName(
-    labName,
+    lab_name,
     checkUserToCreate.userData.campusId
   );
 
@@ -73,8 +73,8 @@ const createLab = async (req, res) => {
   // Criando o laboratório:
   const CreateLab = await labWrite.createLab(
     {
-      Sala: labName,
-      Capacidade: capacity,
+      Sala: lab_name,
+      Capacidade: lab_capacity,
       ID_campus: checkUserToCreate.userData.campusId,
     },
     userId
@@ -115,7 +115,7 @@ const createLab = async (req, res) => {
 
 const createLabUser = async (req, res) => {
   /*-----------------------------------------------------*/
-  const { labId, newUserId } = req.body;
+  const { lab_id, user_id } = req.body;
 
   // Recuperando Id do usuário:
   const token = req.headers["x-access-token"];
@@ -126,7 +126,7 @@ const createLabUser = async (req, res) => {
   // Verificando permissões do usuário com o laboratório:
   const checkUserToManipulate = labPermissionChecks.checkUserToManipulate(
     userId,
-    labId,
+    lab_id,
     3
   );
 
@@ -140,7 +140,7 @@ const createLabUser = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o usuário já pertence ao laboratório:
-  const getNewUserRelation = await labRead.getLabUserRelation(labId, newUserId);
+  const getNewUserRelation = await labRead.getLabUserRelation(lab_id, user_id);
 
   if (getNewUserRelation.status === true) {
     return res.status(400).json({
@@ -152,7 +152,7 @@ const createLabUser = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Adicionando o usuário ao laboratório:
-  const AddUser = await labWrite.relateUserLab(labId, newUserId, 1);
+  const AddUser = await labWrite.relateUserLab(lab_id, user_id, 1);
 
   if (AddUser.status === false) {
     return res.status(400).json({

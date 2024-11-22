@@ -209,7 +209,7 @@ const editMolarMass = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do elemento:
-  const { element_id, element_molar_mass } = req.body;
+  const { element_id, element_molarMass } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -240,7 +240,7 @@ const editMolarMass = async (req, res) => {
   // Editando o peso molecular do elemento químico:
   const result = await elementWrite.editMolarMass(
     element_id,
-    element_molar_mass
+    element_molarMass
   );
 
   if (result.status === false) {
@@ -266,7 +266,7 @@ const editCasNumber = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do elemento:
-  const { element_id, element_cas_number } = req.body;
+  const { element_id, element_casNumber } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -297,7 +297,7 @@ const editCasNumber = async (req, res) => {
   // Editando o número CAS do elemento químico:
   const result = await elementWrite.editCasNumber(
     element_id,
-    element_cas_number
+    element_casNumber
   );
 
   if (result.status === false) {
@@ -323,7 +323,7 @@ const editEcNumber = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do elemento:
-  const { element_id, element_ec_number } = req.body;
+  const { element_id, element_ecNumber } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -352,7 +352,7 @@ const editEcNumber = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o número EC do elemento químico:
-  const result = await elementWrite.editEcNumber(element_id, element_ec_number);
+  const result = await elementWrite.editEcNumber(element_id, element_ecNumber);
 
   if (result.status === false) {
     return res.status(500).json({
@@ -377,7 +377,7 @@ const editPhysicalState = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do elemento:
-  const { element_id, element_physical_state } = req.body;
+  const { element_id, element_physicalState } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -408,7 +408,7 @@ const editPhysicalState = async (req, res) => {
   // Editando o estado físico do elemento químico:
   const result = await elementWrite.editPhysicalState(
     element_id,
-    element_physical_state
+    element_physicalState
   );
 
   if (result.status === false) {
@@ -488,7 +488,7 @@ const editExpiration = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações do elemento:
-  const { element_id, element_expiration } = req.body;
+  const { element_id, element_validity } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -519,7 +519,7 @@ const editExpiration = async (req, res) => {
   // Editando a validade do elemento químico:
   const result = await elementWrite.editExpiration(
     element_id,
-    element_expiration
+    element_validity
   );
 
   if (result.status === false) {

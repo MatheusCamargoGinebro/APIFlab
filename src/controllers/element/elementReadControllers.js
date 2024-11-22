@@ -77,12 +77,12 @@ const getElementsByLabId = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // ID do laboratório:
-  const { labId } = req.body;
+  const { lab_id } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Verificando se o usuário tem permissão para acessar os elementos do laboratório:
-  const userCheck = await labPermission.checkUserToManipulate(userId, labId, 1);
+  const userCheck = await labPermission.checkUserToManipulate(userId, lab_id, 1);
 
   if (userCheck.status === false) {
     return res.status(401).json({
@@ -94,7 +94,7 @@ const getElementsByLabId = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Recuperando informações dos elementos do laboratório:
-  const elements = await elementRead.getElementsByLab(labId);
+  const elements = await elementRead.getElementsByLab(lab_id);
 
   if (elements.status === false) {
     return res.status(404).json({
