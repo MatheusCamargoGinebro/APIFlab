@@ -250,46 +250,42 @@ const editUserType = async (req, res) => {
 
 // O========================================================================================O
 
-// Função para editar o nível de um usuário:
-const EditUserCampusLevel = async (req, res) => {
+// Função para editar o nível de administração de um usuário em um campus:
+const editUserCampusLevel = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Recuperando o token do usuário:
   const token = req.headers["x-access-token"];
-  const responsableUserId = JWT.decode(token).userId;
-  const { userType, userId } = req.body;
+  const userId = JWT.decode(token).userId;
+  const { newUserId, newCampusLevel } = req.body;
 
   /*-----------------------------------------------------*/
 
-  // Verificando se o usuário é administrador:
-  const userCheck = await UserRead.GetUserByID(responsableUserId);
+  // Verificar se os usuários existem e são do mesmo campus:
+  const getActorById = await UserRead.getUserByID(userId);
 
-  if (userCheck.status === false) {
+  const getUserToEdit = await UserRead.getUserByID(newUserId);
+
+  if (
+    getActorById.status === false ||
+    getUserToEdit.status === false ||
+    getActorById.userData.campusId !== getUserToEdit.userData.campusId
+  ) {
     return res.status(400).json({
       status: false,
-      message: "Usuário não encontrado.",
-    });
-  }
-
-  if (userCheck.userData.Tipo !== 3 || responsableUserId === userId) {
-    return res.status(400).json({
-      status: false,
-      message: "Usuário não tem permissão para realizar operação.",
+      message: "Usuários inválidos!",
     });
   }
 
   /*-----------------------------------------------------*/
 
-  // Editando o tipo de usuário:
-  const result = await userModels.EditUserAdminLevel(
-    responsableUserId,
-    userType
-  );
+  // Editar nível de administração do usuário:
+  const result = await UserWrite.EditUserAdminLevel(newUserId, newCampusLevel);
 
   if (result.status === false) {
     return res.status(500).json({
       status: false,
-      message: "Erro ao editar tipo de usuário.",
+      message: "Erro ao editar nível de administração.",
     });
   }
 
@@ -297,7 +293,7 @@ const EditUserCampusLevel = async (req, res) => {
 
   return res.status(200).json({
     status: true,
-    message: "Tipo de usuário editado.",
+    message: "Nível de administração editado.",
   });
 };
 
@@ -310,7 +306,7 @@ export {
   editUserPassword,
   editUserPic,
   editUserType,
-  EditUserCampusLevel,
+  editUserCampusLevel,
 };
 
 // O========================================================================================O
