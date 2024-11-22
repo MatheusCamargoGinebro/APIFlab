@@ -60,7 +60,7 @@ const editName = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -113,7 +113,7 @@ const editQuantity = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -167,7 +167,7 @@ const editDescription = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -224,7 +224,7 @@ const editMolarMass = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -281,7 +281,7 @@ const editCasNumber = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -338,7 +338,7 @@ const editEcNumber = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -392,7 +392,7 @@ const editPhysicalState = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -449,7 +449,7 @@ const editImage = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -503,7 +503,7 @@ const editExpiration = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 
@@ -560,7 +560,7 @@ const editSupervisorLevel = async (req, res) => {
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    GetElementById.data.id_lab,
+    GetElementById.data.labId,
     2
   );
 

@@ -355,6 +355,7 @@ SELECT
     elementos.Imagem AS image,
     elementos.Validade AS expirationDate,
     elementos.SupervisorLevel AS supervisorLevel
+    elementos.ID_lab AS labId
 FROM
     elementos
 WHERE
@@ -399,6 +400,7 @@ SELECT
     equipamentos.Qualidade AS quality,
     equipamentos.Imagem AS image,
     equipamentos.SupervisorLevel AS supervisorLevel
+    equipamentos.ID_lab AS labId
 FROM
     equipamentos
 WHERE

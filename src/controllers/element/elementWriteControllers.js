@@ -71,17 +71,17 @@ const createElement = async (req, res) => {
 
   // Criando o novo elemento químico:
   const result = await elementWrite.createElement({
-    element_name,
-    element_quantity,
-    element_description,
-    element_molarMass,
-    element_casNumber,
-    element_ecNumber,
-    element_physicalState,
-    element_image,
-    element_validity,
-    element_supervisorLevel,
-    element_labId,
+    nome: element_name,
+    quantidade: element_quantity,
+    descricao: element_description,
+    peso_molecular: element_molarMass,
+    numero_cas: element_casNumber,
+    numero_ec: element_ecNumber,
+    estado_fisico: element_physicalState,
+    imagem: element_image,
+    validade: element_validity,
+    supervisorLevel: element_supervisorLevel,
+    id_lab: element_labId,
   });
 
   if (result.status === false) {
