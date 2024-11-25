@@ -18,23 +18,20 @@
 
 // Importando módulos:
 
-// Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+// Módulo de Token JWT:s
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Write de usuário:
-import UserWrite from "../../models/user/userOperations/userWriteModels";
+const UserWrite = require("../../models/user/userOperations/userWriteModels");
 
 // Módulo dos Models Read de usuário:
-import UserRead from "../../models/user/userOperations/userReadModels";
+const UserRead = require("../../models/user/userOperations/userReadModels");
 
 // Módulo dos Models de verificação de código de email:
-import MailCodeModels from "../../models/user/accountValidation/mailCodesModels";
-
-// Módulo dos Models de verificação de código de email:
-import MailCodeModels from "../../models/user/accountValidation/mailCodesModels";
+const MailCodeModels = require("../../models/user/accountValidation/mailCodesModels");
 
 // Módulo de tratamento de senhas:
-import passwordTreat from "../../utils/password_treatment";
+const passwordTreat = require("../../utils/password_treatment");
 
 // O========================================================================================O
 
@@ -300,7 +297,7 @@ const editUserCampusLevel = async (req, res) => {
 // O========================================================================================O
 
 // Exportando módulos:
-export default {
+module.exports = {
   editUserName,
   editUserEmail,
   editUserPassword,

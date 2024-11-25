@@ -22,10 +22,10 @@
 // Importando módulos:
 
 // Modulo de verificação de token:
-import { verify } from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Modulo verificação da blacklist:
-import getFromBlacklist from "../models/user/accountValidation/tokenBlacklistModels";
+const tokenBlacklistModels = require("../models/user/accountValidation/tokenBlacklistModels");
 
 // O============================================================================================O
 
@@ -411,7 +411,7 @@ const checkToken = async (request, response, next) => {
   }
 
   // Verifica se o token está presente no banco de dados:
-  const blackListedToken = await getFromBlacklist(token);
+  const blackListedToken = await tokenBlacklistModels.getFromBlacklist(token);
 
   if (blackListedToken.status === true) {
     return response.status(401).send({
@@ -421,7 +421,7 @@ const checkToken = async (request, response, next) => {
   }
 
   // Verifica se o token é válido:
-  verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       return response.status(401).send({
         message: "Token inválido ou expirado.",
@@ -436,7 +436,7 @@ const checkToken = async (request, response, next) => {
 // O============================================================================================O
 
 // Exportação dos módulos:
-export default {
+module.exports = {
   user_name,
   user_email,
   user_password,

@@ -23,7 +23,7 @@
 // O========================================================================================O
 
 // Importando conexão com o banco de dados:
-import { execute } from "../../utils/connection";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
@@ -57,7 +57,7 @@ const createElement = async (newElement) => {
     id_lab,
   ];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Elemento químico criado com sucesso!" };
@@ -73,7 +73,7 @@ const removeElement = async (elementId) => {
   const query = "CALL DeleteElement(?);";
   const data = [elementId];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Elemento químico removido com sucesso!" };
@@ -89,7 +89,7 @@ const editName = async (elementId, name) => {
   const query = "CALL EditElementName(?, ?);";
   const data = [elementId, name];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -111,7 +111,7 @@ const editQuantity = async (elementId, quantity) => {
   const query = "CALL EditElementQuantity(?, ?);";
   const data = [elementId, quantity];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -133,7 +133,7 @@ const editDescription = async (elementId, description) => {
   const query = "CALL EditElementDescription(?, ?);";
   const data = [elementId, description];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -155,7 +155,7 @@ const editMolarMass = async (elementId, molarMass) => {
   const query = "CALL EditElementMolWeight(?, ?);";
   const data = [elementId, molarMass];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -177,7 +177,7 @@ const editCasNumber = async (elementId, casNumber) => {
   const query = "CALL EditElementCAS(?, ?);";
   const data = [elementId, casNumber];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -199,7 +199,7 @@ const editEcNumber = async (elementId, ecNumber) => {
   const query = "CALL EditElementEC(?, ?);";
   const data = [elementId, ecNumber];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -221,7 +221,7 @@ const editPhysicalState = async (elementId, physicalState) => {
   const query = "CALL EditElementPhysicalState(?, ?);";
   const data = [elementId, physicalState];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -243,7 +243,7 @@ const editImage = async (elementId, image) => {
   const query = "CALL EditElementImage(?, ?);";
   const data = [elementId, image];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -264,7 +264,7 @@ const editElementExpiration = async (elementId, expirationDate) => {
   const query = "CALL EditElementExpiration(?, ?);";
   const data = [elementId, expirationDate];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -285,7 +285,7 @@ const editElementSupervisorLevel = async (elementId, supervisorLevel) => {
   const query = "CALL EditElementSupervisorLevel(?, ?);";
   const data = [elementId, supervisorLevel];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -303,7 +303,7 @@ const editElementSupervisorLevel = async (elementId, supervisorLevel) => {
 // O========================================================================================O
 
 // Exportando módulos:
-export default {
+module.exports = {
   createElement,
   removeElement,
   editName,

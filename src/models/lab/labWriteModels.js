@@ -17,7 +17,7 @@
 // O========================================================================================O
 
 // Importando módulos:
-import { execute } from "../../database/connection";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
@@ -26,7 +26,12 @@ const createLab = async (newLab, userId) => {
   const { Sala, Capacidade, ID_campus } = newLab;
 
   const query = "CALL CreateLab(?, ?, ?, ?)";
-  const [results] = await execute(query, [Sala, Capacidade, ID_campus, userId]);
+  const [results] = await connection.execute(query, [
+    Sala,
+    Capacidade,
+    ID_campus,
+    userId,
+  ]);
 
   if (results.affectedRows > 0) {
     return {
@@ -47,7 +52,11 @@ const createLab = async (newLab, userId) => {
 // Função para adicionar um usuário a um laboratório no banco de dados:
 const relateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
   const query = "CALL RelateUserLab(?, ?, ?)";
-  const [results] = await execute(query, [ID_usuario, ID_lab, AdminLevel]);
+  const [results] = await connection.execute(query, [
+    ID_usuario,
+    ID_lab,
+    AdminLevel,
+  ]);
 
   if (results.affectedRows > 0) {
     return {
@@ -67,7 +76,7 @@ const relateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
 // Função para remover um usuário de um laboratório no banco de dados:
 const removeUser = async (ID_lab, ID_usuario) => {
   const query = "CALL UnrelateUserLab(?, ?)";
-  const [results] = await execute(query, [ID_usuario, ID_lab]);
+  const [results] = await connection.execute(query, [ID_usuario, ID_lab]);
 
   if (results.affectedRows > 0) {
     return {
@@ -87,7 +96,10 @@ const removeUser = async (ID_lab, ID_usuario) => {
 // Função de edição do nome do laboratório no banco de dados:
 const editLabName = async (ID_lab, NewName) => {
   const query = "CALL EditLabName(?, ?)";
-  const [results] = await connection.execute(query, [ID_lab, NewName]);
+  const [results] = await connection.connection.execute(query, [
+    ID_lab,
+    NewName,
+  ]);
 
   if (results.affectedRows > 0) {
     return {
@@ -102,7 +114,10 @@ const editLabName = async (ID_lab, NewName) => {
 // Função de edição da capacidade do laboratório no banco de dados:
 const editLabCapacity = async (ID_lab, newCapacity) => {
   const query = "CALL EditLabCapacity(?, ?);";
-  const [results] = await connection.execute(query, [ID_lab, newCapacity]);
+  const [results] = await connection.connection.execute(query, [
+    ID_lab,
+    newCapacity,
+  ]);
 
   if (results.affectedRows > 0) {
     return {
@@ -122,7 +137,7 @@ const editLabCapacity = async (ID_lab, newCapacity) => {
 // Função para adicionar um administrador a um laboratório no banco de dados:
 const editUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
   const query = "CALL EditUserLabLevel(?, ?, ?)";
-  const [results] = await connection.execute(query, [
+  const [results] = await connection.connection.execute(query, [
     ID_usuario,
     ID_lab,
     AdminLevel,
@@ -144,7 +159,7 @@ const editUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   createLab,
   relateUserLab,
   removeUser,
@@ -152,4 +167,5 @@ export default {
   editLabCapacity,
   editUserLabLevel,
 };
+
 // O========================================================================================O

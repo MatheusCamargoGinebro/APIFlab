@@ -14,14 +14,14 @@
 // O========================================================================================O
 
 // Importando módulos:
-import { execute } from "../../utils/connection";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
 // Ler todos os campus:
 const getAllCampus = async () => {
   const query = "CALL GetAllCampus();";
-  const [result] = await execute(query);
+  const [result] = await connection.execute(query);
 
   if (result.length > 0) {
     return { status: true, campusData: result };
@@ -35,7 +35,7 @@ const getAllCampus = async () => {
 // Procure um campus pelo ID:
 const getCampusById = async (campus_ID) => {
   const query = "CALL GetCampusByID(?);";
-  const [result] = await execute(query, [campus_ID]);
+  const [result] = await connection.execute(query, [campus_ID]);
 
   if (result.length > 0) {
     return { status: true, campusData: result[0] };
@@ -49,7 +49,7 @@ const getCampusById = async (campus_ID) => {
 // Procure um campus pelo nome:
 const getCampusByName = async (campus_name) => {
   const query = "CALL GetCampusByName(?);";
-  const [result] = await execute(query, [campus_name]);
+  const [result] = await connection.execute(query, [campus_name]);
 
   if (result.length > 0) {
     return { status: true, campusData: result[0] };
@@ -61,6 +61,6 @@ const getCampusByName = async (campus_name) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { getAllCampus, getCampusById, getCampusByName };
+module.exports = { getAllCampus, getCampusById, getCampusByName };
 
 // O========================================================================================O

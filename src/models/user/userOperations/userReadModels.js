@@ -17,7 +17,7 @@
 // O====================================================================================O
 
 // Importando conexão com o banco de dados:
-import { execute } from "../../utils/connection";
+const connection = require("../../../utils/connection");
 
 // O====================================================================================O
 
@@ -25,7 +25,7 @@ import { execute } from "../../utils/connection";
 const getUserById = async (ID_usuario) => {
   // const query = "SELECT * FROM usuarios WHERE ID_usuario = ?;";
   const query = "CALL GetUserByID(?);";
-  const [result] = await execute(query, [ID_usuario]);
+  const [result] = await connection.execute(query, [ID_usuario]);
 
   if (result.length > 0) {
     return { status: true, userData: result[0] };
@@ -40,7 +40,7 @@ const getUserById = async (ID_usuario) => {
 const getUserByEmail = async (email) => {
   //const query = "SELECT * FROM usuarios WHERE Email = ?;";
   const query = "CALL GetUserByEmail(?);";
-  const [result] = await execute(query, [email]);
+  const [result] = await connection.execute(query, [email]);
 
   if (result.length > 0) {
     return { status: true, userData: result[0] };
@@ -55,7 +55,7 @@ const getUserByEmail = async (email) => {
 const getUserByName = async (username) => {
   // const query = "SELECT * FROM usuarios WHERE Nome = ?;";
   const query = "CALL GetUserByName(?);";
-  const [result] = await execute(query, [username]);
+  const [result] = await connection.execute(query, [username]);
 
   if (result.length > 0) {
     return { status: true, userData: result[0] };
@@ -69,7 +69,7 @@ const getUserByName = async (username) => {
 // Função para pegar todos os usuários de um campus:
 const getUsersByCampus = async (ID_campus) => {
   const query = "CALL GetUsersByCampus(?);";
-  const [result] = await execute(query, [ID_campus]);
+  const [result] = await connection.execute(query, [ID_campus]);
 
   if (result.length > 0) {
     return { status: true, userData: result };
@@ -83,7 +83,7 @@ const getUsersByCampus = async (ID_campus) => {
 // Função para pegar todos os usuários de um laboratório:
 const getUsersByLab = async (ID_lab) => {
   const query = "CALL GetUsersByLab(?);";
-  const [result] = await execute(query, [ID_lab]);
+  const [result] = await connection.execute(query, [ID_lab]);
 
   if (result.length > 0) {
     return { status: true, userData: result };
@@ -97,7 +97,7 @@ const getUsersByLab = async (ID_lab) => {
 // Função para realizar login:
 const login = async (email, senha) => {
   const query = "CALL Login(?, ?);";
-  const [result] = await execute(query, [email, senha]);
+  const [result] = await connection.execute(query, [email, senha]);
 
   if (result.length > 0) {
     return { status: true, userData: result[0] };
@@ -109,7 +109,7 @@ const login = async (email, senha) => {
 // O====================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   getUserById,
   getUserByEmail,
   getUserByName,

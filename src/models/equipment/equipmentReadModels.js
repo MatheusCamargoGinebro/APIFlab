@@ -13,7 +13,7 @@
 // O========================================================================================O
 
 // Importação de módulos:
-import { execute } from "../../database/database";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
@@ -50,7 +50,7 @@ const getEquipmentsByLabId = async (labId) => {
 // O========================================================================================O
 
 // Exportação dos módulos:
-export default {
+module.exports = {
   getEquipmentById,
   getEquipmentsByLabId,
 };

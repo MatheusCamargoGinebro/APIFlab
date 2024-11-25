@@ -15,16 +15,16 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Write de elementos químicos:
-import elementWrite from "../../models/element/elementWriteModels";
+const elementWrite = require("../../models/element/elementWriteModels");
 
 // Módulo dos Models Read de elementos químicos:
-import elementRead from "../../models/element/elementReadModels";
+const elementRead = require("../../models/element/elementReadModels");
 
 // Módulo de verificação de permissões de laboratório:
-import labPermission from "../../controllers/lab/labPermissionChecks";
+const labPermission = require("../../controllers/lab/labPermissionChecks");
 
 // O========================================================================================O
 
@@ -160,6 +160,6 @@ const removeElement = async (req, res) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { createElement, removeElement };
+module.exports = { createElement, removeElement };
 
 // O========================================================================================O

@@ -421,7 +421,7 @@ const element_id = (request, response, next) => {
 // O============================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   element_name,
   element_quantity,
   element_description,

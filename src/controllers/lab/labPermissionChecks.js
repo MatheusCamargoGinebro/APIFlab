@@ -15,10 +15,10 @@
 // Importando módulos:
 
 // Módulo dos Models Read de usuário:
-import UserRead from "../../models/user/userOperations/userReadModels";
+const UserRead = require("../../models/user/userOperations/userReadModels");
 
 // Módulo dos Models Read de laboratório:
-import LabRead from "../../models/lab/labReadModels";
+const LabRead = require("../../models/lab/labReadModels");
 
 // O========================================================================================O
 
@@ -67,6 +67,6 @@ const checkUserToManipulate = async (userId, labId, allowedLevel) => {
 
 // O========================================================================================O
 
-export default { checkUserToCreate, checkUserToManipulate };
+module.exports = { checkUserToCreate, checkUserToManipulate };
 
 // O========================================================================================O

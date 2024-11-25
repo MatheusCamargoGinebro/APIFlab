@@ -14,7 +14,7 @@
 // O========================================================================================O
 
 // Importando módulos:
-import { execute } from "../../utils/connection";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
@@ -23,7 +23,7 @@ const registerCampus = async (newCampus) => {
   const { campus_name, campus_state } = newCampus;
 
   const query = "CALL CreateCampus(?, ?);";
-  const [result] = await execute(query, [campus_name, campus_state]);
+  const [result] = await connection.execute(query, [campus_name, campus_state]);
 
   if (result.affectedRows > 0) {
     return {
@@ -45,7 +45,7 @@ const registerCampus = async (newCampus) => {
 // Editar nome do campus:
 const editCampusName = async (ID_campus, newName) => {
   const query = "CALL EditCampusName(?, ?);";
-  const [result] = await execute(query, [ID_campus, newName]);
+  const [result] = await connection.execute(query, [ID_campus, newName]);
 
   if (result.affectedRows > 0) {
     return {
@@ -65,7 +65,7 @@ const editCampusName = async (ID_campus, newName) => {
 // Editar estado do campus:
 const editCampusState = async (ID_campus, newName) => {
   const query = "CALL EditCampusState(?, ?);";
-  const [result] = await execute(query, [ID_campus, newName]);
+  const [result] = await connection.execute(query, [ID_campus, newName]);
 
   if (result.affectedRows > 0) {
     return {
@@ -83,6 +83,6 @@ const editCampusState = async (ID_campus, newName) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { registerCampus, editCampusName, editCampusState };
+module.exports = { registerCampus, editCampusName, editCampusState };
 
 // O========================================================================================O

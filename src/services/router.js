@@ -11,57 +11,56 @@
 // O========================================================================================O
 
 // Importando o módulo de roteamento do express:
-import { Router } from "express";
+/* import { Router } from "express"; */
+const { Router } = require("express");
 const router = Router();
-export default router;
 
 // O========================================================================================O
 
 // Importando Middlewares:
 
 // user:
-import userMiddlewares from "../middlewares/userMiddlewares";
+const userMiddlewares = require("../middlewares/userMiddlewares");
 
 // lab:
-import labMiddlewares from "../middlewares/labMiddlewares";
+const labMiddlewares = require("../middlewares/labMiddlewares");
 
 // institute:
-import campusMiddlewares from "../middlewares/campusMiddlewares";
+const campusMiddlewares = require("../middlewares/campusMiddlewares");
 
 // equipment:
-import equipmentMiddlewares from "../middlewares/equipmentMiddlewares";
+const equipmentMiddlewares = require("../middlewares/equipmentMiddlewares");
 
 // element:
-import elementMiddlewares from "../middlewares/elementMiddlewares";
+const elementMiddlewares = require("../middlewares/elementMiddlewares");
 
 // O========================================================================================O
 
 // Importando Controllers:
 
 // user:
-import accountCtrllrs from "../controllers/user/userAccountControls";
-import userEditCtrllrs from "../controllers/user/userEditControllers";
-import userRegisterCtrllrs from "../controllers/user/userRegisterControllers";
+const accountCtrllrs = require("../controllers/user/userAccountControls");
+const userEditCtrllrs = require("../controllers/user/userEditControllers");
+const userRegisterCtrllrs = require("../controllers/user/userRegisterControllers");
 
 // lab:
-import labCreateCtrllrs from "../controllers/lab/labCreateControllers";
-import labEditCtrllrs from "../controllers/lab/labEditControllers";
-import labReadCtrllrs from "../controllers/lab/labReadControllers";
+const labCreateCtrllrs = require("../controllers/lab/labCreateControllers");
+const labEditCtrllrs = require("../controllers/lab/labEditControllers");
+const labReadCtrllrs = require("../controllers/lab/labReadControllers");
 
 // institute:
-import campusWriteCtrllrs from "../controllers/campus/campusWriteControllers";
-import campusReadCtrllrs from "../controllers/campus/campusReadControllers";
+const campusReadCtrllrs = require("../controllers/campus/campusReadControllers");
+const campusWriteCtrllrs = require("../controllers/campus/campusWriteControllers");
 
 // equipment:
-import equipmentEditCtrllrs from "../controllers/equipment/equipmentEditControllers";
-import equipmentReadCtrllrs from "../controllers/equipment/equipmentReadControllers";
-import equipmentWriteCtrllrs from "../controllers/equipment/equipmentWriteControllers";
+const equipmentEditCtrllrs = require("../controllers/equipment/equipmentEditControllers");
+const equipmentReadCtrllrs = require("../controllers/equipment/equipmentReadControllers");
+const equipmentWriteCtrllrs = require("../controllers/equipment/equipmentWriteControllers");
 
 // element:
-import elementEditCtrllrs from "../controllers/element/elementEditControllers";
-import elementReadCtrllrs from "../controllers/element/elementReadControllers";
-import elementWriteCtrllrs from "../controllers/element/elementWriteControllers";
-import userReadModels from "../models/user/userOperations/userReadModels";
+const elementEditCtrllrs = require("../controllers/element/elementEditControllers");
+const elementReadCtrllrs = require("../controllers/element/elementReadControllers");
+const elementWriteCtrllrs = require("../controllers/element/elementWriteControllers");
 
 // O========================================================================================O
 
@@ -81,12 +80,12 @@ setInterval(accountCtrllrs.clearMailCodeList, 86400000);
   O=============================================O
 
   - Registro:
-    - [X] Recuperar (para exibir) informações dos campi do banco de dados;
-    - [X] Registrar um código de verificação de email no banco de dados e enviar o código para o email do usuário;
-    - [X] Registrar um usuário no banco de dados;
+    - [] Recuperar (para exibir) informações dos campi do banco de dados;
+    - [] Registrar um código de verificação de email no banco de dados e enviar o código para o email do usuário;
+    - [] Registrar um usuário no banco de dados;
 
   - Login:
-    - [X] Logar um usuário no sistema;
+    - [] Logar um usuário no sistema;
 */
 
 // O========================================================================================O
@@ -173,17 +172,17 @@ router.post(
   O=====================================O
 
   - Usuário:
-  - [X] Recuperar dados do usuário a partir do token;
+  - [] Recuperar dados do usuário a partir do token;
 
   - Configurações de usuário:
-    - [X] Editar nome do usuário;
-    - [X] Editar email do usuário;
-    - [X] Editar senha do usuário;
-    - [X] Editar foto de perfil do usuário;
-    - [X] Editar tipo de usuário (professor, aluno ou outro);
+    - [] Editar nome do usuário;
+    - [] Editar email do usuário;
+    - [] Editar senha do usuário;
+    - [] Editar foto de perfil do usuário;
+    - [] Editar tipo de usuário (professor, aluno ou outro);
 
   - Logout:
-    - [X] Deslogar o usuário do sistema;
+    - [] Deslogar o usuário do sistema;
 */
 
 // O========================================================================================O
@@ -313,22 +312,22 @@ router.post(
   O======================================O
 
   - Inicio:
-  - [X] Listar laboratórios em que o usuário possui acesso;
-  - [X] Listar laboratórios em que o usuário possui tal nível de acesso;
-  - [X] Registrar um laboratório no banco de dados;
+  - [] Listar laboratórios em que o usuário possui acesso;
+  - [] Listar laboratórios em que o usuário possui tal nível de acesso;
+  - [] Registrar um laboratório no banco de dados;
 
   - Laboratório:
-  - [X] Gerar relatório de acesso ao laboratório;
-  - [X] Gerar relatório de inventário do laboratório;
+  - [] Gerar relatório de acesso ao laboratório;
+  - [] Gerar relatório de inventário do laboratório;
 
   - Editar informações do laboratório:
-    - [X] Editar sala (nome) do laboratório;
-    - [X] Editar capacidade do laboratório;
+    - [] Editar sala (nome) do laboratório;
+    - [] Editar capacidade do laboratório;
 
   - Sessão:
-    - [X] Marcar uma sessão de uso de laboratório no banco de dados;
-    - [X] Listar sessões de uso de laboratório;
-    - [X] Finalizar uma sessão de uso de laboratório no banco de dados;
+    - [] Marcar uma sessão de uso de laboratório no banco de dados;
+    - [] Listar sessões de uso de laboratório;
+    - [] Finalizar uma sessão de uso de laboratório no banco de dados;
 */
 
 // O========================================================================================O
@@ -439,34 +438,34 @@ router.put(
   O==========================================O
 
   - Inicio:
-  - [X] Listar equipamentos do laboratório;
-  - [X] Listar elementos do laboratório;
+  - [] Listar equipamentos do laboratório;
+  - [] Listar elementos do laboratório;
 
   - Equipamento:
-  - [X] Registrar um equipamento no banco de dados;
+  - [] Registrar um equipamento no banco de dados;
   - Editar informações de um equipamento:
-    - [X] Editar nome do equipamento;
-    - [X] Editar descrição do equipamento;
-    - [X] Editar quantidade total do equipamento;
-    - [X] Editar qualidade do equipamento;
-    - [X] Editar imagem do equipamento;
-    - [X] Editar o nível de supervisão do equipamento;
-  - [X] Deletar um equipamento do banco de dados;
+    - [] Editar nome do equipamento;
+    - [] Editar descrição do equipamento;
+    - [] Editar quantidade total do equipamento;
+    - [] Editar qualidade do equipamento;
+    - [] Editar imagem do equipamento;
+    - [] Editar o nível de supervisão do equipamento;
+  - [] Deletar um equipamento do banco de dados;
 
   - Elemento:
-  - [X] Registrar um elemento no banco de dados;
+  - [] Registrar um elemento no banco de dados;
   - Editar informações de um elemento:
-    - [X] Editar nome do elemento;
-    - [X] Editar quantidade do elemento;
-    - [X] Editar descrição do elemento;
-    - [X] Editar peso molecular do elemento;
-    - [X] Editar número CAS do elemento;
-    - [X] Editar número EC do elemento;
-    - [X] Editar estado físico do elemento;
-    - [X] Editar imagem do elemento;
-    - [X] Editar a validade do elemento;
-    - [X] Editar o nível de supervisão do elemento;
-  - [X] Deletar um elemento do banco de dados;
+    - [] Editar nome do elemento;
+    - [] Editar quantidade do elemento;
+    - [] Editar descrição do elemento;
+    - [] Editar peso molecular do elemento;
+    - [] Editar número CAS do elemento;
+    - [] Editar número EC do elemento;
+    - [] Editar estado físico do elemento;
+    - [] Editar imagem do elemento;
+    - [] Editar a validade do elemento;
+    - [] Editar o nível de supervisão do elemento;
+  - [] Deletar um elemento do banco de dados;
 */
 
 // O========================================================================================O
@@ -902,10 +901,10 @@ router.put(
   O================================================================O
 
   Inicio:
-  - [X] Listar usuários de um laboratório;
-  - [X] Relacionar usuários a um laboratório;
-  - [X] Adicionar usuário como admin de um laboratório;
-  - [X] Remover usuário como admin de um laboratório;
+  - [] Listar usuários de um laboratório;
+  - [] Relacionar usuários a um laboratório;
+  - [] Adicionar usuário como admin de um laboratório;
+  - [] Remover usuário como admin de um laboratório;
 */
 
 // O========================================================================================O
@@ -917,7 +916,7 @@ router.get(
   "/lab/users",
   userMiddlewares.checkToken,
   labMiddlewares.lab_id,
-  userReadModels.getUsersByLab
+  accountCtrllrs.getUsersFromLab
 );
 
 /*

@@ -15,16 +15,16 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Read de laboratório:
-import labRead from "../../models/lab/labReadModels";
+const labRead = require("../../models/lab/labReadModels");
 
 // Módulo dos Models Write de laboratório:
-import labWrite from "../../models/lab/labWriteModels";
+const labWrite = require("../../models/lab/labWriteModels");
 
 // Módulo de verificação de permissões:
-import labPermissionChecks from "./labPermissionChecks";
+const labPermissionChecks = require("./labPermissionChecks");
 
 // O========================================================================================O
 
@@ -171,6 +171,6 @@ const createLabUser = async (req, res) => {
 
 // O========================================================================================O
 
-export default { createLab, createLabUser };
+module.exports = { createLab, createLabUser };
 
 // O========================================================================================O

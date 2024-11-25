@@ -13,7 +13,7 @@
 // O========================================================================================O
 
 // Importando conexão com o banco de dados:
-import { execute } from "../../utils/connection";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
@@ -22,7 +22,7 @@ const getElementsByLab = async (ID_lab) => {
   const query = "CALL GetElementsByLab(?);";
   const data = [ID_lab];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.length > 0) {
     return { status: true, data: result };
@@ -38,7 +38,7 @@ const getElementById = async (elementId) => {
   const query = "GetElementByID(?);";
   const data = [elementId];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.length > 0) {
     return { status: true, data: result[0] };
@@ -50,7 +50,7 @@ const getElementById = async (elementId) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   getElementsByLab,
   getElementById,
 };

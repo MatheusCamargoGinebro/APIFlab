@@ -16,22 +16,22 @@
 // Importando módulos:
 
 // Módulo de envio de emails:
-import nodeMailer from "nodemailer";
+const nodeMailer = require("nodemailer");
 
 // Módulo dos Models Write de usuário:
-import UserWrite from "../../models/user/userOperations/userWriteModels";
+const UserWrite = require("../../models/user/userOperations/userWriteModels");
 
 // Módulo dos Models Read de usuário:
-import UserRead from "../../models/user/userOperations/userReadModels";
+const UserRead = require("../../models/user/userOperations/userReadModels");
 
 // Módulo dos Models Read de Campus:
-import campusReadModels from "../../models/campus/campusReadModels";
+const campusReadModels = require("../../models/campus/campusReadModels");
 
 // Módulo dos Models de verificação de código de email:
-import MailCodeModels from "../../models/user/accountValidation/mailCodesModels";
+const MailCodeModels = require("../../models/user/accountValidation/mailCodesModels");
 
 // Módulo de tratamento de senhas:
-import passwordTreat from "../../utils/password_treatment";
+const passwordTreat = require("../../utils/password_treatment");
 
 // O========================================================================================O
 
@@ -234,6 +234,6 @@ const clearMailCodeList = async () => {
 // O========================================================================================O
 
 // Exportação do módulo:
-export default { sendMailCode, userRegister, clearMailCodeList };
+module.exports = { sendMailCode, userRegister, clearMailCodeList };
 
 // O========================================================================================O

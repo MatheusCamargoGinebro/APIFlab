@@ -14,7 +14,7 @@
 // Importando módulos:
 
 // Módulo dos Models Read de campus:
-import CampusRead from "../../models/campus/campusReadModels";
+const CampusRead = require("../../models/campus/campusReadModels");
 
 // O========================================================================================O
 
@@ -43,7 +43,7 @@ const getAllCampus = async (req, res) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   getAllCampus,
 };
 

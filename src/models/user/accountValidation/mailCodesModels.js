@@ -13,7 +13,7 @@
 // O====================================================================================O
 
 // Importando conexão com o banco de dados:
-import { execute } from "../../utils/connection";
+const connection = require("../../../utils/connection");
 
 // O====================================================================================O
 
@@ -23,7 +23,7 @@ const saveMailCode = async (MailCode) => {
 
   // const query = "INSERT INTO email_codes (Email, Checkcode) VALUES (?, ?);";
   const query = "CALL CreateMailCode(?, ?);";
-  const [result] = await execute(query, [email, code]);
+  const [result] = await connection.execute(query, [email, code]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Código de confirmação salvo" };
@@ -41,7 +41,7 @@ const saveMailCode = async (MailCode) => {
 const getMailCode = async (email) => {
   // const query = "SELECT Checkcode FROM email_codes WHERE Email = ?;";
   const query = "CALL GetMailCode(?);";
-  const [result] = await execute(query, [email]);
+  const [result] = await connection.execute(query, [email]);
 
   if (result.length > 0) {
     return { code: result[0].Checkcode, status: true };
@@ -56,7 +56,7 @@ const getMailCode = async (email) => {
 const deleteMailCode = async (email) => {
   // const query = "DELETE FROM email_codes WHERE Email = ?;";
   const query = "CALL DeleteMailCode(?);";
-  const [result] = await execute(query, [email]);
+  const [result] = await connection.execute(query, [email]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Código de confirmação deletado" };
@@ -82,6 +82,11 @@ const clearMailCodeList = async () => {
 // O====================================================================================O
 
 // Exportando funções de códigos de email:
-export default { saveMailCode, getMailCode, deleteMailCode, clearMailCodeList };
+module.exports = {
+  saveMailCode,
+  getMailCode,
+  deleteMailCode,
+  clearMailCodeList,
+};
 
 // O====================================================================================O

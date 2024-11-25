@@ -15,7 +15,7 @@
 // Importando módulos:
 
 // Módulo dos Models Read de usuário:
-import UserRead from "../../models/user/userOperations/userReadModels";
+const UserRead = require("../../models/user/userOperations/userReadModels");
 
 // O========================================================================================O
 
@@ -55,7 +55,7 @@ const checkUserCampusRelation = async (userId, campusId) => {
 
 // O========================================================================================O
 
-export default {
+module.exports = {
   checkUserToEdit,
   checkUserCampusRelation,
 };

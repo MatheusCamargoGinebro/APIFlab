@@ -15,10 +15,10 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Read de laboratório:
-import labRead from "../../models/lab/labReadModels";
+const labRead = require("../../models/lab/labReadModels");
 
 // O========================================================================================O
 
@@ -90,6 +90,6 @@ const getLabByUserLevel = async (req, res) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default { getLabs, getLabByUserLevel };
+module.exports = { getLabs, getLabByUserLevel };
 
 // O========================================================================================O

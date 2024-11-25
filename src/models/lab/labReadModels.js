@@ -18,14 +18,14 @@
 // O========================================================================================O
 
 // Importando módulos:
-import { execute } from "../../database/connection";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
 // Função para buscar um laboratório pelo ID no banco de dados:
 const getLabById = async (ID_lab) => {
   const query = "CALL GetLabByID(?)";
-  const [results] = await execute(query, [ID_lab]);
+  const [results] = await connection.execute(query, [ID_lab]);
 
   if (results.length > 0) {
     return {
@@ -45,7 +45,7 @@ const getLabById = async (ID_lab) => {
 // Função para buscar um laboratório pelo nome no banco de dados:
 const getLabByName = async (labName, campusId) => {
   const query = "CALL GetLabByName(?, ?)";
-  const [results] = await execute(query, [labName, campusId]);
+  const [results] = await connection.execute(query, [labName, campusId]);
 
   if (results.length > 0) {
     return {
@@ -65,7 +65,7 @@ const getLabByName = async (labName, campusId) => {
 // Função para buscar laboratórios de um usuário no banco de dados:
 const getLabsByUser = async (ID_usuario) => {
   const query = "CALL GetLabsByUser(?)";
-  const [results] = await execute(query, [ID_usuario]);
+  const [results] = await connection.execute(query, [ID_usuario]);
 
   if (results.length > 0) {
     return {
@@ -85,7 +85,7 @@ const getLabsByUser = async (ID_usuario) => {
 // Função para buscar todos os usuários de um laboratório no banco de dados:
 const getAllLabUsers = async (ID_lab) => {
   const query = "CALL GetAllLabUsers(?)";
-  const [results] = await execute(query, [ID_lab]);
+  const [results] = await connection.execute(query, [ID_lab]);
 
   if (results.length > 0) {
     return {
@@ -105,7 +105,7 @@ const getAllLabUsers = async (ID_lab) => {
 // Função para buscar usuários de um laboratório por nível no banco de dados:
 const getLabUsersByLevel = async (ID_lab, level) => {
   const query = "CALL GetLabUsersByLevel(?, ?)";
-  const [results] = await execute(query, [ID_lab, level]);
+  const [results] = await connection.execute(query, [ID_lab, level]);
 
   if (results.length > 0) {
     return {
@@ -125,7 +125,7 @@ const getLabUsersByLevel = async (ID_lab, level) => {
 // Função para buscar laboratórios de um usuário por nível no banco de dados:
 const getLabsByUserLevel = async (ID_usuario, level) => {
   const query = "CALL GetLabsByUserLevel(?, ?)";
-  const [results] = await execute(query, [ID_usuario, level]);
+  const [results] = await connection.execute(query, [ID_usuario, level]);
 
   if (results.length > 0) {
     return {
@@ -145,7 +145,7 @@ const getLabsByUserLevel = async (ID_usuario, level) => {
 // Função para buscar a relação entre um usuário e um laboratório no banco de dados:
 const getLabUserRelation = async (ID_lab, ID_usuario) => {
   const query = "CALL GetLabUserRelation(?, ?)";
-  const [results] = await execute(query, [ID_lab, ID_usuario]);
+  const [results] = await connection.execute(query, [ID_lab, ID_usuario]);
 
   if (results.length > 0) {
     return {
@@ -163,7 +163,7 @@ const getLabUserRelation = async (ID_lab, ID_usuario) => {
 // O========================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   getLabById,
   getLabByName,
   getLabsByUser,

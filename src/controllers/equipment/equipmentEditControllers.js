@@ -19,16 +19,16 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Write de equipamentos:
-import equipmentWrite from "../../models/equipment/equipmentWriteModels";
+const equipmentWrite = require("../../models/equipment/equipmentWriteModels");
 
 // Módulo dos Models Read de equipamentos:
-import equipmentRead from "../../models/equipment/equipmentReadModels";
+const equipmentRead = require("../../models/equipment/equipmentReadModels");
 
 // Módulo de verificação de permissões de laboratório:
-import labPermission from "../../controllers/lab/labPermissionChecks";
+const labPermission = require("../lab/labPermissionChecks");
 
 // O========================================================================================O
 
@@ -390,7 +390,7 @@ const editSupervisorLevel = async (req, res) => {
 // O========================================================================================O
 
 // Exportação dos módulos:
-export default {
+module.exports = {
   editName,
   editDescription,
   editTotalQuantity,

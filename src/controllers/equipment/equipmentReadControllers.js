@@ -15,13 +15,13 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Read de equipamentos químicos:
-import equipmentRead from "../../models/equipment/equipmentReadModels";
+const equipmentRead = require("../../models/equipment/equipmentReadModels");
 
 // Módulo de verificação de permissões de laboratório:
-import labPermission from "../../controllers/lab/labPermissionChecks";
+const labPermission = require("../../controllers/lab/labPermissionChecks");
 
 // O========================================================================================O
 
@@ -123,7 +123,7 @@ const getEquipmentsByLabId = async (req, res) => {
 // O========================================================================================O
 
 // Exportação dos módulos:
-export default {
+module.exports = {
   getEquipmentById,
   getEquipmentsByLabId,
 };

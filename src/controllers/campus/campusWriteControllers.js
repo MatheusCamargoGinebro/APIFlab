@@ -16,16 +16,16 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Read de instituto:
-import campusRead from "../../models/campus/campusReadModels";
+const campusRead = require("../../models/campus/campusReadModels");
 
 // Módulo dos Models Write de instituto:
-import campusWrite from "../../models/campus/campusWriteModels";
+const campusWrite = require("../../models/campus/campusWriteModels");
 
 // Módulo de verificação de permissões:
-import campusPermissionChecks from "./campusPermissionChecks";
+const campusPermissionChecks = require("./campusPermissionChecks");
 
 // O========================================================================================O
 
@@ -166,7 +166,7 @@ const editCampusState = async (request, response) => {
 // O========================================================================================O
 
 // Exportação das funções:
-export default {
+module.exports = {
   registerCampus,
   editCampusName,
   editCampusState,

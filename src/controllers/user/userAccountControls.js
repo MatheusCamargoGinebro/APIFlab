@@ -17,19 +17,19 @@
 // Importando módulos:
 
 // Módulo de Token JWT:
-import JWT from "jsonwebtoken";
+const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Read de usuário:
-import UserRead from "../../models/user/userOperations/userReadModels";
+const UserRead = require("../../models/user/userOperations/userReadModels");
 
 // Módulo de tratamento de senhas:
-import passwordTreat from "../../utils/password_treatment";
+const passwordTreat = require("../../utils/password_treatment");
 
 // Módulo de Blacklist de tokens:
-import tokenBlackListModels from "../../models/user/accountValidation/tokenBlacklistModels";
+const tokenBlackListModels = require("../../models/user/accountValidation/tokenBlacklistModels");
 
 // Módulo de MailCode:
-import mailCodesModels from "../../models/user/accountValidation/mailCodesModels";
+const mailCodesModels = require("../../models/user/accountValidation/mailCodesModels");
 
 // O========================================================================================O
 
@@ -215,7 +215,7 @@ const getUsersFromLab = async (req, res) => {
 // O========================================================================================O
 
 // Exportando módulos:
-export default {
+module.exports = {
   userLogin,
   userLogout,
   clearBlackList,

@@ -19,7 +19,7 @@
 // O========================================================================================O
 
 // Importação de módulos:
-import { execute } from "../database/database";
+const connection = require("../../utils/connection");
 
 // O========================================================================================O
 
@@ -46,7 +46,7 @@ const createEquipment = async (newEquipment) => {
     supervisorLevel,
     labId,
   ];
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Equipamento químico criado com sucesso!" };
@@ -62,7 +62,7 @@ const removeEquipment = async (equipmentId) => {
   const query = "CALL DeleteEquipment(?);";
   const data = [equipmentId];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -81,7 +81,7 @@ const editName = async (equipmentId, newName) => {
   const query = "CALL EditEquipmentName(?, ?);";
   const data = [equipmentId, newName];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -103,7 +103,7 @@ const editDescription = async (equipmentId, newDescription) => {
   const query = "CALL EditEquipmentDescription(?, ?);";
   const data = [equipmentId, newDescription];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -125,7 +125,7 @@ const editTotalQuantity = async (equipmentId, NewtotalQuantity) => {
   const query = "CALL EditEquipmentTotalQuantity(?, ?);";
   const data = [equipmentId, NewtotalQuantity];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -147,7 +147,7 @@ const editQuality = async (equipmentId, newQuality) => {
   const query = "CALL EditEquipmentQuality(?, ?);";
   const data = [equipmentId, newQuality];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -169,7 +169,7 @@ const editImage = async (equipmentId, Newimage) => {
   const query = "CALL EditEquipmentImage(?, ?);";
   const data = [equipmentId, Newimage];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -188,7 +188,7 @@ const editSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
   const query = "CALL EditEquipmentSupervisorLevel(?, ?);";
   const data = [equipmentId, newSupervisorLevel];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.affectedRows > 0) {
     return {
@@ -207,7 +207,7 @@ const editSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
 // O========================================================================================O
 
 // Exportação dos módulos:
-export default {
+module.exports = {
   createEquipment,
   removeEquipment,
   editName,

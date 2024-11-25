@@ -150,7 +150,7 @@ const lab_adminLevel = (request, response, next) => {
 
 // O============================================================================================O
 
-export default {
+module.exports = {
   lab_name,
   lab_capacity,
   lab_id,

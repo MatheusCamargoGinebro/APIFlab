@@ -163,7 +163,7 @@ const id_campus = (request, response, next) => {
 // O============================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   campus_name,
   campus_state,
   id_campus,

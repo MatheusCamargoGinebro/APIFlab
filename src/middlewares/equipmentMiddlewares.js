@@ -265,7 +265,7 @@ const equipment_id = (request, response, next) => {
 // O============================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   equipment_name,
   equipment_description,
   equipment_totalQuantity,

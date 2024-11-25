@@ -19,7 +19,7 @@
 // O====================================================================================O
 
 // Importando conexão com o banco de dados:
-import { execute } from "../../utils/connection";
+const connection = require("../../../utils/connection");
 
 // O====================================================================================O
 
@@ -31,7 +31,7 @@ const registerUser = async (newUser) => {
   // Salvando no banco de dados:
 
   const query = "CALL CreateUser(?, ?, ?, ?, ?, ?, ?);";
-  const [result] = await execute(query, [
+  const [result] = await connection.execute(query, [
     nome,
     email,
     senha,
@@ -54,7 +54,7 @@ const registerUser = async (newUser) => {
 const editUserName = async (userID, newName) => {
   // Editando no banco de dados:
   const query = "CALL EditUserName(?, ?);";
-  const [result] = await execute(query, [userID, newName]);
+  const [result] = await connection.execute(query, [userID, newName]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Nome atualizado" };
@@ -69,7 +69,7 @@ const editUserName = async (userID, newName) => {
 const editUserEmail = async (userID, newEmail) => {
   // Editando no banco de dados:
   const query = "CALL EditUserEmail(?, ?);";
-  const [result] = await execute(query, [userID, newEmail]);
+  const [result] = await connection.execute(query, [userID, newEmail]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Email atualizado" };
@@ -84,7 +84,7 @@ const editUserEmail = async (userID, newEmail) => {
 const editUserPassword = async (userID, newPassword) => {
   // Editando no banco de dados:
   const query = "CALL EditUserPassword(?, ?);";
-  const [result] = await execute(query, [userID, newPassword]);
+  const [result] = await connection.execute(query, [userID, newPassword]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Senha atualizada" };
@@ -99,7 +99,7 @@ const editUserPassword = async (userID, newPassword) => {
 const editUserPic = async (userID, newPic) => {
   // Editando no banco de dados:
   const query = "CALL EditUserPic(?, ?);";
-  const [result] = await execute(query, [userID, newPic]);
+  const [result] = await connection.execute(query, [userID, newPic]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Foto de perfil atualizada" };
@@ -114,7 +114,7 @@ const editUserPic = async (userID, newPic) => {
 const editUserType = async (userID, newType) => {
   // Editando no banco de dados:
   const query = "CALL EditUserType(?, ?);";
-  const [result] = await execute(query, [userID, newType]);
+  const [result] = await connection.execute(query, [userID, newType]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Tipo atualizada" };
@@ -129,7 +129,7 @@ const editUserType = async (userID, newType) => {
 const editUserAdminLevel = async (userID, newAdminLevel) => {
   // Editando no banco de dados:
   const query = "CALL EditUserCampusAdminLevel(?, ?);";
-  const [result] = await execute(query, [userID, newAdminLevel]);
+  const [result] = await connection.execute(query, [userID, newAdminLevel]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Nível de administração atualizado" };
@@ -147,7 +147,7 @@ const editUserAdminLevel = async (userID, newAdminLevel) => {
 const editUserLabLevel = async (userID, LabID, newLevel) => {
   // Editando no banco de dados:
   const query = "CALL EditUserLabLevel(?, ?, ?);";
-  const [result] = await execute(query, [userID, LabID, newLevel]);
+  const [result] = await connection.execute(query, [userID, LabID, newLevel]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Nível de laboratório atualizado" };
@@ -159,7 +159,7 @@ const editUserLabLevel = async (userID, LabID, newLevel) => {
 // O====================================================================================O
 
 // Exportando funções:
-export default {
+module.exports = {
   registerUser,
   editUserName,
   editUserEmail,
