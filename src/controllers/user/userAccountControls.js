@@ -8,7 +8,8 @@
     Funções relacionadas ao login e logout de usuário:
     - [X] UserLogin;
     - [X] UserLogout;
-    - [X] ClearTokenList;
+    - [X] ClearBlackList;
+    - [X] ClearMailCodeList;
 */
 
 // O========================================================================================O
@@ -26,6 +27,9 @@ import passwordTreat from "../../utils/password_treatment";
 
 // Módulo de Blacklist de tokens:
 import tokenBlackListModels from "../../models/user/accountValidation/tokenBlacklistModels";
+
+// Módulo de MailCode:
+import mailCodesModels from "../../models/user/accountValidation/mailCodesModels";
 
 // O========================================================================================O
 
@@ -125,11 +129,99 @@ const clearBlackList = async () => {
 
 // O========================================================================================O
 
+// Função para limpar a lista de códigos de email:
+const clearMailCodeList = async () => {
+  const mailCodes = await mailCodesModels.clearMailCodeList();
+
+  return mailCodes;
+};
+
+// O========================================================================================O
+
+// Função para obter os dados de um usuário:
+const getUserData = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando ID do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando dados do usuário:
+  const result = await UserRead.getUserById(userId);
+
+  if (result.status === false) {
+    return res.status(404).json({
+      message: "Usuário não encontrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    userData: result.userData,
+  });
+};
+
+// O========================================================================================O
+
+// Função para obter os usuários de um laboratório:
+const getUsersFromLab = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando ID do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  const { lab_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para acessar os usuários do laboratório:
+  const userCheck = await labPermission.checkUserToManipulate(
+    userId,
+    lab_id,
+    3
+  );
+
+  if (userCheck.status === false) {
+    return res.status(401).json({
+      status: false,
+      message: "Usuário não autorizado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando usuários do laboratório:
+  const result = await UserRead.getUsersByLab(lab_id);
+
+  if (result.status === false) {
+    return res.status(404).json({
+      status: false,
+      message: "Não há usuários no laboratório.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    users: result.users,
+  });
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 export default {
   userLogin,
   userLogout,
   clearBlackList,
+  clearMailCodeList,
+  getUserData,
+  getUsersFromLab,
 };
 
 // O========================================================================================O

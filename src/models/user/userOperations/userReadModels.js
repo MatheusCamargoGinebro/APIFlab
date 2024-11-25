@@ -9,6 +9,9 @@
     - [X] getUserById;
     - [X] getUserByEmail;
     - [X] getUserByName;
+    - [X] getUsersByCampus;
+    - [X] getUsersByLab;
+    - [X] login;
 */
 
 // O====================================================================================O
@@ -77,6 +80,20 @@ const getUsersByCampus = async (ID_campus) => {
 
 // O====================================================================================O
 
+// Função para pegar todos os usuários de um laboratório:
+const getUsersByLab = async (ID_lab) => {
+  const query = "CALL GetUsersByLab(?);";
+  const [result] = await execute(query, [ID_lab]);
+
+  if (result.length > 0) {
+    return { status: true, userData: result };
+  } else {
+    return { status: false, userData: null };
+  }
+};
+
+// O====================================================================================O
+
 // Função para realizar login:
 const login = async (email, senha) => {
   const query = "CALL Login(?, ?);";
@@ -97,6 +114,7 @@ export default {
   getUserByEmail,
   getUserByName,
   getUsersByCampus,
+  getUsersByLab,
   login,
 };
 

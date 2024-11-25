@@ -61,14 +61,14 @@ const getLabByUserLevel = async (req, res) => {
   const token = req.headers["x-access-token"];
   const userId = JWT.decode(token).userId;
 
-  const { user_adminLevel } = req.body;
+  const { lab_adminLevel } = req.body;
 
   /*-----------------------------------------------------*/
 
   // Listando os laboratórios em que o usuário possui determinado nível de acesso:
   const GetLabByUserLevel = await labRead.getLabsByUserLevel(
     userId,
-    user_adminLevel
+    lab_adminLevel
   );
 
   if (GetLabByUserLevel.status === false) {

@@ -354,7 +354,7 @@ SELECT
     elementos.EstadoFisico AS physicalState,
     elementos.Imagem AS image,
     elementos.Validade AS expirationDate,
-    elementos.SupervisorLevel AS supervisorLevel
+    elementos.SupervisorLevel AS supervisorLevel,
     elementos.ID_lab AS labId
 FROM
     elementos
@@ -399,7 +399,7 @@ SELECT
     equipamentos.QuantidadeDisponivel AS availableQuantity,
     equipamentos.Qualidade AS quality,
     equipamentos.Imagem AS image,
-    equipamentos.SupervisorLevel AS supervisorLevel
+    equipamentos.SupervisorLevel AS supervisorLevel,
     equipamentos.ID_lab AS labId
 FROM
     equipamentos
@@ -471,7 +471,7 @@ DROP PROCEDURE IF EXISTS GetUserByID;
 DELIMITER $$
 CREATE PROCEDURE GetUserByID (IN p_ID_usuario INT) BEGIN
 SELECT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,

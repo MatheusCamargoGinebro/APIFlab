@@ -9,6 +9,7 @@
     - [X] lab_name;
     - [X] lab_capacity;
     - [X] lab_id;
+    - [X] lab_adminLevel;
 */
 
 // O============================================================================================O
@@ -110,10 +111,50 @@ const lab_id = (request, response, next) => {
 
 // O============================================================================================O
 
+// Função de verificação do nível de administração do laboratório:
+const lab_adminLevel = (request, response, next) => {
+  if (
+    request.body.lab_adminLevel === undefined ||
+    request.body.lab_adminLevel === null ||
+    !request.body.lab_adminLevel
+  ) {
+    return response.status(400).send({
+      message: "Nível de administração é obrigatório",
+      error_at: "lab_adminLevel",
+    });
+  }
+
+  if (typeof request.body.lab_adminLevel !== "number") {
+    return response.status(400).send({
+      message: "Nível de administração deve ser um número",
+      error_at: "lab_adminLevel",
+    });
+  }
+
+  if (request.body.lab_adminLevel < 1) {
+    return response.status(400).send({
+      message: "O nível de administração deve ser de pelo menos 1",
+      error_at: "lab_adminLevel",
+    });
+  }
+
+  if (request.body.lab_adminLevel > 3) {
+    return response.status(400).send({
+      message: "O nível de administração deve ser de no máximo 3",
+      error_at: "lab_adminLevel",
+    });
+  }
+
+  next();
+};
+
+// O============================================================================================O
+
 export default {
   lab_name,
   lab_capacity,
   lab_id,
+  lab_adminLevel,
 };
 
 // O============================================================================================O

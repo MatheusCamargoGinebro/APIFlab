@@ -6,12 +6,12 @@
     O=========================================================O
 
     Funções relacionadas a edição de usuário:
-    - [X] EditUserName;
-    - [X] EditUserEmail;
-    - [X] EditUserPassword;
+    - [X] editUserName;
+    - [X] editUserEmail;
+    - [X] editUserPassword;
     - [X] editUserPic;
-    - [x] EditUserType;
-    - [x] EditUserCampusLevel;
+    - [x] editUserType;
+    - [x] editUserCampusLevel;
 */
 
 // O========================================================================================O
@@ -300,7 +300,7 @@ const editUserCampusLevel = async (req, res) => {
 // O========================================================================================O
 
 // Exportando módulos:
-export {
+export default {
   editUserName,
   editUserEmail,
   editUserPassword,

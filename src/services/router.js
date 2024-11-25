@@ -1,93 +1,123 @@
-/*
+// O========================================================================================O
+
+/* 
   O======================================================O
   |    Arquivo de configuração das rotas da aplicação    |
   O======================================================O
+
+
 */
 
 // O========================================================================================O
 
 // Importando o módulo de roteamento do express:
-const express = require("express");
-const router = express.Router();
-module.exports = router;
+import { Router } from "express";
+const router = Router();
+export default router;
 
 // O========================================================================================O
 
-/*
-  O=================================================O
-  |    Importação dos controllers e middlewares    |
-  O=================================================O
-*/
+// Importando Middlewares:
+
+// user:
+import userMiddlewares from "../middlewares/userMiddlewares";
+
+// lab:
+import labMiddlewares from "../middlewares/labMiddlewares";
+
+// institute:
+import campusMiddlewares from "../middlewares/campusMiddlewares";
+
+// equipment:
+import equipmentMiddlewares from "../middlewares/equipmentMiddlewares";
+
+// element:
+import elementMiddlewares from "../middlewares/elementMiddlewares";
 
 // O========================================================================================O
 
-// Importando os controllers e middlewares de usuários:
-const userControllers = require("../controllers/user/user_controllers");
-const userMiddlewares = require("../middlewares/user/user_middlewares");
+// Importando Controllers:
 
-// Importando os controllers e middlewares de tokens:
-const tokenMiddlewares = require("../middlewares/token/token_middlewares");
-const tokenControllers = require("../controllers/token/token_controllers");
+// user:
+import accountCtrllrs from "../controllers/user/userAccountControls";
+import userEditCtrllrs from "../controllers/user/userEditControllers";
+import userRegisterCtrllrs from "../controllers/user/userRegisterControllers";
 
-// Importando os controllers e middlewares de institutos:
-const instituteMiddlewares = require("../middlewares/institute/institute_middlewares");
-const instituteControllers = require("../controllers/institute/institute_controllers");
+// lab:
+import labCreateCtrllrs from "../controllers/lab/labCreateControllers";
+import labEditCtrllrs from "../controllers/lab/labEditControllers";
+import labReadCtrllrs from "../controllers/lab/labReadControllers";
 
-// Importando os controllers e middlewares de laboratórios:
-const labMiddlewares = require("../middlewares/lab/lab_middlewares");
-const labControllers = require("../controllers/lab/lab_controllers");
+// institute:
+import campusWriteCtrllrs from "../controllers/campus/campusWriteControllers";
+import campusReadCtrllrs from "../controllers/campus/campusReadControllers";
 
-// Importando os controllers e middlewares de elementos:
-const elementMiddlewares = require("../middlewares/element/element_middlewares");
-const elementControllers = require("../controllers/element/element_controllers");
+// equipment:
+import equipmentEditCtrllrs from "../controllers/equipment/equipmentEditControllers";
+import equipmentReadCtrllrs from "../controllers/equipment/equipmentReadControllers";
+import equipmentWriteCtrllrs from "../controllers/equipment/equipmentWriteControllers";
 
-// Importando os controllers e middlewares de equipamentos:
-const equipmentMiddlewares = require("../middlewares/equipment/equipment_middlewares");
-const equipmentControllers = require("../controllers/equipment/equipment_controllers");
-
-// O========================================================================================O
-
-/*
-  O===========================================O
-  |    Configuração de sistemas de limpeza    |
-  O===========================================O
-*/
+// element:
+import elementEditCtrllrs from "../controllers/element/elementEditControllers";
+import elementReadCtrllrs from "../controllers/element/elementReadControllers";
+import elementWriteCtrllrs from "../controllers/element/elementWriteControllers";
+import userReadModels from "../models/user/userOperations/userReadModels";
 
 // O========================================================================================O
 
-// A cada 30seg, limpar a blacklist de tokens:
-setInterval(tokenControllers.clearBlackList, 1800000);
+// Configuração de sistemas de limpeza:
+
+// A cada 60 segundos, limpar a blacklist de tokens, removendo os tokens já inválidos:
+setInterval(accountCtrllrs.clearBlackList, 60000);
 
 // A cada 24h, limpar os códigos de verificação de email:
-setInterval(tokenControllers.clearMailCodeList, 86400000);
+setInterval(accountCtrllrs.clearMailCodeList, 86400000);
 
 // O========================================================================================O
 
-/*
-  O==================================================O
-  |    Configuração de rotas de usuários e tokens    |
-  O==================================================O
+/* 
+  O=============================================O
+  |    Tela 1 - Login e Registro de Usuários    |
+  O=============================================O
 
-  Usuário:
-  - [X] Enviar código de verificação por email;
-  - [X] Registrar usuário;
-  - [X] Logar como usuário;
-  - [X] Editar Informações do usuário:
-    - [X] Editar nome;
-    - [X] Editar email;
-    - [X] Editar senha;
-    - [X] Editar foto de perfil;
-  - [X] Deslogar;
+  - Registro:
+    - [X] Recuperar (para exibir) informações dos campi do banco de dados;
+    - [X] Registrar um código de verificação de email no banco de dados e enviar o código para o email do usuário;
+    - [X] Registrar um usuário no banco de dados;
+
+  - Login:
+    - [X] Logar um usuário no sistema;
 */
 
 // O========================================================================================O
 
-// Rota de envio de código de verificação por email:
+// +---------------------------------------------------------+
+
+// Rota de listagem de campi:
+router.get("/campus/list", campusReadCtrllrs.getAllCampus);
+
+/*
+  Body:
+  - Nenhum.
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de registro de código de verificação de email:
 router.post(
   "/user/sendmailcode",
   userMiddlewares.user_email,
-  userControllers.sendMailCode
+  userRegisterCtrllrs.sendMailCode
 );
+
+/*
+  Body:
+  {
+    "user_email": "mail@aluno.ifsp.edu.br"
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de registro de usuário:
 router.post(
@@ -95,417 +125,865 @@ router.post(
   userMiddlewares.user_name,
   userMiddlewares.user_email,
   userMiddlewares.user_password,
-  userMiddlewares.user_tipo,
-  instituteMiddlewares.id_campus,
-  userMiddlewares.user_mail_code,
-  userControllers.userRegister
+  userMiddlewares.user_profpic,
+  userMiddlewares.user_type,
+  userMiddlewares.user_campusId,
+  userMiddlewares.validationCode,
+  userRegisterCtrllrs.userRegister
 );
+
+/* 
+  Body:
+  {
+    "user_name": "João",
+    "user_email": "mail@aluno.ifsp.edu.br",
+    "user_password": "J0@o_Passw0rd!123",
+    "user_profpic": "",
+    "user_type": 1,
+    "user_campusId": 1,
+    "validationCode": "12345"
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de login de usuário:
 router.post(
   "/user/login",
   userMiddlewares.user_email,
   userMiddlewares.user_password,
-  userControllers.userLogin
+  accountCtrllrs.userLogin
 );
+
+/*
+  Body:
+  {
+    "user_email": "mail@aluno.ifsp.edu.br",
+    "user_password": "J0@o_Passw0rd!123"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// O========================================================================================O
+
+/* 
+  O=====================================O
+  |    Tela 2 - Tela base do sistema    |
+  O=====================================O
+
+  - Usuário:
+  - [X] Recuperar dados do usuário a partir do token;
+
+  - Configurações de usuário:
+    - [X] Editar nome do usuário;
+    - [X] Editar email do usuário;
+    - [X] Editar senha do usuário;
+    - [X] Editar foto de perfil do usuário;
+    - [X] Editar tipo de usuário (professor, aluno ou outro);
+
+  - Logout:
+    - [X] Deslogar o usuário do sistema;
+*/
+
+// O========================================================================================O
+
+// +---------------------------------------------------------+
+
+// Rota de recuperação de dados do usuário a partir do token:
+router.get(
+  "/user/data",
+  userMiddlewares.checkToken,
+  accountCtrllrs.getUserData
+);
+
+/*
+  Body:
+  - Nenhum.
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de nome de usuário:
+router.put(
+  "/user/edit/name",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_name,
+  userEditCtrllrs.editUserName
+);
+
+/*
+  Body:
+  {
+    "user_name": "João"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de email de usuário:
+router.put(
+  "/user/edit/email",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_email,
+  userMiddlewares.validationCode,
+  userEditCtrllrs.editUserEmail
+);
+
+/*
+  Body:
+  {
+    "user_email": "newmail@aluno.ifsp.edu.br",
+    "validationCode": "12345"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de senha de usuário:
+router.put(
+  "/user/edit/password",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_password,
+  userEditCtrllrs.editUserPassword
+);
+
+/*
+  Body:
+  {
+    "user_password": "New_P@ssw0rd!123"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de foto de perfil de usuário:
+router.put(
+  "/user/edit/picture",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_profpic,
+  userEditCtrllrs.editUserPic
+);
+
+/*
+  Body:
+  {
+    "user_profpic": "<new_profile_picture_in_text_format>"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de tipo de usuário:
+router.put(
+  "/user/edit/type",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_type,
+  userEditCtrllrs.editUserType
+);
+
+/*
+  Body:
+  {
+    "user_type": 2
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de logout de usuário:
 router.post(
   "/user/logout",
-  tokenMiddlewares.CheckToken,
-  userControllers.userLogout
+  userMiddlewares.checkToken,
+  accountCtrllrs.userLogout
 );
 
-// Rota de edição do nome de usuário:
-router.put(
-  "/user/edit/name",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.user_name,
-  userControllers.editUserName
-);
+/*
+  Body:
+  - Nenhum.
+*/
 
-// Rotas de edição de email de usuário:
-router.put(
-  "/user/edit/email",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.user_email,
-  userMiddlewares.user_mail_code,
-  userControllers.editUserEmail
-);
-
-// Rotas de edição de senha de usuário:
-router.put(
-  "/user/edit/password",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.user_password,
-  userControllers.editUserPassword
-);
-
-// Rotas de edição de foto de perfil de usuário:
-router.put(
-  "/user/edit/picture",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.profile_picture,
-  userControllers.editUserProfilePicture
-);
+// +---------------------------------------------------------+
 
 // O========================================================================================O
 
 /*
-  O==================================================O
-  |    Configuração de rotas de institutos e labs    |
-  O==================================================O
+  O======================================O
+  |    Tela 3 - Lista de laboratórios    |
+  O======================================O
 
-  Instituto:
-  - [X] Registrar instituto;
-  - [X] Administradores:
-    - [X] Adicionar administrador ao instituto;
-    - [X] Remover administrador do instituto;
-  - [X] Editar informações do instituto:
-    - [X] Editar nome;
-    - [X] Editar estado;
-  - [~] Deletar instituto;
+  - Inicio:
+  - [X] Listar laboratórios em que o usuário possui acesso;
+  - [X] Listar laboratórios em que o usuário possui tal nível de acesso;
+  - [X] Registrar um laboratório no banco de dados;
+
+  - Laboratório:
+  - [X] Gerar relatório de acesso ao laboratório;
+  - [X] Gerar relatório de inventário do laboratório;
+
+  - Editar informações do laboratório:
+    - [X] Editar sala (nome) do laboratório;
+    - [X] Editar capacidade do laboratório;
+
+  - Sessão:
+    - [X] Marcar uma sessão de uso de laboratório no banco de dados;
+    - [X] Listar sessões de uso de laboratório;
+    - [X] Finalizar uma sessão de uso de laboratório no banco de dados;
 */
 
 // O========================================================================================O
 
-// Rota de registro de instituto:
-router.post(
-  "/institute/register",
-  instituteMiddlewares.campus_name,
-  instituteMiddlewares.campus_state,
-  instituteControllers.registerCampus
-);
+// +---------------------------------------------------------+
 
-// Rota para adicionar um administrador ao instituto:
-router.put(
-  "/institute/admin/",
-  tokenMiddlewares.CheckToken,
-  instituteMiddlewares.id_campus,
-  userMiddlewares.user_id,
-  instituteControllers.addAdminUser
-);
-
-// Rota para remover um administrador do instituto:
-router.delete(
-  "/institute/admin/",
-  tokenMiddlewares.CheckToken,
-  instituteMiddlewares.id_campus,
-  userMiddlewares.user_id,
-  instituteControllers.removeAdminUser
-);
-
-// Rota para editar o nome do instituto:
-router.put(
-  "/institute/edit/name",
-  tokenMiddlewares.CheckToken,
-  instituteMiddlewares.campus_name,
-  instituteMiddlewares.id_campus,
-  instituteControllers.editCampusName
-);
-
-// Rota para editar o estado do instituto:
-router.put(
-  "/institute/edit/state",
-  tokenMiddlewares.CheckToken,
-  instituteMiddlewares.campus_state,
-  instituteMiddlewares.id_campus,
-  instituteControllers.editCampusState
-);
-
-// O========================================================================================O
+// Rota de listagem de laboratórios em que o usuário possui acesso:
+router.get("/lab/list/all", userMiddlewares.checkToken, labReadCtrllrs.getLabs);
 
 /*
-  O=============================================O
-  |    Configuração de rotas de laboratórios    |
-  O=============================================O
-
-  Laboratório:
-  - [X] Registrar laboratório;
-  - [X] Adicionar usuário ao laboratório;
-  - [X] Editar informações do laboratório:
-    - [X] Editar sala;
-    - [X] Editar capacidade;
-  - [X] Administradores:
-    - [X] Adicionar administrador ao laboratório;
-    - [X] Remover administrador do laboratório;
-  - [X] Listar:
-    - [X] Listar laboratórios em que o usuário possui acesso;
-    - [X] Listar laboratórios em que o usuário possui tal nível de acesso;
-  - [~] Deletar laboratório;
-
+  Body:
+  - Nenhum.
 */
 
-// O========================================================================================O
+// +---------------------------------------------------------+
+
+// Rota de listagem de laboratórios em que o usuário possui tal nível de acesso:
+router.get(
+  "/lab/list/level",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_adminLevel,
+  labReadCtrllrs.getLabByUserLevel
+);
+
+/*
+  Body:
+  {
+    "lab_adminLevel": 2
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de registro de laboratório:
-router.post("/lab/register",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkSala,
-  labMiddlewares.checkCapacidade,
-  labControllers.CreateLab
+router.post(
+  "/lab/register",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_name,
+  labMiddlewares.lab_capacity,
+  labCreateCtrllrs.createLab
 );
 
-router.post("/lab/adduser",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.user_id,
-  labMiddlewares.checkLabId,
-  labControllers.CreateLabUser
-);
+/*
+  Body:
+  {
+    "lab_name": "A106",
+    "lab_capacity": 20
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de sala de laboratório:
-router.put("/lab/edit/sala",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkSala,
-  labMiddlewares.checkLabId,
-  labControllers.EditLabName
+router.put(
+  "/lab/edit/name",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_name,
+  labMiddlewares.lab_id,
+  labEditCtrllrs.editLabName
 );
+
+/*
+  Body:
+  {
+    "lab_name": "A107",
+    "lab_id": 1
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de capacidade de laboratório:
-router.put("/lab/edit/capacidade",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkCapacidade,
-  labMiddlewares.checkLabId,
-  labControllers.EditLabCapacity
+router.put(
+  "/lab/edit/capacity",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_capacity,
+  labMiddlewares.lab_id,
+  labEditCtrllrs.editLabCapacity
 );
 
-// Rota de adicionar administrador ao laboratório:
-router.put("/lab/edit/admin",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.user_id,
-  labMiddlewares.checkLabId,
-  labControllers.addAdmin
-);
+/*
+  Body:
+  {
+    "lab_capacity": 25,
+    "lab_id": 1
+  }
+*/
 
-// Rota de remover administrador do laboratório:
-router.delete("/lab/edit/admin",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.user_id,
-  labMiddlewares.checkLabId,
-  labControllers.removeAdmin
-);
+// +---------------------------------------------------------+
 
-// Rota de listar laboratórios em que o usuário possui acesso:
-router.get("/lab/list/all",
-  tokenMiddlewares.CheckToken,
-  labControllers.GetLabs
-);
+// Rota para marcar uma sessão de uso de laboratório no banco de dados:
 
-// Rota de listar laboratórios em que o usuário possui tal nível de acesso:
-router.get("/lab/list/level",
-  tokenMiddlewares.CheckToken,
-  userMiddlewares.adminLevel,
-  labControllers.GetLabByUserLevel
-);
+// +---------------------------------------------------------+
 
+// Rota para listar sessões de uso de laboratório:
+
+// +---------------------------------------------------------+
+
+// Rota para finalizar uma sessão de uso de laboratório no banco de dados:
+
+// +---------------------------------------------------------+
 
 // O========================================================================================O
 
 /*
   O==========================================O
-  |    Configuração de rotas de elementos    |
+  |    Tela 4 - Inventário do laboratório    |
   O==========================================O
 
-  Elemento:
-  - [X] Registrar elemento em laboratório;
-  - [X] Remover elemento de laboratório;
-  - [X] Editar informações do elemento:
-    - [X] Editar nome;
-    - [X] Editar quantidade;
-    - [X] Editar peso molecular;
-    - [X] Editar numero_cas;
-    - [X] Editar numero_ec;
-    - [X] Editar estado_fisico;
-    - [X] editar imagem;
-  - [X] Listar:
-    - [X] Listar elementos de determinado laboratório;
+  - Inicio:
+  - [X] Listar equipamentos do laboratório;
+  - [X] Listar elementos do laboratório;
+
+  - Equipamento:
+  - [X] Registrar um equipamento no banco de dados;
+  - Editar informações de um equipamento:
+    - [X] Editar nome do equipamento;
+    - [X] Editar descrição do equipamento;
+    - [X] Editar quantidade total do equipamento;
+    - [X] Editar qualidade do equipamento;
+    - [X] Editar imagem do equipamento;
+    - [X] Editar o nível de supervisão do equipamento;
+  - [X] Deletar um equipamento do banco de dados;
+
+  - Elemento:
+  - [X] Registrar um elemento no banco de dados;
+  - Editar informações de um elemento:
+    - [X] Editar nome do elemento;
+    - [X] Editar quantidade do elemento;
+    - [X] Editar descrição do elemento;
+    - [X] Editar peso molecular do elemento;
+    - [X] Editar número CAS do elemento;
+    - [X] Editar número EC do elemento;
+    - [X] Editar estado físico do elemento;
+    - [X] Editar imagem do elemento;
+    - [X] Editar a validade do elemento;
+    - [X] Editar o nível de supervisão do elemento;
+  - [X] Deletar um elemento do banco de dados;
 */
 
 // O========================================================================================O
 
-// Rota de registro de elemento:
-router.post("/element/register",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkNome,
-  elementMiddlewares.checkQuantidade,
-  elementMiddlewares.checkDescricao,
-  elementMiddlewares.checkPesoMolecular,
-  elementMiddlewares.checkNumeroCAS,
-  elementMiddlewares.checkNumeroEC,
-  elementMiddlewares.checkEstadoFisico,
-  elementMiddlewares.checkImage,
-  elementControllers.createElement,
-);
+// +---------------------------------------------------------+
 
-// Rota de remoção de elemento:
-router.delete("/element/remove",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementControllers.removeElement,
+// Rota de listagem de equipamentos do laboratório:
+router.get(
+  "/equipment/list",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_labId,
+  equipmentReadCtrllrs.getEquipmentsByLabId
 );
-
-// Rota de edição de nome de elemento:
-router.put("/element/edit/name",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkNome,
-  elementControllers.editName,
-);
-
-// Rota de edição de quantidade de elemento:
-router.put("/element/edit/quantity",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkQuantidade,
-  elementControllers.editQuantity,
-);
-
-// Rota de edição de peso molecular de elemento:
-router.put("/element/edit/molarMass",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkPesoMolecular,
-  elementControllers.editMolarMass,
-);
-
-// Rota de edição de número CAS de elemento:
-router.put("/element/edit/cas",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkNumeroCAS,
-  elementControllers.editCasNumber,
-);
-
-// Rota de edição de número EC de elemento:
-router.put("/element/edit/ec",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkNumeroEC,
-  elementControllers.editEcNumber,
-);
-
-// Rota de edição de estado físico de elemento:
-router.put("/element/edit/physicalstate",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkEstadoFisico,
-  elementControllers.editPhysicalState,
-);
-
-// Rota de edição de imagem de elemento:
-router.put("/element/edit/image",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  elementMiddlewares.checkElementID,
-  elementMiddlewares.checkImage,
-  elementControllers.editImage,
-);
-
-// Rota de listagem de elementos de determinado laboratório:
-router.get("/element/list",
-  labMiddlewares.checkLabId,
-  elementControllers.getElementsByLabId,
-);
-
-// O========================================================================================O
 
 /*
-  O=============================================O
-  |    Configuração de rotas de equipamentos    |
-  O=============================================O
-
-  Equipamento:
-    [] Registrar equipamento em laboratório;
-    [] Deletar equipamento;
-    [] Editar informações do equipamento:
-      [] Editar nome;
-      [] Editar descrição;
-      [] Editar QuantidadeTotal;
-      [] Editar Qualidade;
-      [] Editar imagem;
-    [] Listar:
-      [] Listar equipamentos de determinado laboratório;
+  Body:
+  {
+    "equipment_labId": 1
+  }
 */
 
-// O========================================================================================O
+// +---------------------------------------------------------+
+
+// Rota de listagem de elementos do laboratório:
+router.get(
+  "/element/list",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_labId,
+  elementReadCtrllrs.getElementsByLabId
+);
+
+/*
+  Body:
+  {
+    "element_labId": 1
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de registro de equipamento:
-router.post("/equipment/register",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentName,
-  equipmentMiddlewares.checkEquipmentDescription,
-  equipmentMiddlewares.checkEquipmentQuantity,
-  equipmentMiddlewares.checkEquipmentQuality,
-  equipmentMiddlewares.checkEquipmentImage,
-  equipmentControllers.createEquipment,
+router.post(
+  "/equipment/register",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_name,
+  equipmentMiddlewares.equipment_description,
+  equipmentMiddlewares.equipment_totalQuantity,
+  equipmentMiddlewares.equipment_quality,
+  equipmentMiddlewares.equipment_image,
+  equipmentMiddlewares.equipment_supervisorLevel,
+  equipmentMiddlewares.equipment_labId,
+  equipmentWriteCtrllrs.createEquipment
 );
 
-// Rota de remoção de equipamento:
-router.delete("/equipment/remove",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentID,
-  equipmentControllers.removeEquipment,
-);
+/*
+  Body:
+  {
+    "equipment_name": "Béquer",
+    "equipment_description": "Béquer de 250mL",
+    "equipment_totalQuantity": 10,
+    "equipment_quality": 5,
+    "equipment_image": "",
+    "equipment_supervisorLevel": 2,
+    "equipment_labId": 1
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de nome de equipamento:
-router.put("/equipment/edit/name",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentID,
-  equipmentMiddlewares.checkEquipmentName,
-  equipmentControllers.editName,
+router.put(
+  "/equipment/edit/name",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentMiddlewares.equipment_name,
+  equipmentEditCtrllrs.editName
 );
+
+/*
+  Body:
+  {
+    "equipment_id": 1,
+    "equipment_name": "Béquer de 500mL"
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de descrição de equipamento:
-router.put("/equipment/edit/description",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentID,
-  equipmentMiddlewares.checkEquipmentDescription,
-  equipmentControllers.editDescription,
+router.put(
+  "/equipment/edit/description",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentMiddlewares.equipment_description,
+  equipmentEditCtrllrs.editDescription
 );
+
+/*
+  Body:
+  {
+    "equipment_id": 1,
+    "equipment_description": "Béquer de 500mL com graduação"
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de quantidade total de equipamento:
-router.put("/equipment/edit/quantity",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentID,
-  equipmentMiddlewares.checkEquipmentQuantity,
-  equipmentControllers.editTotalQuantity,
+router.put(
+  "/equipment/edit/quantity",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentMiddlewares.equipment_totalQuantity,
+  equipmentEditCtrllrs.editTotalQuantity
 );
+
+/*
+  Body:
+  {
+    "equipment_id": 1,
+    "equipment_totalQuantity": 15
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de qualidade de equipamento:
-router.put("/equipment/edit/quality",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentID,
-  equipmentMiddlewares.checkEquipmentQuality,
-  equipmentControllers.editQuality,
+router.put(
+  "/equipment/edit/quality",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentMiddlewares.equipment_quality,
+  equipmentEditCtrllrs.editQuality
 );
+
+/*
+  Body:
+  {
+    "equipment_id": 1,
+    "equipment_quality": 4
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // Rota de edição de imagem de equipamento:
-router.put("/equipment/edit/image",
-  tokenMiddlewares.CheckToken,
-  labMiddlewares.checkLabId,
-  equipmentMiddlewares.checkEquipmentID,
-  equipmentMiddlewares.checkEquipmentImage,
-  equipmentControllers.editImage,
+router.put(
+  "/equipment/edit/image",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentMiddlewares.equipment_image,
+  equipmentEditCtrllrs.editImage
 );
 
-// Rota de listagem de equipamentos de determinado laboratório:
-router.get("/equipment/list",
-  labMiddlewares.checkLabId,
-  equipmentControllers.getEquipmentsByLabId,
+/*
+  Body:
+  {
+    "equipment_id": 1,
+    "equipment_image": "<new_image_in_text_format>"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de nível de supervisão de equipamento:
+router.put(
+  "/equipment/edit/supervisor",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentMiddlewares.equipment_supervisorLevel,
+  equipmentEditCtrllrs.editSupervisorLevel
 );
+
+/*
+  Body:
+  {
+    "equipment_id": 1,
+    "equipment_supervisorLevel": 1
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de remoção de equipamento:
+router.delete(
+  "/equipment/remove",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentWriteCtrllrs.removeEquipment
+);
+
+/*
+  Body:
+  {
+    "equipment_id": 1
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de registro de elemento:
+router.post(
+  "/element/register",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_name,
+  elementMiddlewares.element_quantity,
+  elementMiddlewares.element_description,
+  elementMiddlewares.element_molarMass,
+  elementMiddlewares.element_casNumber,
+  elementMiddlewares.element_ecNumber,
+  elementMiddlewares.element_physicalState,
+  elementMiddlewares.element_image,
+  elementMiddlewares.element_validity,
+  elementMiddlewares.element_supervisorLevel,
+  elementMiddlewares.element_labId,
+  elementWriteCtrllrs.createElement
+);
+
+/*
+  Body:
+  {
+    "element_name": "Água",
+    "element_quantity": 1000,
+    "element_description": "Água destilada",
+    "element_molarMass": 18.01528,
+    "element_casNumber": "7732-18-5",
+    "element_ecNumber": "231-791-2",
+    "element_physicalState": 1,
+    "element_image": "",
+    "element_validity": "2023-12-31",
+    "element_supervisorLevel": 1,
+    "element_labId": 1
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de nome de elemento:
+router.put(
+  "/element/edit/name",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_name,
+  elementEditCtrllrs.editName
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_name": "Água Destilada"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de quantidade de elemento:
+router.put(
+  "/element/edit/quantity",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_quantity,
+  elementEditCtrllrs.editQuantity
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_quantity": 2000
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de descrição de elemento:
+router.put(
+  "/element/edit/description",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_description,
+  elementEditCtrllrs.editDescription
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_description": "Água destilada para uso em laboratório"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de peso molecular de elemento:
+router.put(
+  "/element/edit/molarMass",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_molarMass,
+  elementEditCtrllrs.editMolarMass
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_molarMass": 8.01528
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de número CAS de elemento:
+router.put(
+  "/element/edit/cas",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_casNumber,
+  elementEditCtrllrs.editCasNumber
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_casNumber": "7732-18-6"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de número EC de elemento:
+router.put(
+  "/element/edit/ec",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_ecNumber,
+  elementEditCtrllrs.editEcNumber
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_ecNumber": "231-791-3"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de estado físico de elemento:
+router.put(
+  "/element/edit/physicalState",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_physicalState,
+  elementEditCtrllrs.editPhysicalState
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_physicalState": 2
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de imagem de elemento:
+router.put(
+  "/element/edit/image",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_image,
+  elementEditCtrllrs.editImage
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_image": "<new_image_in_text_format>"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de validade de elemento:
+router.put(
+  "/element/edit/validity",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_validity,
+  elementEditCtrllrs.editExpiration
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_validity": "2023-12-31"
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de edição de nível de supervisão de elemento:
+router.put(
+  "/element/edit/supervisor",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementMiddlewares.element_supervisorLevel,
+  elementEditCtrllrs.editSupervisorLevel
+);
+
+/*
+  Body:
+  {
+    "element_id": 1,
+    "element_supervisorLevel": 2
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// O========================================================================================O
+
+/*
+  O================================================================O
+  |    Tela 5 - Controle de administração de usuários de um lab    |
+  O================================================================O
+
+  Inicio:
+  - [X] Listar usuários de um laboratório;
+  - [X] Relacionar usuários a um laboratório;
+  - [X] Adicionar usuário como admin de um laboratório;
+  - [X] Remover usuário como admin de um laboratório;
+*/
+
+// O========================================================================================O
+
+// +---------------------------------------------------------+
+
+// Rota de listagem de usuários de um laboratório:
+router.get(
+  "/lab/users",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_id,
+  userReadModels.getUsersByLab
+);
+
+/*
+  Body:
+  {
+    "lab_id": 1
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de relacionamento de usuário a um laboratório:
+router.post(
+  "/lab/adduser",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_id,
+  labMiddlewares.lab_id,
+  labCreateCtrllrs.createLabUser
+);
+
+/*
+  Body:
+  {
+    "user_id": 1,
+    "lab_id": 1
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de adição de usuário como admin de um laboratório:
+router.put(
+  "/lab/addadmin",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_id,
+  labMiddlewares.lab_id,
+  labEditCtrllrs.addAdmin
+);
+
+/*
+  Body:
+  {
+    "user_id": 1,
+    "lab_id": 1
+  }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de remoção de usuário como admin de um laboratório:
+router.delete(
+  "/lab/removeadmin",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_id,
+  labMiddlewares.lab_id,
+  labEditCtrllrs.removeAdmin
+);
+
+/*
+  Body:
+  {
+    "user_id": 1,
+    "lab_id": 1
+  }
+*/
+
+// +---------------------------------------------------------+
 
 // O========================================================================================O

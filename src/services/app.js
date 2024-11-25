@@ -1,11 +1,11 @@
 // Inicializa a aplicação express e exporta a mesma para
 // ser utilizada em outros arquivos.
-const express = require("express");
-const router = require("./router");
+import express, { json } from "express";
+import router from "./router";
 
 const app = express();
 
-app.use(express.json());
+app.use(json());
 app.use(router);
 
-module.exports = app;
+export default app;
