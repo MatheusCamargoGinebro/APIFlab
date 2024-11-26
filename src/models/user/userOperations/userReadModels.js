@@ -23,7 +23,6 @@ const connection = require("../../../utils/connection");
 
 // Função para pegar informações do usuário pelo ID:
 const getUserById = async (ID_usuario) => {
-  // const query = "SELECT * FROM usuarios WHERE ID_usuario = ?;";
   const query = "CALL GetUserByID(?);";
   const [result] = await connection.execute(query, [ID_usuario]);
 
@@ -38,11 +37,10 @@ const getUserById = async (ID_usuario) => {
 
 // Função para pegar informações do usuário pelo email:
 const getUserByEmail = async (email) => {
-  //const query = "SELECT * FROM usuarios WHERE Email = ?;";
   const query = "CALL GetUserByEmail(?);";
   const [result] = await connection.execute(query, [email]);
 
-  if (result.length > 0) {
+  if (result[0].length > 0) {
     return { status: true, userData: result[0] };
   } else {
     return { status: false, userData: null };
@@ -53,11 +51,10 @@ const getUserByEmail = async (email) => {
 
 // Função para pegar informações do usuário pelo nome de usuário:
 const getUserByName = async (username) => {
-  // const query = "SELECT * FROM usuarios WHERE Nome = ?;";
   const query = "CALL GetUserByName(?);";
   const [result] = await connection.execute(query, [username]);
 
-  if (result.length > 0) {
+  if (result[0].length > 0) {
     return { status: true, userData: result[0] };
   } else {
     return { status: false, userData: null };

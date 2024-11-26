@@ -131,7 +131,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS EditUserPassword;
 
 DELIMITER $$
-CREATE PROCEDURE EditUserPassword (IN p_ID_user INT, IN p_Senha VARCHAR(60), p_Salt VARCHAR (60)) BEGIN
+CREATE PROCEDURE EditUserPassword (IN p_ID_user INT, IN p_Senha VARCHAR(60), p_Salt VARCHAR(60)) BEGIN
 UPDATE usuarios
 SET
     Senha = p_Senha,

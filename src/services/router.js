@@ -11,9 +11,9 @@
 // O========================================================================================O
 
 // Importando o módulo de roteamento do express:
-/* import { Router } from "express"; */
-const { Router } = require("express");
-const router = Router();
+const express = require("express");
+const router = express.Router();
+module.exports = router;
 
 // O========================================================================================O
 
@@ -67,7 +67,7 @@ const elementWriteCtrllrs = require("../controllers/element/elementWriteControll
 // Configuração de sistemas de limpeza:
 
 // A cada 60 segundos, limpar a blacklist de tokens, removendo os tokens já inválidos:
-setInterval(accountCtrllrs.clearBlackList, 60000);
+/*setInterval(accountCtrllrs.clearBlackList, 60000); */
 
 // A cada 24h, limpar os códigos de verificação de email:
 setInterval(accountCtrllrs.clearMailCodeList, 86400000);
@@ -80,9 +80,9 @@ setInterval(accountCtrllrs.clearMailCodeList, 86400000);
   O=============================================O
 
   - Registro:
-    - [] Recuperar (para exibir) informações dos campi do banco de dados;
-    - [] Registrar um código de verificação de email no banco de dados e enviar o código para o email do usuário;
-    - [] Registrar um usuário no banco de dados;
+    - [X] Recuperar (para exibir) informações dos campi do banco de dados;
+    - [X] Registrar um código de verificação de email no banco de dados e enviar o código para o email do usuário;
+    - [X] Registrar um usuário no banco de dados;
 
   - Login:
     - [] Logar um usuário no sistema;

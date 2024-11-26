@@ -162,7 +162,8 @@ SELECT
 FROM
     laboratorios
 WHERE
-    laboratorios.Sala = p_labName AND laboratorios.ID_campus = p_ID_campus;
+    laboratorios.Sala = p_labName
+    AND laboratorios.ID_campus = p_ID_campus;
 
 END $$ DELIMITER;
 
@@ -211,7 +212,6 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
-
 -- Ler laboratórios de um usuário por nível:
 DROP PROCEDURE IF EXISTS GetLabsByUserLevel;
 
@@ -237,7 +237,6 @@ DROP PROCEDURE IF EXISTS GetLabUserRelation;
 
 DELIMITER $$
 CREATE PROCEDURE GetLabUserRelation (IN p_ID_lab INT, IN p_ID_usuario INT) BEGIN
-
 SELECT
     userlab.ID_lab AS labID,
     userlab.ID_usuario AS userID,

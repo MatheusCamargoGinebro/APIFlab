@@ -1,5 +1,4 @@
 -- =========================================== DATABASE iflab ===========================================
-
 DROP DATABASE IF EXISTS iflab;
 
 CREATE DATABASE IF NOT EXISTS iflab;
@@ -7,8 +6,8 @@ CREATE DATABASE IF NOT EXISTS iflab;
 USE iflab;
 
 -- =========================================== Informações do instituto ===========================================
-CREATE TABLE
-    IF NOT EXISTS campus (
+CREATE TABLE IF NOT EXISTS
+    campus (
         -- PK
         ID_campus INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_campus),
@@ -19,8 +18,8 @@ CREATE TABLE
     );
 
 -- =========================================== Informações do usuário ===========================================
-CREATE TABLE
-    IF NOT EXISTS usuarios (
+CREATE TABLE IF NOT EXISTS
+    usuarios (
         -- PK
         ID_usuario INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_usuario),
@@ -48,8 +47,8 @@ CREATE TABLE
     );
 
 -- =========================================== Informações do laboratório ===========================================
-CREATE TABLE
-    IF NOT EXISTS laboratorios (
+CREATE TABLE IF NOT EXISTS
+    laboratorios (
         -- PK
         ID_lab INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_lab),
@@ -63,8 +62,8 @@ CREATE TABLE
         FOREIGN KEY (ID_campus) REFERENCES campus (ID_campus)
     );
 
-CREATE TABLE
-    IF NOT EXISTS userlab (
+CREATE TABLE IF NOT EXISTS
+    userlab (
         -- PK
         ID_relation INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_relation),
@@ -83,8 +82,8 @@ CREATE TABLE
     );
 
 -- =========================================== Informações dos horários ===========================================
-CREATE TABLE
-    IF NOT EXISTS Horarios (
+CREATE TABLE IF NOT EXISTS
+    Horarios (
         -- PK
         ID_hor INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_hor),
@@ -105,8 +104,8 @@ CREATE TABLE
     );
 
 -- =========================================== Informações dos elementos ===========================================
-CREATE TABLE
-    IF NOT EXISTS Elementos (
+CREATE TABLE IF NOT EXISTS
+    Elementos (
         -- PK
         ID_elem INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_elem),
@@ -133,8 +132,8 @@ CREATE TABLE
         FOREIGN KEY (ID_lab) REFERENCES laboratorios (ID_lab)
     );
 
-CREATE TABLE
-    IF NOT EXISTS Reserva_elemento (
+CREATE TABLE IF NOT EXISTS
+    Reserva_elemento (
         -- PK
         ID_reslem INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_reslem),
@@ -150,8 +149,8 @@ CREATE TABLE
     );
 
 -- =========================================== Informações dos equipamentos ===========================================
-CREATE TABLE
-    IF NOT EXISTS Equipamentos (
+CREATE TABLE IF NOT EXISTS
+    Equipamentos (
         -- PK
         ID_equip INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_equip),
@@ -175,8 +174,8 @@ CREATE TABLE
         FOREIGN KEY (ID_lab) REFERENCES laboratorios (ID_lab)
     );
 
-CREATE TABLE
-    IF NOT EXISTS Reserva_equipamento (
+CREATE TABLE IF NOT EXISTS
+    Reserva_equipamento (
         -- PK
         ID_resequip INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_resequip),
@@ -190,8 +189,8 @@ CREATE TABLE
     );
 
 -- =========================================== Email Confirmation Code ===========================================
-CREATE TABLE
-    IF NOT EXISTS email_codes (
+CREATE TABLE IF NOT EXISTS
+    email_codes (
         -- PK
         ID_email INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_email),
@@ -200,8 +199,8 @@ CREATE TABLE
         Checkcode VARCHAR(5) NOT NULL
     );
 
-CREATE TABLE
-    IF NOT EXISTS blacklist (
+CREATE TABLE IF NOT EXISTS
+    blacklist (
         -- PK
         ID_blacklist INT NOT NULL AUTO_INCREMENT,
         PRIMARY KEY (ID_blacklist),

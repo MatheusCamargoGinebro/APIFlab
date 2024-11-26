@@ -43,8 +43,8 @@ const getMailCode = async (email) => {
   const query = "CALL GetMailCode(?);";
   const [result] = await connection.execute(query, [email]);
 
-  if (result.length > 0) {
-    return { code: result[0].Checkcode, status: true };
+  if (result[0].length > 0) {
+    return { code: result[0][0].Checkcode, status: true };
   } else {
     return { code: null, status: false };
   }

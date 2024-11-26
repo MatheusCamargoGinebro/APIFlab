@@ -46,6 +46,7 @@ const sendMailCode = async (req, res) => {
     return res.status(400).json({
       status: false,
       message: "Email já cadastrado",
+      error_at: "user_email",
     });
   }
 
@@ -70,6 +71,7 @@ const sendMailCode = async (req, res) => {
       return res.status(500).json({
         status: false,
         message: "Houve algum erro interno",
+        error_at: "system_error",
         error: error,
       });
     });
@@ -92,6 +94,7 @@ const sendMailCode = async (req, res) => {
     return res.status(500).json({
       status: false,
       message: "Erro ao enviar código de confirmação.",
+      error_at: "system_error",
     });
   }
 };
@@ -118,12 +121,15 @@ const userRegister = async (req, res) => {
     validationCode
   );
 
-  if (mailCodeCheck.status === false) {
+  if (mailCodeCheck.status === false || mailCodeCheck.code !== validationCode) {
     return res.status(400).json({
       status: false,
       message: "Código de confirmação inválido",
+      error_at: "validationCode",
     });
   }
+
+  console.log("Validou o código de confirmação");
 
   /*-----------------------------------------------------*/
 
@@ -134,6 +140,7 @@ const userRegister = async (req, res) => {
     return res.status(400).json({
       status: false,
       message: "Email já cadastrado",
+      error_at: "user_email",
     });
   }
 
@@ -146,6 +153,7 @@ const userRegister = async (req, res) => {
     return res.status(400).json({
       status: false,
       message: "Nome de usuário já cadastrado",
+      error_at: "user_name",
     });
   }
 
@@ -158,6 +166,7 @@ const userRegister = async (req, res) => {
     return res.status(400).json({
       status: false,
       message: "Campus não encontrado",
+      error_at: "user_campusId",
     });
   }
 
@@ -182,8 +191,8 @@ const userRegister = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  // Registrando o usuário:
-  const status = await UserWrite.registerUser({
+  // Criando o objeto do novo usuário:
+  const newUser = {
     nome: user_name,
     email: user_email,
     senha: hashedPassword,
@@ -191,7 +200,10 @@ const userRegister = async (req, res) => {
     tipo: user_type,
     campusId: user_campusId,
     CampusAdminLevel: CampusAdminLevel,
-  });
+  };
+
+  // Registrando o usuário:
+  const status = await UserWrite.registerUser(newUser);
 
   if (status === false) {
     return res.status(500).json({
@@ -209,6 +221,7 @@ const userRegister = async (req, res) => {
     return res.status(500).json({
       status: false,
       message: "Erro ao deletar código de confirmação",
+      error_at: "system_error",
     });
   }
 

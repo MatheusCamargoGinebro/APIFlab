@@ -29,7 +29,6 @@ const registerUser = async (newUser) => {
     newUser;
 
   // Salvando no banco de dados:
-
   const query = "CALL CreateUser(?, ?, ?, ?, ?, ?, ?);";
   const [result] = await connection.execute(query, [
     nome,

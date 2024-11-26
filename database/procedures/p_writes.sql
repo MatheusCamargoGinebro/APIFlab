@@ -42,35 +42,17 @@ DROP PROCEDURE IF EXISTS CreateUser;
 
 DELIMITER $$
 CREATE PROCEDURE CreateUser (
-    IN p_Nome VARCHAR(128),
-    IN p_Email VARCHAR(256),
-    IN p_Senha VARCHAR(60),
-    IN p_Salt VARCHAR(60),
-    IN p_Tipo INT,
-    IN p_CampusAdminLevel INT,
-    IN p_ID_campus INT
-) BEGIN
+    IN p_Nome VARCHAR(128), 
+    IN p_Email VARCHAR(256), 
+    IN p_Senha VARCHAR(60), 
+    IN p_Salt VARCHAR(60), 
+    IN p_Tipo INT, 
+    IN p_CampusAdminLevel INT, 
+    IN p_ID_campus INT) BEGIN
 INSERT INTO
-    usuarios (
-        Nome,
-        Email,
-        Senha,
-        Salt,
-        Tipo,
-        CampusAdminLevel,
-        ID_campus
-    )
+    usuarios (Nome, Email, Senha, Salt, Tipo, CampusAdminLevel, ID_campus)
 VALUES
-    (
-        p_Nome,
-        p_Email,
-        p_Senha,
-        p_Salt,
-        p_profilePic,
-        p_Tipo,
-        p_CampusAdminLevel,
-        p_ID_campus
-    );
+    (p_Nome, p_Email, p_Senha, p_Salt, p_Tipo, p_CampusAdminLevel, p_ID_campus);
 
 END $$ DELIMITER;
 
@@ -79,12 +61,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS CreateLab;
 
 DELIMITER $$
-CREATE PROCEDURE CreateLab (
-    IN p_Sala VARCHAR(16),
-    IN p_Capacidade INT,
-    IN p_ID_campus INT,
-    IN p_ID_usuario INT
-) BEGIN
+CREATE PROCEDURE CreateLab (IN p_Sala VARCHAR(16), IN p_Capacidade INT, IN p_ID_campus INT, IN p_ID_usuario INT) BEGIN
 INSERT INTO
     laboratorios (Sala, Capacidade, ID_campus)
 VALUES
@@ -102,11 +79,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS RelateUserLab;
 
 DELIMITER $$
-CREATE PROCEDURE RelateUserLab (
-    IN p_ID_usuario INT,
-    IN p_ID_lab INT,
-    IN p_AdminLevel INT
-) BEGIN
+CREATE PROCEDURE RelateUserLab (IN p_ID_usuario INT, IN p_ID_lab INT, IN p_AdminLevel INT) BEGIN
 INSERT INTO
     userlab (AdminLevel, ID_usuario, ID_lab)
 VALUES
@@ -146,33 +119,9 @@ CREATE PROCEDURE CreateElement (
     IN p_ID_lab INT
 ) BEGIN
 INSERT INTO
-    elementos (
-        Nome,
-        Quantidade,
-        Descricao,
-        Peso_molecular,
-        Num_cas,
-        Num_ec,
-        EstadoFisico,
-        Imagem,
-        Validade,
-        SupervisorLevel,
-        ID_lab
-    )
+    elementos (Nome, Quantidade, Descricao, Peso_molecular, Num_cas, Num_ec, EstadoFisico, Imagem, Validade, SupervisorLevel, ID_lab)
 VALUES
-    (
-        p_Nome,
-        p_Quantidade,
-        p_Descricao,
-        p_Peso_molecular,
-        p_Num_cas,
-        p_Num_ec,
-        p_EstadoFisico,
-        p_Imagem,
-        p_Validade,
-        p_SupervisorLevel,
-        p_ID_lab
-    );
+    (p_Nome, p_Quantidade, p_Descricao, p_Peso_molecular, p_Num_cas, p_Num_ec, p_EstadoFisico, p_Imagem, p_Validade, p_SupervisorLevel, p_ID_lab);
 
 END $$ DELIMITER;
 
@@ -197,38 +146,11 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS CreateEquipment;
 
 DELIMITER $$
-CREATE PROCEDURE CreateEquipment (
-    IN p_Nome VARCHAR(128),
-    IN p_Descricao TEXT,
-    IN p_QuantidadeTotal INT,
-    IN p_QuantidadeDisponivel INT,
-    IN p_Qualidade INT,
-    IN p_Imagem LONGTEXT,
-    IN p_SupervisorLevel INT,
-    IN p_ID_lab INT
-) BEGIN
+CREATE PROCEDURE CreateEquipment (IN p_Nome VARCHAR(128), IN p_Descricao TEXT, IN p_QuantidadeTotal INT, IN p_QuantidadeDisponivel INT, IN p_Qualidade INT, IN p_Imagem LONGTEXT, IN p_SupervisorLevel INT, IN p_ID_lab INT) BEGIN
 INSERT INTO
-    equipamentos (
-        Nome,
-        Descricao,
-        QuantidadeTotal,
-        QuantidadeDisponivel,
-        Qualidade,
-        Imagem,
-        SupervisorLevel,
-        ID_lab
-    )
+    equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, Imagem, SupervisorLevel, ID_lab)
 VALUES
-    (
-        p_Nome,
-        p_Descricao,
-        p_QuantidadeTotal,
-        p_QuantidadeDisponivel,
-        p_Qualidade,
-        p_Imagem,
-        p_SupervisorLevel,
-        p_ID_lab
-    );
+    (p_Nome, p_Descricao, p_QuantidadeTotal, p_QuantidadeDisponivel, p_Qualidade, p_Imagem, p_SupervisorLevel, p_ID_lab);
 
 END $$ DELIMITER;
 
@@ -253,21 +175,9 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS CreateSchedule;
 
 DELIMITER $$
-CREATE PROCEDURE CreateSchedule (
-    IN p_Inicio TIMESTAMP,
-    IN p_Fim TIMESTAMP,
-    IN p_ID_lab INT,
-    IN p_ID_usuario INT
-) BEGIN
+CREATE PROCEDURE CreateSchedule (IN p_Inicio TIMESTAMP, IN p_Fim TIMESTAMP, IN p_ID_lab INT, IN p_ID_usuario INT) BEGIN
 INSERT INTO
-    horarios (
-        Inicio,
-        Fim,
-        Finished,
-        Started,
-        ID_lab,
-        ID_usuario
-    )
+    horarios (Inicio, Fim, Finished, Started, ID_lab, ID_usuario)
 VALUES
     (p_Inicio, p_Fim, 0, 0, p_ID_lab, p_ID_usuario);
 
@@ -278,11 +188,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS ReserveElement;
 
 DELIMITER $$
-CREATE PROCEDURE ReserveElement (
-    IN p_Quantidade DECIMAL(10, 3),
-    IN p_ID_elem INT,
-    IN p_ID_hor INT
-) BEGIN
+CREATE PROCEDURE ReserveElement (IN p_Quantidade DECIMAL(10, 3), IN p_ID_elem INT, IN p_ID_hor INT) BEGIN
 INSERT INTO
     reserva_elemento (Quantidade, ID_elem, ID_hor)
 VALUES
@@ -302,11 +208,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS ReserveEquipment;
 
 DELIMITER $$
-CREATE PROCEDURE ReserveEquipment (
-    IN p_Quantidade INT,
-    IN p_ID_equip INT,
-    IN p_ID_hor INT
-) BEGIN
+CREATE PROCEDURE ReserveEquipment (IN p_Quantidade INT, IN p_ID_equip INT, IN p_ID_hor INT) BEGIN
 INSERT INTO
     reserva_equipamento (Quantidade, ID_equip, ID_hor)
 VALUES

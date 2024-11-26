@@ -114,7 +114,7 @@ const userLogout = async (req, res) => {
 
 // Função para limpar a lista de tokens:
 const clearBlackList = async () => {
-  const blacklist = await tokenModels.getAllBlacklist();
+  const blacklist = await tokenBlackListModels.getAllBlacklist();
 
   blacklist.forEach(async (token) => {
     JWT.verify(token.Token, process.env.JWT_SECRET, async (err, decoded) => {

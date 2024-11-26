@@ -36,7 +36,7 @@ const getAllCampus = async (req, res) => {
 
   return res.status(200).json({
     status: true,
-    campusData: campus.campusData,
+    campusData: campus.campusData[0],
   });
 };
 

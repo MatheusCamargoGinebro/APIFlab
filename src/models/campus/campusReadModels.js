@@ -37,7 +37,7 @@ const getCampusById = async (campus_ID) => {
   const query = "CALL GetCampusByID(?);";
   const [result] = await connection.execute(query, [campus_ID]);
 
-  if (result.length > 0) {
+  if (result[0].length > 0) {
     return { status: true, campusData: result[0] };
   } else {
     return { status: false, campusData: null };

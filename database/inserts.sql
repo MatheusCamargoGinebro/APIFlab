@@ -2,46 +2,16 @@
 INSERT INTO
     campus (Nome, Estado)
 VALUES
-    ('Campus I', 'SP');
+    ('Campus I', 'SP'),
+    ('Campus II', 'MG'),
+    ('Campus III', 'RS');
 
 INSERT INTO
-    usuarios (
-        Nome,
-        Email,
-        Senha,
-        Salt,
-        Tipo,
-        CampusAdminLevel,
-        ID_campus
-    )
+    usuarios (Nome, Email, Senha, Salt, Tipo, CampusAdminLevel, ID_campus)
 VALUES
-    (
-        'Aluno',
-        'aluno@aluno.ifsp.edu.br',
-        '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
-        '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
-        1,
-        1,
-        1
-    ),
-    (
-        'Professor',
-        'professor@ifsp.edu.br',
-        '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
-        '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
-        2,
-        2,
-        1
-    ),
-    (
-        'Outro',
-        'admin@ifsp.edu.br',
-        '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO',
-        '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W',
-        3,
-        3,
-        1
-    );
+    ('Aluno', 'aluno@aluno.ifsp.edu.br', '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO', '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W', 1, 1, 1),
+    ('Professor', 'professor@ifsp.edu.br', '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO', '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W', 2, 2, 1),
+    ('Outro', 'admin@ifsp.edu.br', '$2a$10$e4NVh5XJUY409kv.NDwRguoH/BiF81mHi8Rxsptl1pqaUIMXqXdPO', '$2a$10$3zDSC07NpU.sk6DjWPUGdO6uHTX/D.eyj0vaAKVP3OluK6j.M6e2W', 3, 3, 1);
 
 INSERT INTO
     laboratorios (Sala, Capacidade, ID_campus)
@@ -60,18 +30,7 @@ VALUES
     (1, 1, 2) /* Aluno é usuário membro do lab2 */;
 
 INSERT INTO
-    elementos (
-        Nome,
-        Quantidade,
-        Descricao,
-        Peso_molecular,
-        Num_cas,
-        Num_ec,
-        EstadoFisico,
-        Validade,
-        SupervisorLevel,
-        ID_lab
-    )
+    elementos (Nome, Quantidade, Descricao, Peso_molecular, Num_cas, Num_ec, EstadoFisico, Validade, SupervisorLevel, ID_lab)
 VALUES
     (
         'Ácido Clorídrico',
@@ -109,125 +68,25 @@ VALUES
         1,
         1
     ),
-    (
-        'Ácido Fórmico',
-        1000,
-        'Ácido Fórmico é um ácido orgânico fraco. É um líquido incolor, altamente corrosivo e tóxico. É um ácido fraco, capaz de corroer metais, tecidos vivos e muitos outros materiais.',
-        46.03,
-        '64-18-6',
-        '200-579-1',
-        1,
-        '2022-12-31',
-        1,
-        1
-    );
+    ('Ácido Fórmico', 1000, 'Ácido Fórmico é um ácido orgânico fraco. É um líquido incolor, altamente corrosivo e tóxico. É um ácido fraco, capaz de corroer metais, tecidos vivos e muitos outros materiais.', 46.03, '64-18-6', '200-579-1', 1, '2022-12-31', 1, 1);
 
 INSERT INTO
-    equipamentos (
-        Nome,
-        Descricao,
-        QuantidadeTotal,
-        QuantidadeDisponivel,
-        Qualidade,
-        SupervisorLevel,
-        ID_lab
-    )
+    equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, SupervisorLevel, ID_lab)
 VALUES
-    (
-        'Balança Analítica',
-        'Balança analítica é um equipamento de medição de massa de alta precisão. É utilizada em laboratórios de química, física e biologia para pesar substâncias em pequenas quantidades.',
-        10,
-        10,
-        5,
-        0,
-        1
-    ),
-    (
-        'Bureta',
-        'Bureta é um equipamento de laboratório utilizado para medir volumes de líquidos com precisão. É um tubo de vidro graduado, com uma torneira na parte inferior, que permite a liberação controlada do líquido.',
-        10,
-        10,
-        5,
-        0,
-        1
-    ),
-    (
-        'Mufla',
-        'Mufla é um equipamento de laboratório utilizado para aquecer substâncias a altas temperaturas. É um forno elétrico, com resistências internas, que permite a queima de materiais em altas temperaturas.',
-        10,
-        10,
-        5,
-        0,
-        1
-    ),
-    (
-        'Estufa',
-        'Estufa é um equipamento de laboratório utilizado para secar e esterilizar materiais. É um forno elétrico, com resistências internas, que permite a secagem de materiais a baixas temperaturas.',
-        10,
-        10,
-        5,
-        0,
-        1
-    );
+    ('Balança Analítica', 'Balança analítica é um equipamento de medição de massa de alta precisão. É utilizada em laboratórios de química, física e biologia para pesar substâncias em pequenas quantidades.', 10, 10, 5, 0, 1),
+    ('Bureta', 'Bureta é um equipamento de laboratório utilizado para medir volumes de líquidos com precisão. É um tubo de vidro graduado, com uma torneira na parte inferior, que permite a liberação controlada do líquido.', 10, 10, 5, 0, 1),
+    ('Mufla', 'Mufla é um equipamento de laboratório utilizado para aquecer substâncias a altas temperaturas. É um forno elétrico, com resistências internas, que permite a queima de materiais em altas temperaturas.', 10, 10, 5, 0, 1),
+    ('Estufa', 'Estufa é um equipamento de laboratório utilizado para secar e esterilizar materiais. É um forno elétrico, com resistências internas, que permite a secagem de materiais a baixas temperaturas.', 10, 10, 5, 0, 1);
 
 INSERT INTO
-    horarios (
-        Inicio,
-        Fim,
-        Finished,
-        Started,
-        ID_lab,
-        ID_usuario
-    )
+    horarios (Inicio, Fim, Finished, Started, ID_lab, ID_usuario)
 VALUES
-    (
-        '2022-12-31 08:00:00',
-        '2022-12-31 12:00:00',
-        0,
-        0,
-        1,
-        1
-    ),
-    (
-        '2022-12-31 08:00:00',
-        '2022-12-31 12:00:00',
-        0,
-        0,
-        1,
-        2
-    ),
-    (
-        '2022-12-31 08:00:00',
-        '2022-12-31 12:00:00',
-        0,
-        0,
-        1,
-        3
-    ),
-    (
-        '2022-12-31 08:00:00',
-        '2022-12-31 12:00:00',
-        0,
-        0,
-        2,
-        1
-    ),
-    (
-        '2022-12-31 08:00:00',
-        '2022-12-31 12:00:00',
-        0,
-        0,
-        2,
-        2
-    ),
-    (
-        '2022-12-31 08:00:00',
-        '2022-12-31 12:00:00',
-        0,
-        0,
-        2,
-        3
-    );
+    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 1, 1),
+    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 1, 2),
+    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 1, 3),
+    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 2, 1),
+    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 2, 2),
+    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 2, 3);
 
 INSERT INTO
     reserva_elemento (Quantidade, ID_elem, ID_hor)
