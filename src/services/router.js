@@ -182,7 +182,7 @@ router.post(
     - [X] Editar tipo de usuário (professor, aluno ou outro);
 
   - Logout:
-    - [] Deslogar o usuário do sistema;
+    - [X] Deslogar o usuário do sistema;
 */
 
 // O========================================================================================O
