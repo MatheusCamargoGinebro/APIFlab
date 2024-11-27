@@ -131,7 +131,7 @@ const user_email = (request, response, next) => {
 
   if (
     !/^[a-zA-Z0-9._-]+@aluno\.ifsp\.edu\.br$/.test(request.body.user_email) &&
-    !/^[a-zA-Z0-9._-]+@ifsp\.edu\.br$/.test(request.body.email)
+    !/^[a-zA-Z0-9._-]+@ifsp\.edu\.br$/.test(request.body.user_email)
   ) {
     return response.status(400).send({
       message: "Email deve ser um email vinculado à instituição!",

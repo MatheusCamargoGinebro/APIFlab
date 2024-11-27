@@ -47,7 +47,7 @@ const getLabs = async (req, res) => {
   // Retornando os laboratórios encontrados:
   return res.status(200).json({
     status: true,
-    labs: GetLabByUser.labs,
+    labs: GetLabByUser.labs[0],
   });
 };
 
@@ -83,7 +83,7 @@ const getLabByUserLevel = async (req, res) => {
   // Retornando os laboratórios encontrados:
   return res.status(200).json({
     status: true,
-    labs: GetLabByUserLevel.labs,
+    labs: GetLabByUserLevel.labs[0],
   });
 };
 

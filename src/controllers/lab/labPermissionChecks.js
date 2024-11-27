@@ -32,7 +32,7 @@ const checkUserToCreate = async (userId) => {
     return { status: false };
   }
 
-  return { status: true, userData: user.userData };
+  return { status: true, userData: user.userData[0] };
 };
 
 // O========================================================================================O
@@ -51,17 +51,17 @@ const checkUserToManipulate = async (userId, labId, allowedLevel) => {
   }
 
   // Verificando se o usuário possui a permissão necessária:
-  const userLab = await LabRead.getLabUserRelation(userId, labId);
+  const userLab = await LabRead.getLabUserRelation(labId, userId);
 
-  if (userLab.status === false || userLab.relation.userLevel <= allowedLevel) {
+  if (userLab.status === false || userLab.relation[0].userLevel < allowedLevel) {
     return { status: false };
   }
 
   return {
     status: true,
-    userData: user.userData,
-    labData: lab.lab,
-    relationbData: userLab.relation,
+    userData: user.userData[0],
+    labData: lab.lab[0],
+    relation: userLab.relation[0],
   };
 };
 

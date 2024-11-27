@@ -47,10 +47,10 @@ const getLabByName = async (labName, campusId) => {
   const query = "CALL GetLabByName(?, ?)";
   const [results] = await connection.execute(query, [labName, campusId]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
-      lab: results[0],
+      lab: results[0][0],
     };
   } else {
     return {
@@ -147,7 +147,7 @@ const getLabUserRelation = async (ID_lab, ID_usuario) => {
   const query = "CALL GetLabUserRelation(?, ?)";
   const [results] = await connection.execute(query, [ID_lab, ID_usuario]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
       relation: results[0],

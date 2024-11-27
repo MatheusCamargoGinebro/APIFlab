@@ -218,7 +218,7 @@ DELIMITER $$
 CREATE PROCEDURE EditLabName (IN p_ID_lab INT, IN p_Nome VARCHAR(128)) BEGIN
 UPDATE laboratorios
 SET
-    Nome = p_Nome
+    Sala = p_Nome
 WHERE
     ID_lab = p_ID_lab;
 

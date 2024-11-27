@@ -155,7 +155,7 @@ DROP PROCEDURE IF EXISTS GetLabByName;
 DELIMITER $$
 CREATE PROCEDURE GetLabByName (IN p_labName VARCHAR(256), IN p_ID_campus INT) BEGIN
 SELECT
-    laboratorios.ID_lab AS labID,
+    laboratorios.ID_lab AS labId,
     laboratorios.Sala AS labName,
     laboratorios.Capacidade AS capacity,
     laboratorios.ID_campus AS campusID

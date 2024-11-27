@@ -312,17 +312,17 @@ router.post(
   O======================================O
 
   - Inicio:
-  - [] Listar laboratórios em que o usuário possui acesso;
-  - [] Listar laboratórios em que o usuário possui tal nível de acesso;
-  - [] Registrar um laboratório no banco de dados;
+  - [X] Listar laboratórios em que o usuário possui acesso;
+  - [X] Listar laboratórios em que o usuário possui tal nível de acesso;
+  - [X] Registrar um laboratório no banco de dados;
 
   - Laboratório:
   - [] Gerar relatório de acesso ao laboratório;
   - [] Gerar relatório de inventário do laboratório;
 
   - Editar informações do laboratório:
-    - [] Editar sala (nome) do laboratório;
-    - [] Editar capacidade do laboratório;
+    - [X] Editar sala (nome) do laboratório;
+    - [X] Editar capacidade do laboratório;
 
   - Sessão:
     - [] Marcar uma sessão de uso de laboratório no banco de dados;
@@ -377,6 +377,14 @@ router.post(
     "lab_capacity": 20
   }
 */
+
+// +---------------------------------------------------------+
+
+// Rota de geração de relatório de acesso ao laboratório:
+
+// +---------------------------------------------------------+
+
+// Rota de geração de relatório de inventário do laboratório:
 
 // +---------------------------------------------------------+
 

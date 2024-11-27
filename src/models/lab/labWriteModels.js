@@ -37,7 +37,6 @@ const createLab = async (newLab, userId) => {
     return {
       status: true,
       message: "Laboratório cadastrado com sucesso!",
-      labId: results.insertId,
     };
   } else {
     return {
@@ -96,7 +95,7 @@ const removeUser = async (ID_lab, ID_usuario) => {
 // Função de edição do nome do laboratório no banco de dados:
 const editLabName = async (ID_lab, NewName) => {
   const query = "CALL EditLabName(?, ?)";
-  const [results] = await connection.connection.execute(query, [
+  const [results] = await connection.execute(query, [
     ID_lab,
     NewName,
   ]);
@@ -114,7 +113,7 @@ const editLabName = async (ID_lab, NewName) => {
 // Função de edição da capacidade do laboratório no banco de dados:
 const editLabCapacity = async (ID_lab, newCapacity) => {
   const query = "CALL EditLabCapacity(?, ?);";
-  const [results] = await connection.connection.execute(query, [
+  const [results] = await connection.execute(query, [
     ID_lab,
     newCapacity,
   ]);
@@ -137,7 +136,7 @@ const editLabCapacity = async (ID_lab, newCapacity) => {
 // Função para adicionar um administrador a um laboratório no banco de dados:
 const editUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
   const query = "CALL EditUserLabLevel(?, ?, ?)";
-  const [results] = await connection.connection.execute(query, [
+  const [results] = await connection.execute(query, [
     ID_usuario,
     ID_lab,
     AdminLevel,
