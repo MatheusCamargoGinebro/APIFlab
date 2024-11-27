@@ -910,10 +910,10 @@ router.put(
 
   Inicio:
   - [] Listar usuários de um laboratório;
-  - [] Relacionar usuários a um laboratório;
-  - [] Desrelacionar usuários de um laboratório;
-  - [] Adicionar usuário como admin de um laboratório;
-  - [] Remover usuário como admin de um laboratório;
+  - [X] Relacionar usuários a um laboratório;
+  - [X] Desrelacionar usuários de um laboratório;
+  - [X] Adicionar usuário como admin de um laboratório;
+  - [X] Remover usuário como admin de um laboratório;
 */
 
 // O========================================================================================O
