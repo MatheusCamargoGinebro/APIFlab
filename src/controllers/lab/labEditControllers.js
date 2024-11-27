@@ -151,6 +151,16 @@ const addAdmin = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
+  // Verificando se as IDs são válidas:
+  if (userId === user_id) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não pode adicionar a si mesmo como administrador!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
   // Verificando se o tal usuário tem permissão para adicionar um administrador ao laboratório:
   const checkUserToManipulate = await labPermissionChecks.checkUserToManipulate(
     userId,
@@ -184,10 +194,7 @@ const addAdmin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se o usuário já é administrador:
-  if (
-    checkUserLabRelation.relationbData.userLevel === 3 ||
-    checkUserLabRelation.relationbData.userLevel === 2
-  ) {
+  if (checkUserLabRelation.relation.userLevel >= 2) {
     return res.status(400).json({
       status: false,
       message: "Usuário já é administrador!",
@@ -227,6 +234,16 @@ const removeAdmin = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
+  // Verificando se as IDs são válidas:
+  if (userId === user_id) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não pode remover a si mesmo como administrador!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
   // Verificando se o tal usuário tem permissão para remover um administrador do laboratório:
   const checkUserToManipulate = await labPermissionChecks.checkUserToManipulate(
     userId,
@@ -259,8 +276,16 @@ const removeAdmin = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
+  // Verificando se o usuário é administrador primário:
+  if (checkUserLabRelation.relation.userLevel === 3) {
+    return res.status(400).json({
+      status: false,
+      message: "Não é permitido alterar permissões do responsável do laboratório!",
+    });
+  }
+
   // Verificando se o usuário é administrador:
-  if (checkUserLabRelation.relationbData.userLevel !== 2) {
+  if (checkUserLabRelation.relation.userLevel !== 2) {
     return res.status(400).json({
       status: false,
       message: "Usuário não é administrador!",

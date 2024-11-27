@@ -911,6 +911,7 @@ router.put(
   Inicio:
   - [] Listar usuários de um laboratório;
   - [] Relacionar usuários a um laboratório;
+  - [] Desrelacionar usuários de um laboratório;
   - [] Adicionar usuário como admin de um laboratório;
   - [] Remover usuário como admin de um laboratório;
 */
@@ -955,6 +956,17 @@ router.post(
 
 // +---------------------------------------------------------+
 
+// Rota de desrelacionamento de usuário de um laboratório:
+router.delete(
+  "/lab/removeuser",
+  userMiddlewares.checkToken,
+  userMiddlewares.user_id,
+  labMiddlewares.lab_id,
+  labCreateCtrllrs.removeLabUser
+);
+
+// +---------------------------------------------------------+
+
 // Rota de adição de usuário como admin de um laboratório:
 router.put(
   "/lab/addadmin",
@@ -975,7 +987,7 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota de remoção de usuário como admin de um laboratório:
-router.delete(
+router.put(
   "/lab/removeadmin",
   userMiddlewares.checkToken,
   userMiddlewares.user_id,

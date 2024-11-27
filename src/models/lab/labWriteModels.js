@@ -8,7 +8,7 @@
     Funções de inserção de laboratórios no banco de dados:
     - [X] createLab;
     - [X] relateUserLab;
-    - [X] removeUser;
+    - [X] unrelateUserLab;
     - [X] editLabName;
     - [X] editLabCapacity;
     - [X] editUserLabLevel;
@@ -73,7 +73,7 @@ const relateUserLab = async (ID_lab, ID_usuario, AdminLevel) => {
 // O========================================================================================O
 
 // Função para remover um usuário de um laboratório no banco de dados:
-const removeUser = async (ID_lab, ID_usuario) => {
+const unrelateUserLab = async (ID_lab, ID_usuario) => {
   const query = "CALL UnrelateUserLab(?, ?)";
   const [results] = await connection.execute(query, [ID_usuario, ID_lab]);
 
@@ -161,7 +161,7 @@ const editUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
 module.exports = {
   createLab,
   relateUserLab,
-  removeUser,
+  unrelateUserLab,
   editLabName,
   editLabCapacity,
   editUserLabLevel,
