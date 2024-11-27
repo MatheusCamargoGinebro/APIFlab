@@ -24,8 +24,8 @@ const getEquipmentById = async (equipmentId) => {
 
   const [result] = await connection.execute(query, data);
 
-  if (result.length > 0) {
-    return { status: true, data: result[0] };
+  if (result[0].length > 0) {
+    return { status: true, data: result[0][0] };
   } else {
     return { status: false, message: "Equipamento químico não encontrado!" };
   }

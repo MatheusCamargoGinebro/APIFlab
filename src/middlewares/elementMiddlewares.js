@@ -313,9 +313,34 @@ const element_validity = (request, response, next) => {
     });
   }
 
-  if (typeof request.body.element_validity !== "number") {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!regex.test(request.body.element_validity)) {
     return response.status(400).send({
-      message: "Validade do elemento deve ser um número",
+      message:
+        "Validade do elemento deve ser uma data válida no formato YYYY-MM-DD",
+      error_at: "element_validity",
+    });
+  }
+
+  const [year, month, day] = request.body.element_validity
+    .split("-")
+    .map(Number);
+  const date = new Date(year, month - 1, day);
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() + 1 !== month ||
+    date.getDate() !== day
+  ) {
+    return response.status(400).send({
+      message: "Data inválida",
+      error_at: "element_validity",
+    });
+  }
+
+  if (isNaN(date.getTime())) {
+    return response.status(400).send({
+      message:
+        "Validade do elemento deve ser uma data válida no formato YYYY-MM-DD",
       error_at: "element_validity",
     });
   }
@@ -336,8 +361,7 @@ const element_validity = (request, response, next) => {
 const element_supervisorLevel = (request, response, next) => {
   if (
     request.body.element_supervisorLevel === undefined ||
-    request.body.element_supervisorLevel === null ||
-    !request.body.element_supervisorLevel
+    request.body.element_supervisorLevel === null
   ) {
     return response.status(400).send({
       message: "Nível de supervisão do elemento é obrigatório",
@@ -353,9 +377,9 @@ const element_supervisorLevel = (request, response, next) => {
   }
 
   if (
+    request.body.element_supervisorLevel !== 0 &&
     request.body.element_supervisorLevel !== 1 &&
-    request.body.element_supervisorLevel !== 2 &&
-    request.body.element_supervisorLevel !== 3
+    request.body.element_supervisorLevel !== 2
   ) {
     return response.status(400).send({
       message:

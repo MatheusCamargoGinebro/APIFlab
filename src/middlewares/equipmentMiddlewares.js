@@ -179,8 +179,7 @@ const equipment_image = (request, response, next) => {
 const equipment_supervisorLevel = (request, response, next) => {
   if (
     request.body.equipment_supervisorLevel === undefined ||
-    request.body.equipment_supervisorLevel === null ||
-    !request.body.equipment_supervisorLevel
+    request.body.equipment_supervisorLevel === null
   ) {
     return response.status(400).send({
       message: "Nível de supervisão do equipamento é obrigatório",
@@ -202,9 +201,9 @@ const equipment_supervisorLevel = (request, response, next) => {
     });
   }
 
-  if (request.body.equipment_supervisorLevel > 3) {
+  if (request.body.equipment_supervisorLevel > 2) {
     return response.status(400).send({
-      message: "Nível de supervisão do equipamento não pode ser maior que 3",
+      message: "Nível de supervisão do equipamento não pode ser maior que 2",
       error_at: "equipment_supervisorLevel",
     });
   }

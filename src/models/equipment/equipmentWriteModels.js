@@ -189,7 +189,7 @@ const editSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
   const data = [equipmentId, newSupervisorLevel];
 
   const [result] = await connection.execute(query, data);
-
+  
   if (result.affectedRows > 0) {
     return {
       status: true,

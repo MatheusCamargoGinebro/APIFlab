@@ -35,13 +35,13 @@ const getElementsByLab = async (ID_lab) => {
 
 // Função para buscar um elemento químico pelo ID:
 const getElementById = async (elementId) => {
-  const query = "GetElementByID(?);";
+  const query = "CALL GetElementByID(?);";
   const data = [elementId];
 
   const [result] = await connection.execute(query, data);
 
-  if (result.length > 0) {
-    return { status: true, data: result[0] };
+  if (result[0].length > 0) {
+    return { status: true, data: result[0][0] };
   } else {
     return { status: false, message: "Elemento químico não encontrado!" };
   }

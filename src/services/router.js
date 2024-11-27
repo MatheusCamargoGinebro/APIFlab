@@ -448,20 +448,20 @@ router.put(
   - [X] Listar elementos do laboratório;
 
   - Equipamento:
-  - [] Registrar um equipamento no banco de dados;
+  - [X] Registrar um equipamento no banco de dados;
   - Editar informações de um equipamento:
-    - [] Editar nome do equipamento;
-    - [] Editar descrição do equipamento;
-    - [] Editar quantidade total do equipamento;
-    - [] Editar qualidade do equipamento;
-    - [] Editar imagem do equipamento;
-    - [] Editar o nível de supervisão do equipamento;
-  - [] Deletar um equipamento do banco de dados;
+    - [X] Editar nome do equipamento;
+    - [X] Editar descrição do equipamento;
+    - [X] Editar quantidade total do equipamento;
+    - [X] Editar qualidade do equipamento;
+    - [X] Editar imagem do equipamento;
+    - [X] Editar o nível de supervisão do equipamento;
+  - [X] Deletar um equipamento do banco de dados;
 
   - Elemento:
-  - [] Registrar um elemento no banco de dados;
+  - [X] Registrar um elemento no banco de dados;
   - Editar informações de um elemento:
-    - [] Editar nome do elemento;
+    - [X] Editar nome do elemento;
     - [] Editar quantidade do elemento;
     - [] Editar descrição do elemento;
     - [] Editar peso molecular do elemento;

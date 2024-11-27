@@ -453,6 +453,13 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
+UPDATE equipamentos
+SET
+    QuantidadeDisponivel = p_QuantidadeTotal
+WHERE
+    ID_equip = p_ID_equip
+    AND QuantidadeDisponivel > p_QuantidadeTotal;
+
 END $$ DELIMITER;
 
 -- O==============================================================O --
@@ -489,7 +496,7 @@ DROP PROCEDURE IF EXISTS EditEquipmentSupervisorLevel;
 
 DELIMITER $$
 CREATE PROCEDURE EditEquipmentSupervisorLevel (IN p_ID_equip INT, IN p_SupervisorLevel INT) BEGIN
-UPDATE equipamentos
+UPDATE Equipamentos
 SET
     SupervisorLevel = p_SupervisorLevel
 WHERE

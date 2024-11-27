@@ -343,7 +343,7 @@ DROP PROCEDURE IF EXISTS GetElementByID;
 DELIMITER $$
 CREATE PROCEDURE GetElementByID (IN p_ID_elem INT) BEGIN
 SELECT
-    elementos.ID_elem AS elementID,
+    elementos.ID_elem AS elementId,
     elementos.Nome AS elementName,
     elementos.Quantidade AS Quantity,
     elementos.Descricao AS description,
@@ -356,7 +356,7 @@ SELECT
     elementos.SupervisorLevel AS supervisorLevel,
     elementos.ID_lab AS labId
 FROM
-    elementos
+    Elementos
 WHERE
     elementos.ID_elem = p_ID_elem;
 
