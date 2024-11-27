@@ -174,7 +174,7 @@ DROP PROCEDURE IF EXISTS GetAllLabUsers;
 DELIMITER $$
 CREATE PROCEDURE GetAllLabUsers (IN p_ID_lab INT) BEGIN
 SELECT DISTINCT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
@@ -196,7 +196,7 @@ DROP PROCEDURE IF EXISTS GetLabUsersByLevel;
 DELIMITER $$
 CREATE PROCEDURE GetLabUsersByLevel (IN p_ID_lab INT, IN p_level INT) BEGIN
 SELECT DISTINCT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
@@ -239,7 +239,7 @@ DELIMITER $$
 CREATE PROCEDURE GetLabUserRelation (IN p_ID_lab INT, IN p_ID_usuario INT) BEGIN
 SELECT
     userlab.ID_lab AS labID,
-    userlab.ID_usuario AS userID,
+    userlab.ID_usuario AS userId,
     userlab.AdminLevel AS userLevel
 FROM
     userlab
@@ -429,7 +429,7 @@ DROP PROCEDURE IF EXISTS GetUsersByLab;
 DELIMITER $$
 CREATE PROCEDURE GetUsersByLab (IN p_ID_lab INT) BEGIN
 SELECT DISTINCT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
@@ -450,7 +450,7 @@ DROP PROCEDURE IF EXISTS GetUsersByCampus;
 DELIMITER $$
 CREATE PROCEDURE GetUsersByCampus (IN p_ID_campus INT) BEGIN
 SELECT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
@@ -513,7 +513,7 @@ DROP PROCEDURE IF EXISTS GetUserByName;
 DELIMITER $$
 CREATE PROCEDURE GetUserByName (IN p_Name VARCHAR(256)) BEGIN
 SELECT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
@@ -533,7 +533,7 @@ DROP PROCEDURE IF EXISTS Login;
 DELIMITER $$
 CREATE PROCEDURE Login (IN p_Email VARCHAR(256), IN p_Senha VARCHAR(256)) BEGIN
 SELECT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,

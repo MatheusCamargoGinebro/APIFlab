@@ -31,6 +31,9 @@ const tokenBlackListModels = require("../../models/user/accountValidation/tokenB
 // Módulo de MailCode:
 const mailCodesModels = require("../../models/user/accountValidation/mailCodesModels");
 
+// Módulo de permissões de laboratório:
+const labPermission = require("../../controllers/lab/labPermissionChecks");
+
 // O========================================================================================O
 
 // Função para realizar o login de um usuário:
@@ -113,26 +116,31 @@ const userLogout = async (req, res) => {
 
 // Função para limpar a lista de tokens:
 const clearBlackList = async () => {
+  console.log("Limpando blacklist de tokens...");
   const blacklist = await tokenBlackListModels.getAllBlacklist();
 
   blacklist.forEach(async (token) => {
-    JWT.verify(token.Token, process.env.JWT_SECRET, async (err, decoded) => {
+    // Verificando se o token já expirou ou se ainda é válido:
+    JWT.verify(token.Token, process.env.JWT_SECRET, async (err, __decoded) => {
       if (err) {
+        // Removendo token da blacklist:
         await tokenBlackListModels.removeFromBlacklist(token.Token);
       }
     });
   });
-
-  return { status: true, message: "Blacklist limpa." };
 };
 
 // O========================================================================================O
 
 // Função para limpar a lista de códigos de email:
-const clearMailCodeList = async () => {
+const clearMailCodeList = async (__req, res) => {
+  console.log("Limpando lista de códigos de email...");
   const mailCodes = await mailCodesModels.clearMailCodeList();
 
-  return mailCodes;
+  return res.status(200).json({
+    status: true,
+    message: "Lista de códigos de email limpa.",
+  });
 };
 
 // O========================================================================================O
@@ -209,7 +217,7 @@ const getUsersFromLab = async (req, res) => {
 
   return res.status(200).json({
     status: true,
-    users: result.users,
+    users: result.userData[0],
   });
 };
 

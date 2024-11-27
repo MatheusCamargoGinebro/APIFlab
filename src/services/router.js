@@ -5,7 +5,6 @@
   |    Arquivo de configuração das rotas da aplicação    |
   O======================================================O
 
-
 */
 
 // O========================================================================================O
@@ -67,10 +66,10 @@ const elementWriteCtrllrs = require("../controllers/element/elementWriteControll
 // Configuração de sistemas de limpeza:
 
 // A cada 60 segundos, limpar a blacklist de tokens, removendo os tokens já inválidos:
-/*setInterval(accountCtrllrs.clearBlackList, 60000); */
+setInterval(accountCtrllrs.clearBlackList, 60000);
 
-// A cada 24h, limpar os códigos de verificação de email:
-setInterval(accountCtrllrs.clearMailCodeList, 86400000);
+// A cada 8h, limpar os códigos de verificação de email:
+setInterval(accountCtrllrs.clearMailCodeList, 28800000);
 
 // O========================================================================================O
 
@@ -124,7 +123,6 @@ router.post(
   userMiddlewares.user_name,
   userMiddlewares.user_email,
   userMiddlewares.user_password,
-  userMiddlewares.user_profpic,
   userMiddlewares.user_type,
   userMiddlewares.user_campusId,
   userMiddlewares.validationCode,
@@ -446,8 +444,8 @@ router.put(
   O==========================================O
 
   - Inicio:
-  - [] Listar equipamentos do laboratório;
-  - [] Listar elementos do laboratório;
+  - [X] Listar equipamentos do laboratório;
+  - [X] Listar elementos do laboratório;
 
   - Equipamento:
   - [] Registrar um equipamento no banco de dados;
@@ -909,7 +907,7 @@ router.put(
   O================================================================O
 
   Inicio:
-  - [] Listar usuários de um laboratório;
+  - [X] Listar usuários de um laboratório;
   - [X] Relacionar usuários a um laboratório;
   - [X] Desrelacionar usuários de um laboratório;
   - [X] Adicionar usuário como admin de um laboratório;

@@ -90,37 +90,6 @@ const createLab = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  // Recuperando ID do laboratório criado:
-  const GetLabByNameAgain = await labRead.getLabByName(
-    lab_name,
-    checkUserToCreate.userData.campusId
-  );
-
-  if (GetLabByNameAgain.status === false) {
-    return res.status(500).json({
-      status: false,
-      message: "Erro ao recuperar laboratório!",
-    });
-  }
-
-  /*-----------------------------------------------------*/
-
-  // Relacionando o laboratório com o usuário criador:
-  const RelateUserLab = await labWrite.relateUserLab(
-    GetLabByNameAgain.lab.labId,
-    userId,
-    3
-  );
-
-  if (RelateUserLab.status === false) {
-    return res.status(400).json({
-      status: false,
-      message: "Erro ao relacionar usuário ao laboratório!",
-    });
-  }
-
-  /*-----------------------------------------------------*/
-
   return res.status(200).json({
     status: true,
     message: "Laboratório criado com sucesso!",

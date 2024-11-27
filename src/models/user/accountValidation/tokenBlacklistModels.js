@@ -54,7 +54,7 @@ const getAllBlacklist = async () => {
   const query = "CALL GetAllBlacklist();";
   const [result] = await connection.execute(query);
 
-  return result;
+  return result[0];
 };
 
 // O====================================================================================O

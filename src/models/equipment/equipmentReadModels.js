@@ -22,7 +22,7 @@ const getEquipmentById = async (equipmentId) => {
   const query = "CALL GetEquipmentByID(?);";
   const data = [equipmentId];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
   if (result.length > 0) {
     return { status: true, data: result[0] };
@@ -38,10 +38,10 @@ const getEquipmentsByLabId = async (labId) => {
   const query = "CALL GetEquipmentsByLab(?);";
   const data = [labId];
 
-  const [result] = await execute(query, data);
+  const [result] = await connection.execute(query, data);
 
-  if (result.length > 0) {
-    return { status: true, data: result };
+  if (result[0].length > 0) {
+    return { status: true, data: result[0] };
   } else {
     return { status: false, message: "Equipamentos químicos não encontrados!" };
   }

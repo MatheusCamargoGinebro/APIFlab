@@ -24,8 +24,8 @@ const getElementsByLab = async (ID_lab) => {
 
   const [result] = await connection.execute(query, data);
 
-  if (result.length > 0) {
-    return { status: true, data: result };
+  if (result[0].length > 0) {
+    return { status: true, data: result[0] };
   } else {
     return { status: false, message: "Elementos químicos não encontrados!" };
   }

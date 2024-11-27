@@ -83,24 +83,14 @@ const getEquipmentsByLabId = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // ID do laboratório:
-  const { lab_id } = req.body;
+  const { equipment_labId } = req.body;
 
   /*-----------------------------------------------------*/
-
-  // Recuperando informações dos equipamentos químicos:
-  const equipments = await equipmentRead.getEquipmentsByLabId(lab_id);
-
-  if (equipments.status === false) {
-    return res.status(404).json({
-      status: false,
-      message: "Equipamentos químicos não encontrados!",
-    });
-  }
 
   // Verificando se o usuário tem permissão para acessar os equipamentos químicos:
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    lab_id,
+    equipment_labId,
     2
   );
 
@@ -108,6 +98,18 @@ const getEquipmentsByLabId = async (req, res) => {
     return res.status(401).json({
       status: false,
       message: "Usuário não autorizado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações dos equipamentos químicos:
+  const equipments = await equipmentRead.getEquipmentsByLabId(equipment_labId);
+
+  if (equipments.status === false) {
+    return res.status(404).json({
+      status: false,
+      message: "Equipamentos químicos não encontrados!",
     });
   }
 

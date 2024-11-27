@@ -41,14 +41,7 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS CreateUser;
 
 DELIMITER $$
-CREATE PROCEDURE CreateUser (
-    IN p_Nome VARCHAR(128), 
-    IN p_Email VARCHAR(256), 
-    IN p_Senha VARCHAR(60), 
-    IN p_Salt VARCHAR(60), 
-    IN p_Tipo INT, 
-    IN p_CampusAdminLevel INT, 
-    IN p_ID_campus INT) BEGIN
+CREATE PROCEDURE CreateUser (IN p_Nome VARCHAR(128), IN p_Email VARCHAR(256), IN p_Senha VARCHAR(60), IN p_Salt VARCHAR(60), IN p_Tipo INT, IN p_CampusAdminLevel INT, IN p_ID_campus INT) BEGIN
 INSERT INTO
     usuarios (Nome, Email, Senha, Salt, Tipo, CampusAdminLevel, ID_campus)
 VALUES
