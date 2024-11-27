@@ -491,9 +491,11 @@ DROP PROCEDURE IF EXISTS GetUserByEmail;
 DELIMITER $$
 CREATE PROCEDURE GetUserByEmail (IN p_Email VARCHAR(256)) BEGIN
 SELECT
-    usuarios.ID_usuario AS userID,
+    usuarios.ID_usuario AS userId,
     usuarios.Nome AS userName,
     usuarios.Email AS userEmail,
+    usuarios.Senha AS userPassword,
+    usuarios.Salt AS userSalt,
     usuarios.profilePic AS userImage,
     usuarios.Tipo AS userType,
     usuarios.CampusAdminLevel AS campusAdminLevel

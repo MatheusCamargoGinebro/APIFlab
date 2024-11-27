@@ -80,10 +80,10 @@ const editUserEmail = async (userID, newEmail) => {
 // O====================================================================================O
 
 // Função para editar a senha de um usuário:
-const editUserPassword = async (userID, newPassword) => {
+const editUserPassword = async (userID, newPassword, newSalt) => {
   // Editando no banco de dados:
-  const query = "CALL EditUserPassword(?, ?);";
-  const [result] = await connection.execute(query, [userID, newPassword]);
+  const query = "CALL EditUserPassword(?, ?, ?);";
+  const [result] = await connection.execute(query, [userID, newPassword, newSalt]);
 
   if (result.affectedRows > 0) {
     return { status: true, message: "Senha atualizada" };

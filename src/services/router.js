@@ -85,7 +85,7 @@ setInterval(accountCtrllrs.clearMailCodeList, 86400000);
     - [X] Registrar um usuário no banco de dados;
 
   - Login:
-    - [] Logar um usuário no sistema;
+    - [X] Logar um usuário no sistema;
 */
 
 // O========================================================================================O
@@ -172,14 +172,14 @@ router.post(
   O=====================================O
 
   - Usuário:
-  - [] Recuperar dados do usuário a partir do token;
+  - [X] Recuperar dados do usuário a partir do token;
 
   - Configurações de usuário:
-    - [] Editar nome do usuário;
-    - [] Editar email do usuário;
-    - [] Editar senha do usuário;
-    - [] Editar foto de perfil do usuário;
-    - [] Editar tipo de usuário (professor, aluno ou outro);
+    - [X] Editar nome do usuário;
+    - [X] Editar email do usuário;
+    - [X] Editar senha do usuário;
+    - [X] Editar foto de perfil do usuário;
+    - [X] Editar tipo de usuário (professor, aluno ou outro);
 
   - Logout:
     - [] Deslogar o usuário do sistema;

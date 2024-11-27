@@ -41,7 +41,7 @@ const getUserByEmail = async (email) => {
   const [result] = await connection.execute(query, [email]);
 
   if (result[0].length > 0) {
-    return { status: true, userData: result[0] };
+    return { status: true, userData: result[0][0] };
   } else {
     return { status: false, userData: null };
   }

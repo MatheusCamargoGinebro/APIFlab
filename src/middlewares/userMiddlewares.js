@@ -72,7 +72,7 @@ const user_name = (request, response, next) => {
       .status(400)
       .send({ message: "Nome não pode ser vazio!", error_at: "user_name" });
   }
-  
+
   if (!/^[A-Za-zÀ-ÖØ-öø-ÿ -]+$/.test(request.body.user_name)) {
     return response.status(400).send({
       message: "Nome deve conter apenas letras e espaços!",

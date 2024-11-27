@@ -96,8 +96,9 @@ const editUserEmail = async (req, res) => {
     validationCode
   );
 
-  if (mailCodeCheck === false) {
+  if (mailCodeCheck === false || validationCode !== mailCodeCheck.code) {
     return res.status(400).json({
+      status: false,
       message: "Código de confirmação não vinculado ao email.",
     });
   }
@@ -129,14 +130,7 @@ const editUserEmail = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Deletando o código de confirmação:
-  const mailCodeDelete = await MailCodeModels.deleteMailCode(user_email);
-
-  if (mailCodeDelete.status === false) {
-    return res.status(500).json({
-      status: false,
-      message: "Erro ao deletar código de confirmação",
-    });
-  }
+  const deleteMailCode = await MailCodeModels.deleteMailCode(user_email);
 
   /*-----------------------------------------------------*/
 
@@ -228,7 +222,7 @@ const editUserType = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Editando o tipo de usuário:
-  const result = await userModels.editUserType(userId, user_type);
+  const result = await UserWrite.editUserType(userId, user_type);
 
   if (result.status === false) {
     return res.status(500).json({

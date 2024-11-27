@@ -129,8 +129,6 @@ const userRegister = async (req, res) => {
     });
   }
 
-  console.log("Validou o código de confirmação");
-
   /*-----------------------------------------------------*/
 
   // Verificando se o email já está cadastrado:

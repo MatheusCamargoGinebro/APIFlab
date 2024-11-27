@@ -56,8 +56,8 @@ const userLogin = async (req, res) => {
   // Comparando senhas:
   const result = await passwordTreat.comparePasswords(
     user_password,
-    userInfo.userData.Salt,
-    userInfo.userData.Senha
+    userInfo.userData.userSalt,
+    userInfo.userData.userPassword
   );
 
   if (result === false) {
@@ -69,9 +69,8 @@ const userLogin = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  // Gerando token de autenticação:
   const token = JWT.sign(
-    { userId: userInfo.userData.ID_usuario },
+    { userId: userInfo.userData.userId },
     process.env.JWT_SECRET,
     {
       expiresIn: 86400,
@@ -153,6 +152,7 @@ const getUserData = async (req, res) => {
 
   if (result.status === false) {
     return res.status(404).json({
+      status: false,
       message: "Usuário não encontrado.",
     });
   }
@@ -160,7 +160,8 @@ const getUserData = async (req, res) => {
   /*-----------------------------------------------------*/
 
   return res.status(200).json({
-    userData: result.userData,
+    status: true,
+    data: result.userData[0],
   });
 };
 

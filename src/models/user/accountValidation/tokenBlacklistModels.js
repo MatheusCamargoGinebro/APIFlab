@@ -40,7 +40,7 @@ const getFromBlacklist = async (token) => {
   const query = "CALL GetFromBlacklist(?);";
   const [result] = await connection.execute(query, [token]);
 
-  if (result.length > 0) {
+  if (result[0].length > 0) {
     return { status: true, message: "Token na blacklist" };
   } else {
     return { status: false, message: "Token não está na blacklist" };
