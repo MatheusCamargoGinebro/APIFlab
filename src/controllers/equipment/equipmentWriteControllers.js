@@ -1,13 +1,13 @@
 // O========================================================================================O
 
 /*
-    O================================================================================================O
-    |    Funções de controllers relacionadas a inserção de equipamentos em laboratórios específicos    |
-    O================================================================================================O
+  O==================================================================================================O
+  |    Funções de controllers relacionadas a inserção de equipamentos em laboratórios específicos    |
+  O==================================================================================================O
 
-    Funções de controllers relacionadas a inserção de equipamentos em laboratórios específicos:
-    - [X] createEquipment;
-    - [X] removeEquipment;
+  Funções de controllers relacionadas a inserção de equipamentos em laboratórios específicos:
+  - [X] createEquipment;
+  - [X] removeEquipment;
 */
 
 // O========================================================================================O

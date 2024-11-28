@@ -38,10 +38,6 @@ function validateDate(dateString) {
     return false;
   }
 
-  if (dateString !== "number") {
-    return false;
-  }
-
   return true;
 }
 
@@ -52,7 +48,7 @@ const session_start_at = (req, res, next) => {
   if (
     req.body.session_start_at === undefined ||
     req.body.session_start_at === null ||
-    req.body.session_start_at === ""
+    !req.body.session_start_at
   ) {
     return res.status(400).json({
       status: false,
@@ -115,7 +111,7 @@ const session_labId = (req, res, next) => {
     });
   }
 
-  if (req.body.session_labId !== "number" || isNaN(req.body.session_labId)) {
+  if (isNaN(req.body.session_labId)) {
     return res.status(400).json({
       status: false,
       message: "ID do laboratório inválido.",
@@ -133,15 +129,10 @@ const session_equipment_list = (req, res, next) => {
   if (
     req.body.session_equipment_list === undefined ||
     req.body.session_equipment_list === null ||
-    req.body.session_equipment_list === ""
+    !req.body.session_equipment_list ||
+    !Array.isArray(req.body.session_equipment_list)
   ) {
     // Define a lista de equipamentos como um array vazio:
-    req.body.session_equipment_list = [];
-
-    return next();
-  }
-
-  if (!Array.isArray(req.body.session_equipment_list)) {
     req.body.session_equipment_list = [];
 
     return next();
@@ -151,7 +142,7 @@ const session_equipment_list = (req, res, next) => {
     if (
       req.body.session_equipment_list[i].equipment_id === undefined ||
       req.body.session_equipment_list[i].equipment_id === null ||
-      req.body.session_equipment_list[i].equipment_id === ""
+      !req.body.session_equipment_list[i].equipment_id
     ) {
       return res.status(400).json({
         status: false,
@@ -160,10 +151,7 @@ const session_equipment_list = (req, res, next) => {
       });
     }
 
-    if (
-      req.body.session_equipment_list[i].equipment_id !== "number" ||
-      isNaN(req.body.session_equipment_list[i].equipment_id)
-    ) {
+    if (isNaN(req.body.session_equipment_list[i].equipment_id)) {
       return res.status(400).json({
         status: false,
         message: "ID do equipamento inválido.",
@@ -174,7 +162,7 @@ const session_equipment_list = (req, res, next) => {
     if (
       req.body.session_equipment_list[i].equipment_quantity === undefined ||
       req.body.session_equipment_list[i].equipment_quantity === null ||
-      req.body.session_equipment_list[i].equipment_quantity === ""
+      !req.body.session_equipment_list[i].equipment_quantity
     ) {
       return res.status(400).json({
         status: false,
@@ -183,10 +171,7 @@ const session_equipment_list = (req, res, next) => {
       });
     }
 
-    if (
-      req.body.session_equipment_list[i].equipment_quantity !== "number" ||
-      isNaN(req.body.session_equipment_list[i].equipment_quantity)
-    ) {
+    if (isNaN(req.body.session_equipment_list[i].equipment_quantity)) {
       return res.status(400).json({
         status: false,
         message: "Quantidade do equipamento inválida.",
@@ -213,15 +198,10 @@ const session_element_list = (req, res, next) => {
   if (
     req.body.session_element_list === undefined ||
     req.body.session_element_list === null ||
-    req.body.session_element_list === ""
+    !req.body.session_element_list ||
+    !Array.isArray(req.body.session_element_list)
   ) {
     // Define a lista de elementos químicos como um array vazio:
-    req.body.session_element_list = [];
-
-    return next();
-  }
-
-  if (!Array.isArray(req.body.session_element_list)) {
     req.body.session_element_list = [];
 
     return next();
@@ -231,7 +211,7 @@ const session_element_list = (req, res, next) => {
     if (
       req.body.session_element_list[i].element_id === undefined ||
       req.body.session_element_list[i].element_id === null ||
-      req.body.session_element_list[i].element_id === ""
+      !req.body.session_element_list[i].element_id
     ) {
       return res.status(400).json({
         status: false,
@@ -240,10 +220,7 @@ const session_element_list = (req, res, next) => {
       });
     }
 
-    if (
-      req.body.session_element_list[i].element_id !== "number" ||
-      isNaN(req.body.session_element_list[i].element_id)
-    ) {
+    if (isNaN(req.body.session_element_list[i].element_id)) {
       return res.status(400).json({
         status: false,
         message: "ID do elemento químico inválido.",
@@ -254,7 +231,7 @@ const session_element_list = (req, res, next) => {
     if (
       req.body.session_element_list[i].element_quantity === undefined ||
       req.body.session_element_list[i].element_quantity === null ||
-      req.body.session_element_list[i].element_quantity === ""
+      !req.body.session_element_list[i].element_quantity
     ) {
       return res.status(400).json({
         status: false,
@@ -263,10 +240,7 @@ const session_element_list = (req, res, next) => {
       });
     }
 
-    if (
-      req.body.session_element_list[i].element_quantity !== "number" ||
-      isNaN(req.body.session_element_list[i].element_quantity)
-    ) {
+    if (isNaN(req.body.session_element_list[i].element_quantity)) {
       return res.status(400).json({
         status: false,
         message: "Quantidade do elemento químico inválida.",
@@ -302,7 +276,7 @@ const session_id = (req, res, next) => {
     });
   }
 
-  if (req.body.session_id !== "number" || NaN(req.body.session_id)) {
+  if (isNaN(req.body.session_id)) {
     return res.status(400).json({
       status: false,
       message: "ID da sessão inválido.",

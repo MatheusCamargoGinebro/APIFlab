@@ -493,14 +493,8 @@ router.post(
   sessionMiddlewares.session_end_at,
   sessionMiddlewares.session_labId,
   sessionMiddlewares.session_equipment_list,
-  sessionMiddlewares.session_element_list /* ,
-  sessionCtrllrs.createSession */,
-  (req, res) => {
-    res.status(200).json({
-      message: "Rota em desenvolvimento.",
-      sended_data: req.body,
-    });
-  }
+  sessionMiddlewares.session_element_list,
+  sessionCtrllrs.createSession
 );
 // +---------------------------------------------------------+
 
@@ -508,14 +502,8 @@ router.post(
 router.get(
   "/lab/session/list",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_labId /* 
-  sessionCtrllrs.getSessionsByLabId */,
-  (req, res) => {
-    res.status(200).json({
-      message: "Rota em desenvolvimento.",
-      sended_data: req.body,
-    });
-  }
+  sessionMiddlewares.session_labId,
+  sessionCtrllrs.GetSessionsByLabId
 );
 
 // +---------------------------------------------------------+
@@ -524,14 +512,8 @@ router.get(
 router.put(
   "/lab/session/start",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_id /*
-  sessionCtrllrs.startSession */,
-  (req, res) => {
-    res.status(200).json({
-      message: "Rota em desenvolvimento.",
-      sended_data: req.body,
-    });
-  }
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.startSession
 );
 
 // +---------------------------------------------------------+
@@ -540,14 +522,8 @@ router.put(
 router.put(
   "/lab/session/end",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_id /*
-  sessionCtrllrs.endSession */,
-  (req, res) => {
-    res.status(200).json({
-      message: "Rota em desenvolvimento.",
-      sended_data: req.body,
-    });
-  }
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.endSession,
 );
 
 // +---------------------------------------------------------+
