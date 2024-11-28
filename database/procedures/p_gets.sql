@@ -116,15 +116,15 @@ SELECT DISTINCT
     laboratorios.ID_lab AS labID,
     laboratorios.Sala AS labName,
     usuario.nome AS atualUser,
-    horarios.Inicio AS sessionStartsAt,
+    horarios.Inicio AS sessionStartsAt,/* 
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
-    horarios.Finished AS sessionFinished
+    horarios.Finished AS sessionFinished */
 FROM
     laboratorios
     JOIN userlab ON laboratorios.ID_lab = userlab.ID_lab
-    JOIN usuarios usuario ON userlab.ID_usuario = usuario.ID_usuario
-    JOIN horarios ON laboratorios.ID_lab = horarios.ID_lab
+    JOIN usuarios usuario ON userlab.ID_usuario = usuario.ID_usuario/* 
+    JOIN horarios ON laboratorios.ID_lab = horarios.ID_lab */
 WHERE
     usuario.ID_usuario = p_ID_usuario;
 

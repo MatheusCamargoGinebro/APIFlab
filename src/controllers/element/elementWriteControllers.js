@@ -118,15 +118,15 @@ const removeElement = async (req, res) => {
   const element = await elementRead.getElementById(element_id);
 
   if (element.status === false) {
-    return res.status(400).json({
+    return res.status(404).json({
       status: false,
-      message: "Erro ao remover elemento químico.",
+      message: "Elemento químico não encontrado.",
     });
   }
 
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    element.element.labId,
+    element.data.labId,
     2
   );
 

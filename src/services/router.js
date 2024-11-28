@@ -462,16 +462,16 @@ router.put(
   - [X] Registrar um elemento no banco de dados;
   - Editar informações de um elemento:
     - [X] Editar nome do elemento;
-    - [] Editar quantidade do elemento;
-    - [] Editar descrição do elemento;
-    - [] Editar peso molecular do elemento;
-    - [] Editar número CAS do elemento;
-    - [] Editar número EC do elemento;
-    - [] Editar estado físico do elemento;
-    - [] Editar imagem do elemento;
-    - [] Editar a validade do elemento;
-    - [] Editar o nível de supervisão do elemento;
-  - [] Deletar um elemento do banco de dados;
+    - [X] Editar quantidade do elemento;
+    - [X] Editar descrição do elemento;
+    - [X] Editar peso molecular do elemento;
+    - [X] Editar número CAS do elemento;
+    - [X] Editar número EC do elemento;
+    - [X] Editar estado físico do elemento;
+    - [X] Editar imagem do elemento;
+    - [X] Editar a validade do elemento;
+    - [X] Editar o nível de supervisão do elemento;
+  - [X] Deletar um elemento do banco de dados;
 */
 
 // O========================================================================================O
@@ -898,6 +898,14 @@ router.put(
 */
 
 // +---------------------------------------------------------+
+
+// Rota de remoção de elemento:
+router.delete(
+  "/element/remove",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementWriteCtrllrs.removeElement
+);
 
 // O========================================================================================O
 

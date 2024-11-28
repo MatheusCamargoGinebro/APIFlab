@@ -47,7 +47,7 @@ const getLabs = async (req, res) => {
   // Retornando os laboratórios encontrados:
   return res.status(200).json({
     status: true,
-    labs: GetLabByUser.labs[0],
+    labs: GetLabByUser.labs,
   });
 };
 

@@ -16,8 +16,8 @@
     - [X] editEcNumber;
     - [X] editPhysicalState;
     - [X] editImage;
-    - [X] editElementExpiration;
-    - [X] editElementSupervisorLevel;
+    - [X] editExpiration;
+    - [X] editSupervisorLevel;
 */
 
 // O========================================================================================O
@@ -260,7 +260,7 @@ const editImage = async (elementId, image) => {
 
 // O========================================================================================O
 
-const editElementExpiration = async (elementId, expirationDate) => {
+const editExpiration = async (elementId, expirationDate) => {
   const query = "CALL EditElementExpiration(?, ?);";
   const data = [elementId, expirationDate];
 
@@ -281,7 +281,7 @@ const editElementExpiration = async (elementId, expirationDate) => {
 
 // O========================================================================================O
 
-const editElementSupervisorLevel = async (elementId, supervisorLevel) => {
+const editSupervisorLevel = async (elementId, supervisorLevel) => {
   const query = "CALL EditElementSupervisorLevel(?, ?);";
   const data = [elementId, supervisorLevel];
 
@@ -314,8 +314,8 @@ module.exports = {
   editEcNumber,
   editPhysicalState,
   editImage,
-  editElementExpiration,
-  editElementSupervisorLevel,
+  editExpiration,
+  editSupervisorLevel,
 };
 
 // O========================================================================================O

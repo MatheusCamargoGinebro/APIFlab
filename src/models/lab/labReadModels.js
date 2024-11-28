@@ -67,10 +67,10 @@ const getLabsByUser = async (ID_usuario) => {
   const query = "CALL GetLabsByUser(?)";
   const [results] = await connection.execute(query, [ID_usuario]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
-      labs: results,
+      labs: results[0],
     };
   } else {
     return {
