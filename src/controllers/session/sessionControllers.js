@@ -31,7 +31,74 @@ const labPermission = require("../../controllers/lab/labPermissionChecks");
 // O========================================================================================O
 
 // Função para criar uma nova sessão em um laboratório:
-const createSession = async (req, res) => {};
+const createSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Informações da nova sessão:
+  const {
+    session_start_at,
+    session_end_at,
+    session_labId,
+    session_equipment_list,
+    session_element_list,
+  } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para criar uma sessão em um laboratório:
+  const userCheck = await labPermission.checkUserToManipulate(
+    userId,
+    session_labId,
+    2
+  );
+
+  if (userCheck.status === false) {
+    return res.status(401).json({
+      status: false,
+      message:
+        "Você não tem permissão para criar uma sessão neste laboratório!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se há alguma sessão no horário solicitado:
+  const checkSession = await sessionRead.checkSession(
+    session_labId,
+    session_start_at,
+    session_end_at
+  );
+
+  if (checkSession.status === true) {
+    return res.status(401).json({
+      status: false,
+      message: "Já existe uma sessão neste horário!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se há equipamentos o suficiente disponíveis para a sessão:
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se há elementos o suficiente disponíveis para a sessão:
+
+  /*-----------------------------------------------------*/
+
+  // Criando a nova sessão:
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Sessão criada com sucesso!",
+  });
+};
 
 // O========================================================================================O
 
