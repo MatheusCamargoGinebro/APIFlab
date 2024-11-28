@@ -18,17 +18,6 @@
 
 // Função de validação de data:
 function validateDate(dateString) {
-  // Como é um timestamp:
-  /* 
-    - O valor informado é um número;
-    - O valor informado é um número inteiro;
-    - O valor informado é um número inteiro positivo;
-    - O valor informado é um número inteiro positivo maior que zero;
-
-    Exemplo de timestamp: 1630000000000; equivale a 2021-08-27 00:00:00.
-    Timestamp de 28/11/2024 09:43:42: 1738100622000.
-  */
-
   // Verifica se o valor informado é um timestamp:
   if (isNaN(dateString)) {
     return false;
@@ -46,6 +35,10 @@ function validateDate(dateString) {
 
   // Verifica se o valor informado é um número inteiro positivo maior que zero:
   if (dateString <= 0) {
+    return false;
+  }
+
+  if (dateString !== "number") {
     return false;
   }
 
@@ -122,7 +115,7 @@ const session_labId = (req, res, next) => {
     });
   }
 
-  if (isNaN(req.body.session_labId)) {
+  if (req.body.session_labId !== "number" || isNaN(req.body.session_labId)) {
     return res.status(400).json({
       status: false,
       message: "ID do laboratório inválido.",
@@ -167,7 +160,10 @@ const session_equipment_list = (req, res, next) => {
       });
     }
 
-    if (isNaN(req.body.session_equipment_list[i].equipment_id)) {
+    if (
+      req.body.session_equipment_list[i].equipment_id !== "number" ||
+      isNaN(req.body.session_equipment_list[i].equipment_id)
+    ) {
       return res.status(400).json({
         status: false,
         message: "ID do equipamento inválido.",
@@ -187,7 +183,10 @@ const session_equipment_list = (req, res, next) => {
       });
     }
 
-    if (isNaN(req.body.session_equipment_list[i].equipment_quantity)) {
+    if (
+      req.body.session_equipment_list[i].equipment_quantity !== "number" ||
+      isNaN(req.body.session_equipment_list[i].equipment_quantity)
+    ) {
       return res.status(400).json({
         status: false,
         message: "Quantidade do equipamento inválida.",
@@ -241,7 +240,10 @@ const session_element_list = (req, res, next) => {
       });
     }
 
-    if (isNaN(req.body.session_element_list[i].element_id)) {
+    if (
+      req.body.session_element_list[i].element_id !== "number" ||
+      isNaN(req.body.session_element_list[i].element_id)
+    ) {
       return res.status(400).json({
         status: false,
         message: "ID do elemento químico inválido.",
@@ -261,7 +263,10 @@ const session_element_list = (req, res, next) => {
       });
     }
 
-    if (isNaN(req.body.session_element_list[i].element_quantity)) {
+    if (
+      req.body.session_element_list[i].element_quantity !== "number" ||
+      isNaN(req.body.session_element_list[i].element_quantity)
+    ) {
       return res.status(400).json({
         status: false,
         message: "Quantidade do elemento químico inválida.",
@@ -297,7 +302,7 @@ const session_id = (req, res, next) => {
     });
   }
 
-  if (isNaN(req.body.session_id)) {
+  if (req.body.session_id !== "number" || NaN(req.body.session_id)) {
     return res.status(400).json({
       status: false,
       message: "ID da sessão inválido.",
