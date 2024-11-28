@@ -18,19 +18,19 @@ module.exports = router;
 
 // Importando Middlewares:
 
-// user:
+// Módulo de validação de dados de usuário:
 const userMiddlewares = require("../middlewares/userMiddlewares");
 
-// lab:
+// Módulo de validação de dados de laboratório:
 const labMiddlewares = require("../middlewares/labMiddlewares");
 
-// institute:
+// Módulo de validação de dados de campus:
 const campusMiddlewares = require("../middlewares/campusMiddlewares");
 
-// equipment:
+// Módulo de validação de dados de equipamento:
 const equipmentMiddlewares = require("../middlewares/equipmentMiddlewares");
 
-// element:
+// Módulo de validação de dados de elemento:
 const elementMiddlewares = require("../middlewares/elementMiddlewares");
 
 // O========================================================================================O
@@ -38,35 +38,66 @@ const elementMiddlewares = require("../middlewares/elementMiddlewares");
 // Importando Controllers:
 
 // user:
+// Módulo de controle de contas de usuário:
 const accountCtrllrs = require("../controllers/user/userAccountControls");
+
+// Módulo de controle de edição de usuário:
 const userEditCtrllrs = require("../controllers/user/userEditControllers");
+
+// Módulo de controle de registro de usuário:
 const userRegisterCtrllrs = require("../controllers/user/userRegisterControllers");
 
+// o----------------------------------------------------------------------------------o
+
 // lab:
+// Módulo de controle de criação de laboratório:
 const labCreateCtrllrs = require("../controllers/lab/labCreateControllers");
+
+// Módulo de controle de edição de laboratório:
 const labEditCtrllrs = require("../controllers/lab/labEditControllers");
+
+// Módulo de controle de leitura de laboratório:
 const labReadCtrllrs = require("../controllers/lab/labReadControllers");
 
+// o----------------------------------------------------------------------------------o
+
 // institute:
+// Módulo de controle de edição de campus:
 const campusReadCtrllrs = require("../controllers/campus/campusReadControllers");
+
+// Módulo de controle de edição de campus:
 const campusWriteCtrllrs = require("../controllers/campus/campusWriteControllers");
 
+// o----------------------------------------------------------------------------------o
+
 // equipment:
+// Módulo de controle de edição de equipamento:
 const equipmentEditCtrllrs = require("../controllers/equipment/equipmentEditControllers");
+
+// Módulo de controle de leitura de equipamento:
 const equipmentReadCtrllrs = require("../controllers/equipment/equipmentReadControllers");
+
+// Módulo de controle de escrita de equipamento:
 const equipmentWriteCtrllrs = require("../controllers/equipment/equipmentWriteControllers");
 
+// o----------------------------------------------------------------------------------o
+
 // element:
+// Módulo de controle de edição de elemento:
 const elementEditCtrllrs = require("../controllers/element/elementEditControllers");
+
+// Módulo de controle de leitura de elemento:
 const elementReadCtrllrs = require("../controllers/element/elementReadControllers");
+
+// Módulo de controle de escrita de elemento:
 const elementWriteCtrllrs = require("../controllers/element/elementWriteControllers");
 
 // O========================================================================================O
 
 // Configuração de sistemas de limpeza:
 
-// A cada 60 segundos, limpar a blacklist de tokens, removendo os tokens já inválidos:
-setInterval(accountCtrllrs.clearBlackList, 60000);
+// A cada 24h, limpar a blacklist de tokens, removendo os tokens já inválidos:
+setInterval(accountCtrllrs.clearBlackList, 86400000);
 
 // A cada 8h, limpar os códigos de verificação de email:
 setInterval(accountCtrllrs.clearMailCodeList, 28800000);
@@ -78,26 +109,45 @@ setInterval(accountCtrllrs.clearMailCodeList, 28800000);
   |    Tela 1 - Login e Registro de Usuários    |
   O=============================================O
 
-  - Registro:
-    - [X] Recuperar (para exibir) informações dos campi do banco de dados;
-    - [X] Registrar um código de verificação de email no banco de dados e enviar o código para o email do usuário;
-    - [X] Registrar um usuário no banco de dados;
+  - Rotas:
+    - [V] Recuperar (para exibir) informações dos campi do banco de dados;
+    Route: /campus/list
+    Body: {}
 
-  - Login:
-    - [X] Logar um usuário no sistema;
+    - [V] Registrar um código de verificação de email no banco de dados e
+    enviar o código para o email do usuário;
+    Route: /user/sendmailcode
+    Body: 
+    { 
+      "user_email": <mail> 
+    }
+
+    - [V] Registrar um usuário no banco de dados;
+    Route: /user/register
+    Body: 
+    {
+      "user_name": <name>,
+      "user_email": <mail>, 
+      "user_password": <password>,
+      "user_profpic": <profile_picture>, 
+      "user_type": <type>, 
+      "user_campusId": <campus_id>,
+      "validationCode": <code> 
+    }
+    
+    - [V] Login - Logar um usuário no sistema;
+    Route: /user/login
+    Body: 
+    {
+      "user_email": <mail>,
+      "user_password": <password>
+    }
 */
 
 // O========================================================================================O
 
-// +---------------------------------------------------------+
-
-// Rota de listagem de campi:
+// Rota de listagem de campus:
 router.get("/campus/list", campusReadCtrllrs.getAllCampus);
-
-/*
-  Body:
-  - Nenhum.
-*/
 
 // +---------------------------------------------------------+
 
@@ -107,13 +157,6 @@ router.post(
   userMiddlewares.user_email,
   userRegisterCtrllrs.sendMailCode
 );
-
-/*
-  Body:
-  {
-    "user_email": "mail@aluno.ifsp.edu.br"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -129,19 +172,6 @@ router.post(
   userRegisterCtrllrs.userRegister
 );
 
-/* 
-  Body:
-  {
-    "user_name": "João",
-    "user_email": "mail@aluno.ifsp.edu.br",
-    "user_password": "J0@o_Passw0rd!123",
-    "user_profpic": "",
-    "user_type": 1,
-    "user_campusId": 1,
-    "validationCode": "12345"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de login de usuário:
@@ -152,16 +182,6 @@ router.post(
   accountCtrllrs.userLogin
 );
 
-/*
-  Body:
-  {
-    "user_email": "mail@aluno.ifsp.edu.br",
-    "user_password": "J0@o_Passw0rd!123"
-  }
-*/
-
-// +---------------------------------------------------------+
-
 // O========================================================================================O
 
 /* 
@@ -169,23 +189,53 @@ router.post(
   |    Tela 2 - Tela base do sistema    |
   O=====================================O
 
-  - Usuário:
-  - [X] Recuperar dados do usuário a partir do token;
+  - Rotas:
+  - [V] Recuperar dados do usuário a partir do token;
+  Route: /user/data
+  Body: {}
 
-  - Configurações de usuário:
-    - [X] Editar nome do usuário;
-    - [X] Editar email do usuário;
-    - [X] Editar senha do usuário;
-    - [X] Editar foto de perfil do usuário;
-    - [X] Editar tipo de usuário (professor, aluno ou outro);
+  - [V] Editar nome do usuário;
+  Route: /user/edit/name
+  Body:
+  {
+    "user_name": <name>
+  }
 
-  - Logout:
-    - [X] Deslogar o usuário do sistema;
+  - [V] Editar email do usuário;
+  Route: /user/edit/email
+  Body:
+  {
+    "user_email": <mail>,
+    "validationCode": <code>
+  }
+  
+  - [V] Editar senha do usuário;
+  Route: /user/edit/password
+  Body:
+  {
+    "user_password": <password>
+  }
+  
+  - [V] Editar foto de perfil do usuário;
+  Route: /user/edit/picture
+  Body:
+  {
+    "user_profpic": <profile_picture>
+  }
+  
+  - [V] Editar tipo de usuário (professor, aluno ou outro);
+  Route: /user/edit/type
+  Body:
+  {
+    "user_type": <type>
+  }
+  
+  - [V] Deslogar o usuário do sistema;
+  Route: /user/logout
+  Body: {}
 */
 
 // O========================================================================================O
-
-// +---------------------------------------------------------+
 
 // Rota de recuperação de dados do usuário a partir do token:
 router.get(
@@ -193,11 +243,6 @@ router.get(
   userMiddlewares.checkToken,
   accountCtrllrs.getUserData
 );
-
-/*
-  Body:
-  - Nenhum.
-*/
 
 // +---------------------------------------------------------+
 
@@ -208,13 +253,6 @@ router.put(
   userMiddlewares.user_name,
   userEditCtrllrs.editUserName
 );
-
-/*
-  Body:
-  {
-    "user_name": "João"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -227,14 +265,6 @@ router.put(
   userEditCtrllrs.editUserEmail
 );
 
-/*
-  Body:
-  {
-    "user_email": "newmail@aluno.ifsp.edu.br",
-    "validationCode": "12345"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de senha de usuário:
@@ -244,14 +274,6 @@ router.put(
   userMiddlewares.user_password,
   userEditCtrllrs.editUserPassword
 );
-
-/*
-  Body:
-  {
-    "user_password": "New_P@ssw0rd!123"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de foto de perfil de usuário:
@@ -261,13 +283,6 @@ router.put(
   userMiddlewares.user_profpic,
   userEditCtrllrs.editUserPic
 );
-
-/*
-  Body:
-  {
-    "user_profpic": "<new_profile_picture_in_text_format>"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -279,13 +294,6 @@ router.put(
   userEditCtrllrs.editUserType
 );
 
-/*
-  Body:
-  {
-    "user_type": 2
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de logout de usuário:
@@ -295,13 +303,6 @@ router.post(
   accountCtrllrs.userLogout
 );
 
-/*
-  Body:
-  - Nenhum.
-*/
-
-// +---------------------------------------------------------+
-
 // O========================================================================================O
 
 /*
@@ -309,36 +310,98 @@ router.post(
   |    Tela 3 - Lista de laboratórios    |
   O======================================O
 
-  - Inicio:
-  - [X] Listar laboratórios em que o usuário possui acesso;
-  - [X] Listar laboratórios em que o usuário possui tal nível de acesso;
-  - [X] Registrar um laboratório no banco de dados;
+  - Rotas:
+  - [V] Listar laboratórios em que o usuário possui acesso;
+  Route: /lab/list/all
+  Body: {}
 
-  - Laboratório:
+
+  - [V] Listar laboratórios em que o usuário possui tal nível de acesso;
+  Route: /lab/list/level
+  Body:
+  {
+    "lab_adminLevel": <level>
+  }
+  
+  - [V] Registrar um laboratório no banco de dados;
+  Route: /lab/register
+  Body:
+  {
+    "lab_name": <name>,
+    "lab_capacity": <capacity>
+  }
+
   - [] Gerar relatório de acesso ao laboratório;
+  Route: /lab/report/access
+  Body: 
+  {
+    "lab_id": <id>,
+    "date_start": <start_date>,
+    "date_end": <end_date>  
+  }
+  
   - [] Gerar relatório de inventário do laboratório;
+  Route: /lab/report/inventory
+  Body:
+  {
+    "lab_id": <id>,
+    "date_start": <start_date>,
+    "date_end": <end_date>  
+  }
 
-  - Editar informações do laboratório:
-    - [X] Editar sala (nome) do laboratório;
-    - [X] Editar capacidade do laboratório;
+  - [V] Editar sala (nome) do laboratório;
+  Route: /lab/edit/name
+  Body:
+  {
+    "lab_name": <name>,
+    "lab_id": <id>
+  }
 
-  - Sessão:
-    - [] Marcar uma sessão de uso de laboratório no banco de dados;
-    - [] Listar sessões de uso de laboratório;
-    - [] Finalizar uma sessão de uso de laboratório no banco de dados;
+  - [V] Editar capacidade do laboratório;
+  Route: /lab/edit/capacity
+  Body:
+  {
+    "lab_capacity": <capacity>,
+    "lab_id": <id>
+  }
+
+  - [] Marcar uma sessão de uso de laboratório no banco de dados;
+  Route: /lab/session/register
+  Body:
+  {
+    "session_date": <date>,
+    "session_start": <start_time>,
+    "session_end": <end_time>,
+    "session_labId": <lab_id>,
+    "session_userId": <user_id>
+  }
+  
+  - [] Listar sessões de uso de laboratório;
+  Route: /lab/session/list
+  Body:
+  {
+    "session_labId": <lab_id>
+  }
+
+  - [] Iniciar uma sessão de uso de laboratório no banco de dados;
+  Route: /lab/session/start
+  Body:
+  {
+    "session_id": <id>
+  }
+  
+  - [] Finalizar uma sessão de uso de laboratório no banco de dados;
+  Route: /lab/session/end
+  Body:
+  {
+    "session_id": <id>
+  }
 */
 
 // O========================================================================================O
 
-// +---------------------------------------------------------+
-
 // Rota de listagem de laboratórios em que o usuário possui acesso:
 router.get("/lab/list/all", userMiddlewares.checkToken, labReadCtrllrs.getLabs);
-
-/*
-  Body:
-  - Nenhum.
-*/
 
 // +---------------------------------------------------------+
 
@@ -350,13 +413,6 @@ router.get(
   labReadCtrllrs.getLabByUserLevel
 );
 
-/*
-  Body:
-  {
-    "lab_adminLevel": 2
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de registro de laboratório:
@@ -367,14 +423,6 @@ router.post(
   labMiddlewares.lab_capacity,
   labCreateCtrllrs.createLab
 );
-
-/*
-  Body:
-  {
-    "lab_name": "A106",
-    "lab_capacity": 20
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -395,14 +443,6 @@ router.put(
   labEditCtrllrs.editLabName
 );
 
-/*
-  Body:
-  {
-    "lab_name": "A107",
-    "lab_id": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de capacidade de laboratório:
@@ -414,14 +454,6 @@ router.put(
   labEditCtrllrs.editLabCapacity
 );
 
-/*
-  Body:
-  {
-    "lab_capacity": 25,
-    "lab_id": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota para marcar uma sessão de uso de laboratório no banco de dados:
@@ -432,6 +464,10 @@ router.put(
 
 // +---------------------------------------------------------+
 
+// Rota para iniciar uma sessão de uso de laboratório no banco de dados:
+
+// +---------------------------------------------------------+
+
 // Rota para finalizar uma sessão de uso de laboratório no banco de dados:
 
 // +---------------------------------------------------------+
@@ -439,39 +475,85 @@ router.put(
 // O========================================================================================O
 
 /*
-  O==========================================O
-  |    Tela 4 - Inventário do laboratório    |
-  O==========================================O
+  O=========================================================O
+  |    Tela 4 - Inventário do laboratório - Equipamentos    |
+  O=========================================================O
+  
+  - Rotas:
+  - [V] Listar equipamentos do laboratório;
+  Route: /equipment/list
+  Body:
+  {
+    "equipment_labId": <lab_id>
+  }
 
-  - Inicio:
-  - [X] Listar equipamentos do laboratório;
-  - [X] Listar elementos do laboratório;
+  - [V] Registrar um equipamento no banco de dados;
+  Route: /equipment/register
+  Body:
+  {
+    "equipment_name": <name>,
+    "equipment_description": <description>,
+    "equipment_totalQuantity": <total_quantity>,
+    "equipment_quality": <quality>,
+    "equipment_image": <image>,
+    "equipment_supervisorLevel": <supervisor_level>,
+    "equipment_labId": <lab_id>
+  }
 
-  - Equipamento:
-  - [X] Registrar um equipamento no banco de dados;
-  - Editar informações de um equipamento:
-    - [X] Editar nome do equipamento;
-    - [X] Editar descrição do equipamento;
-    - [X] Editar quantidade total do equipamento;
-    - [X] Editar qualidade do equipamento;
-    - [X] Editar imagem do equipamento;
-    - [X] Editar o nível de supervisão do equipamento;
-  - [X] Deletar um equipamento do banco de dados;
+  - [V] Editar nome do equipamento;
+  Route: /equipment/edit/name
+  Body:
+  {
+    "equipment_id": <id>,
+    "equipment_name": <name>
+  }
 
-  - Elemento:
-  - [X] Registrar um elemento no banco de dados;
-  - Editar informações de um elemento:
-    - [X] Editar nome do elemento;
-    - [X] Editar quantidade do elemento;
-    - [X] Editar descrição do elemento;
-    - [X] Editar peso molecular do elemento;
-    - [X] Editar número CAS do elemento;
-    - [X] Editar número EC do elemento;
-    - [X] Editar estado físico do elemento;
-    - [X] Editar imagem do elemento;
-    - [X] Editar a validade do elemento;
-    - [X] Editar o nível de supervisão do elemento;
-  - [X] Deletar um elemento do banco de dados;
+  - [V] Editar descrição do equipamento;
+  Route: /equipment/edit/description
+  Body:
+  {
+    "equipment_id": <id>,
+    "equipment_description": <description>
+  }
+
+  - [V] Editar quantidade total do equipamento;
+  Route: /equipment/edit/quantity
+  Body:
+  {
+    "equipment_id": <id>,
+    "equipment_totalQuantity": <total_quantity>
+  }
+  
+  - [V] Editar qualidade do equipamento;
+  Route: /equipment/edit/quality
+  Body:
+  {
+    "equipment_id": <id>,
+    "equipment_quality": <quality>
+  }
+  
+  - [V] Editar imagem do equipamento;
+  Route: /equipment/edit/image
+  Body:
+  {
+    "equipment_id": <id>,
+    "equipment_image": <image>
+  }
+  
+  - [V] Editar o nível de supervisão do equipamento;
+  Route: /equipment/edit/supervisor
+  Body:
+  {
+    "equipment_id": <id>,
+    "equipment_supervisorLevel": <supervisor_level>
+  }
+  
+  - [V] Deletar um equipamento do banco de dados;
+  Route: /equipment/remove
+  Body:
+  {
+    "equipment_id": <id>
+  }
 */
 
 // O========================================================================================O
@@ -485,31 +567,6 @@ router.get(
   equipmentMiddlewares.equipment_labId,
   equipmentReadCtrllrs.getEquipmentsByLabId
 );
-
-/*
-  Body:
-  {
-    "equipment_labId": 1
-  }
-*/
-
-// +---------------------------------------------------------+
-
-// Rota de listagem de elementos do laboratório:
-router.get(
-  "/element/list",
-  userMiddlewares.checkToken,
-  elementMiddlewares.element_labId,
-  elementReadCtrllrs.getElementsByLabId
-);
-
-/*
-  Body:
-  {
-    "element_labId": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de registro de equipamento:
@@ -526,19 +583,6 @@ router.post(
   equipmentWriteCtrllrs.createEquipment
 );
 
-/*
-  Body:
-  {
-    "equipment_name": "Béquer",
-    "equipment_description": "Béquer de 250mL",
-    "equipment_totalQuantity": 10,
-    "equipment_quality": 5,
-    "equipment_image": "",
-    "equipment_supervisorLevel": 2,
-    "equipment_labId": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de nome de equipamento:
@@ -549,14 +593,6 @@ router.put(
   equipmentMiddlewares.equipment_name,
   equipmentEditCtrllrs.editName
 );
-
-/*
-  Body:
-  {
-    "equipment_id": 1,
-    "equipment_name": "Béquer de 500mL"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -569,14 +605,6 @@ router.put(
   equipmentEditCtrllrs.editDescription
 );
 
-/*
-  Body:
-  {
-    "equipment_id": 1,
-    "equipment_description": "Béquer de 500mL com graduação"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de quantidade total de equipamento:
@@ -587,15 +615,6 @@ router.put(
   equipmentMiddlewares.equipment_totalQuantity,
   equipmentEditCtrllrs.editTotalQuantity
 );
-
-/*
-  Body:
-  {
-    "equipment_id": 1,
-    "equipment_totalQuantity": 15
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de qualidade de equipamento:
@@ -606,14 +625,6 @@ router.put(
   equipmentMiddlewares.equipment_quality,
   equipmentEditCtrllrs.editQuality
 );
-
-/*
-  Body:
-  {
-    "equipment_id": 1,
-    "equipment_quality": 4
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -626,14 +637,6 @@ router.put(
   equipmentEditCtrllrs.editImage
 );
 
-/*
-  Body:
-  {
-    "equipment_id": 1,
-    "equipment_image": "<new_image_in_text_format>"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de nível de supervisão de equipamento:
@@ -645,14 +648,6 @@ router.put(
   equipmentEditCtrllrs.editSupervisorLevel
 );
 
-/*
-  Body:
-  {
-    "equipment_id": 1,
-    "equipment_supervisorLevel": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de remoção de equipamento:
@@ -663,12 +658,136 @@ router.delete(
   equipmentWriteCtrllrs.removeEquipment
 );
 
+// O========================================================================================O
+
 /*
+  O======================================================O
+  |    Tela 4 - Inventário do laboratório - Elementos    |
+  O======================================================O
+
+  - Rotas:
+  - [V] Listar elementos do laboratório;
+  Route: /element/list
   Body:
   {
-    "equipment_id": 1
+    "element_labId": <lab_id>
   }
+
+  - [V] Registrar um elemento no banco de dados;
+  Route: /element/register
+  Body:
+  {
+    "element_name": <name>,
+    "element_quantity": <quantity>,
+    "element_description": <description>,
+    "element_molarMass": <molar_mass>,
+    "element_casNumber": <cas_number>,
+    "element_ecNumber": <ec_number>,
+    "element_physicalState": <physical_state>,
+    "element_image": <image>,
+    "element_validity": <validity>,
+    "element_supervisorLevel": <supervisor_level>,
+    "element_labId": <lab_id>
+  }
+
+  - [V] Editar nome do elemento;
+  Route: /element/edit/name
+  Body:
+  {
+    "element_id": <id>,
+    "element_name": <name>
+  }
+
+  - [V] Editar quantidade do elemento;
+  Route: /element/edit/quantity
+  Body:
+  {
+    "element_id": <id>,
+    "element_quantity": <quantity>
+  }
+
+  - [V] Editar descrição do elemento;
+  Route: /element/edit/description
+  Body:
+  {
+    "element_id": <id>,
+    "element_description": <description>
+  }
+
+  - [V] Editar peso molecular do elemento;
+  Route: /element/edit/molarMass
+  Body:
+  {
+    "element_id": <id>,
+    "element_molarMass": <molar_mass>
+  }
+
+  - [V] Editar número CAS do elemento;
+  Route: /element/edit/cas
+  Body:
+  {
+    "element_id": <id>,
+    "element_casNumber": <cas_number>
+  }
+
+  - [V] Editar número EC do elemento;
+  Route: /element/edit/ec
+  Body:
+  {
+    "element_id": <id>,
+    "element_ecNumber": <ec_number>
+  }
+
+  - [V] Editar estado físico do elemento;
+  Route: /element/edit/physicalState
+  Body:
+  {
+    "element_id": <id>,
+    "element_physicalState": <physical_state>
+  }
+
+  - [V] Editar imagem do elemento;
+  Route: /element/edit/image
+  Body:
+  {
+    "element_id": <id>,
+    "element_image": <image>
+  }
+
+  - [V] Editar a validade do elemento;
+  Route: /element/edit/validity
+  Body:
+  {
+    "element_id": <id>,
+    "element_validity": <validity>
+  }
+
+  - [V] Editar o nível de supervisão do elemento;
+  Route: /element/edit/supervisor
+  Body:
+  {
+    "element_id": <id>,
+    "element_supervisorLevel": <supervisor_level>
+  } 
+
+  - [V] Deletar um elemento do banco de dados;
+  Route: /element/remove
+  Body:
+  {
+    "element_id": <id>
+  }
+
 */
+
+// O========================================================================================O
+
+// Rota de listagem de elementos do laboratório:
+router.get(
+  "/element/list",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_labId,
+  elementReadCtrllrs.getElementsByLabId
+);
 
 // +---------------------------------------------------------+
 
@@ -690,23 +809,6 @@ router.post(
   elementWriteCtrllrs.createElement
 );
 
-/*
-  Body:
-  {
-    "element_name": "Água",
-    "element_quantity": 1000,
-    "element_description": "Água destilada",
-    "element_molarMass": 18.01528,
-    "element_casNumber": "7732-18-5",
-    "element_ecNumber": "231-791-2",
-    "element_physicalState": 1,
-    "element_image": "",
-    "element_validity": "2023-12-31",
-    "element_supervisorLevel": 1,
-    "element_labId": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de nome de elemento:
@@ -717,14 +819,6 @@ router.put(
   elementMiddlewares.element_name,
   elementEditCtrllrs.editName
 );
-
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_name": "Água Destilada"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -737,14 +831,6 @@ router.put(
   elementEditCtrllrs.editQuantity
 );
 
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_quantity": 2000
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de descrição de elemento:
@@ -755,14 +841,6 @@ router.put(
   elementMiddlewares.element_description,
   elementEditCtrllrs.editDescription
 );
-
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_description": "Água destilada para uso em laboratório"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -775,14 +853,6 @@ router.put(
   elementEditCtrllrs.editMolarMass
 );
 
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_molarMass": 8.01528
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de número CAS de elemento:
@@ -793,14 +863,6 @@ router.put(
   elementMiddlewares.element_casNumber,
   elementEditCtrllrs.editCasNumber
 );
-
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_casNumber": "7732-18-6"
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -813,14 +875,6 @@ router.put(
   elementEditCtrllrs.editEcNumber
 );
 
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_ecNumber": "231-791-3"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de estado físico de elemento:
@@ -831,14 +885,6 @@ router.put(
   elementMiddlewares.element_physicalState,
   elementEditCtrllrs.editPhysicalState
 );
-
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_physicalState": 2
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -851,14 +897,6 @@ router.put(
   elementEditCtrllrs.editImage
 );
 
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_image": "<new_image_in_text_format>"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de validade de elemento:
@@ -870,14 +908,6 @@ router.put(
   elementEditCtrllrs.editExpiration
 );
 
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_validity": "2023-12-31"
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de edição de nível de supervisão de elemento:
@@ -888,14 +918,6 @@ router.put(
   elementMiddlewares.element_supervisorLevel,
   elementEditCtrllrs.editSupervisorLevel
 );
-
-/*
-  Body:
-  {
-    "element_id": 1,
-    "element_supervisorLevel": 2
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -914,17 +936,49 @@ router.delete(
   |    Tela 5 - Controle de administração de usuários de um lab    |
   O================================================================O
 
-  Inicio:
-  - [X] Listar usuários de um laboratório;
-  - [X] Relacionar usuários a um laboratório;
-  - [X] Desrelacionar usuários de um laboratório;
-  - [X] Adicionar usuário como admin de um laboratório;
-  - [X] Remover usuário como admin de um laboratório;
-*/
+  - Rotas:
+  - [V] Listar usuários de um laboratório;
+  Route: /lab/users
+  Body:
+  {
+    "lab_id": <lab_id>
+  }
+
+  - [V] Relacionar usuários a um laboratório;
+  Route: /lab/adduser
+  Body:
+  {
+    "user_id": <user_id>,
+    "lab_id": <lab_id>
+  }
+
+  - [V] Desrelacionar usuários de um laboratório;
+  Route: /lab/removeuser
+  Body:
+  {
+    "user_id": <user_id>,
+    "lab_id": <lab_id>
+  }
+
+  - [V] Adicionar usuário como admin de um laboratório;
+  Route: /lab/addadmin
+  Body:
+  {
+    "user_id": <user_id>,
+    "lab_id": <lab_id>
+  }
+
+  - [V] Remover usuário como admin de um laboratório;
+  Route: /lab/removeadmin
+  Body:
+  {
+    "user_id": <user_id>,
+    "lab_id": <lab_id>
+  }
+
+  */
 
 // O========================================================================================O
-
-// +---------------------------------------------------------+
 
 // Rota de listagem de usuários de um laboratório:
 router.get(
@@ -933,13 +987,6 @@ router.get(
   labMiddlewares.lab_id,
   accountCtrllrs.getUsersFromLab
 );
-
-/*
-  Body:
-  {
-    "lab_id": 1
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -951,14 +998,6 @@ router.post(
   labMiddlewares.lab_id,
   labCreateCtrllrs.createLabUser
 );
-
-/*
-  Body:
-  {
-    "user_id": 1,
-    "lab_id": 1
-  }
-*/
 
 // +---------------------------------------------------------+
 
@@ -982,14 +1021,6 @@ router.put(
   labEditCtrllrs.addAdmin
 );
 
-/*
-  Body:
-  {
-    "user_id": 1,
-    "lab_id": 1
-  }
-*/
-
 // +---------------------------------------------------------+
 
 // Rota de remoção de usuário como admin de um laboratório:
@@ -1000,14 +1031,6 @@ router.put(
   labMiddlewares.lab_id,
   labEditCtrllrs.removeAdmin
 );
-
-/*
-  Body:
-  {
-    "user_id": 1,
-    "lab_id": 1
-  }
-*/
 
 // +---------------------------------------------------------+
 

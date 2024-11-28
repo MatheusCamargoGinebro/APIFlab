@@ -125,19 +125,12 @@ const editTotalQuantity = async (equipmentId, NewtotalQuantity) => {
   const query = "CALL EditEquipmentTotalQuantity(?, ?);";
   const data = [equipmentId, NewtotalQuantity];
 
-  const [result] = await connection.execute(query, data);
+  await connection.execute(query, data);
 
-  if (result.affectedRows > 0) {
-    return {
-      status: true,
-      message: "Quantidade total do equipamento químico editada com sucesso!",
-    };
-  } else {
-    return {
-      status: false,
-      message: "Erro ao editar quantidade total do equipamento químico!",
-    };
-  }
+  return {
+    status: true,
+    message: "Quantidade total do equipamento químico editada com sucesso!",
+  };
 };
 
 // O========================================================================================O
@@ -189,7 +182,7 @@ const editSupervisorLevel = async (equipmentId, newSupervisorLevel) => {
   const data = [equipmentId, newSupervisorLevel];
 
   const [result] = await connection.execute(query, data);
-  
+
   if (result.affectedRows > 0) {
     return {
       status: true,

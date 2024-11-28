@@ -354,7 +354,7 @@ const editSupervisorLevel = async (req, res) => {
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
     getEquipmentById.data.labId,
-    2
+    3
   );
 
   if (userCheck.status === false) {

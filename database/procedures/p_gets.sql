@@ -115,15 +115,17 @@ CREATE PROCEDURE GetLabsByUser (IN p_ID_usuario INT) BEGIN
 SELECT DISTINCT
     laboratorios.ID_lab AS labID,
     laboratorios.Sala AS labName,
-    usuario.nome AS atualUser,
-    horarios.Inicio AS sessionStartsAt,/* 
+    usuario.nome AS atualUser
+    /*,
+    horarios.Inicio AS sessionStartsAt, 
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
     horarios.Finished AS sessionFinished */
 FROM
     laboratorios
     JOIN userlab ON laboratorios.ID_lab = userlab.ID_lab
-    JOIN usuarios usuario ON userlab.ID_usuario = usuario.ID_usuario/* 
+    JOIN usuarios usuario ON userlab.ID_usuario = usuario.ID_usuario
+    /* 
     JOIN horarios ON laboratorios.ID_lab = horarios.ID_lab */
 WHERE
     usuario.ID_usuario = p_ID_usuario;
@@ -318,7 +320,7 @@ DROP PROCEDURE IF EXISTS GetElementsByLab;
 DELIMITER $$
 CREATE PROCEDURE GetElementsByLab (IN p_ID_lab INT) BEGIN
 SELECT
-    elementos.ID_elem AS elementID,
+    elementos.ID_elem AS elementId,
     elementos.Nome AS elementName,
     elementos.Quantidade AS Quantity,
     elementos.Descricao AS description,
@@ -369,7 +371,7 @@ DROP PROCEDURE IF EXISTS GetEquipmentsByLab;
 DELIMITER $$
 CREATE PROCEDURE GetEquipmentsByLab (IN p_ID_lab INT) BEGIN
 SELECT
-    equipamentos.ID_equip AS equipmentID,
+    equipamentos.ID_equip AS equipmentId,
     equipamentos.Nome AS equipmentName,
     equipamentos.Descricao AS description,
     equipamentos.QuantidadeTotal AS totalQuantity,
@@ -434,7 +436,8 @@ SELECT DISTINCT
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
     usuarios.Tipo AS userType,
-    usuarios.CampusAdminLevel AS campusAdminLevel
+    usuarios.CampusAdminLevel AS campusAdminLevel,
+    userlab.AdminLevel AS userLevel
 FROM
     usuarios
     JOIN userlab ON usuarios.ID_usuario = userlab.ID_usuario

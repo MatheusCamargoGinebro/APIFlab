@@ -449,16 +449,16 @@ DELIMITER $$
 CREATE PROCEDURE EditEquipmentTotalQuantity (IN p_ID_equip INT, IN p_QuantidadeTotal INT) BEGIN
 UPDATE equipamentos
 SET
-    QuantidadeTotal = p_QuantidadeTotal
-WHERE
-    ID_equip = p_ID_equip;
-
-UPDATE equipamentos
-SET
     QuantidadeDisponivel = p_QuantidadeTotal
 WHERE
     ID_equip = p_ID_equip
     AND QuantidadeDisponivel > p_QuantidadeTotal;
+
+UPDATE equipamentos
+SET
+    QuantidadeTotal = p_QuantidadeTotal
+WHERE
+    ID_equip = p_ID_equip;
 
 END $$ DELIMITER;
 

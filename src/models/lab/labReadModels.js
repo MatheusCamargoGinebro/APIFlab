@@ -87,10 +87,10 @@ const getAllLabUsers = async (ID_lab) => {
   const query = "CALL GetAllLabUsers(?)";
   const [results] = await connection.execute(query, [ID_lab]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
-      users: results,
+      users: results[0],
     };
   } else {
     return {
@@ -107,10 +107,10 @@ const getLabUsersByLevel = async (ID_lab, level) => {
   const query = "CALL GetLabUsersByLevel(?, ?)";
   const [results] = await connection.execute(query, [ID_lab, level]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
-      users: results,
+      users: results[0],
     };
   } else {
     return {
@@ -127,10 +127,10 @@ const getLabsByUserLevel = async (ID_usuario, level) => {
   const query = "CALL GetLabsByUserLevel(?, ?)";
   const [results] = await connection.execute(query, [ID_usuario, level]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
-      labs: results,
+      labs: results[0],
     };
   } else {
     return {
