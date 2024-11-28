@@ -11,7 +11,7 @@
     - [X] session_labId;
     - [X] session_equipment_list;
     - [X] session_element_list;
-    - [ ] session_id;
+    - [X] session_id;
 */
 
 // O============================================================================================O
