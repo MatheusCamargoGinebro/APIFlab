@@ -33,6 +33,9 @@ const equipmentMiddlewares = require("../middlewares/equipmentMiddlewares");
 // Módulo de validação de dados de elemento:
 const elementMiddlewares = require("../middlewares/elementMiddlewares");
 
+// Módulo de validação de dados de sessão:
+const sessionMiddlewares = require("../middlewares/sessionMiddlewares");
+
 // O========================================================================================O
 
 // Importando Controllers:
@@ -91,6 +94,12 @@ const elementReadCtrllrs = require("../controllers/element/elementReadController
 
 // Módulo de controle de escrita de elemento:
 const elementWriteCtrllrs = require("../controllers/element/elementWriteControllers");
+
+// o----------------------------------------------------------------------------------o
+
+// session:
+// Módulo de controle de sessão:
+const sessionCtrllrs = require("../controllers/session/sessionControllers");
 
 // O========================================================================================O
 
@@ -369,11 +378,31 @@ router.post(
   Route: /lab/session/register
   Body:
   {
-    "session_date": <date>,
-    "session_start": <start_time>,
-    "session_end": <end_time>,
+    "session_start_at": <start_time>,
+    "session_end_at": <end_time>,
     "session_labId": <lab_id>,
-    "session_userId": <user_id>
+    "session_equipment_list": [
+      {
+        "equipment_id": <id>,
+        "equipment_quantity": <quantity>
+      },
+      {
+        "equipment_id": <id>,
+        "equipment_quantity": <quantity>
+      }
+        ...
+    ],
+    "session_element_list": [
+      {
+        "element_id": <id>,
+        "element_quantity": <quantity>
+      },
+      {
+        "element_id": <id>,
+        "element_quantity": <quantity>
+      }
+        ...
+    ]
   }
   
   - [] Listar sessões de uso de laboratório;
@@ -457,18 +486,69 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota para marcar uma sessão de uso de laboratório no banco de dados:
-
+router.post(
+  "/lab/session/register",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_start_at,
+  sessionMiddlewares.session_end_at,
+  sessionMiddlewares.session_labId,
+  sessionMiddlewares.session_equipment_list,
+  sessionMiddlewares.session_element_list /* ,
+  sessionCtrllrs.createSession */,
+  (req, res) => {
+    res.status(200).json({
+      message: "Rota em desenvolvimento.",
+      sended_data: req.body,
+    });
+  }
+);
 // +---------------------------------------------------------+
 
 // Rota para listar sessões de uso de laboratório:
+router.get(
+  "/lab/session/list",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_labId /* 
+  sessionCtrllrs.getSessionsByLabId */,
+  (req, res) => {
+    res.status(200).json({
+      message: "Rota em desenvolvimento.",
+      sended_data: req.body,
+    });
+  }
+);
 
 // +---------------------------------------------------------+
 
 // Rota para iniciar uma sessão de uso de laboratório no banco de dados:
+router.put(
+  "/lab/session/start",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id /*
+  sessionCtrllrs.startSession */,
+  (req, res) => {
+    res.status(200).json({
+      message: "Rota em desenvolvimento.",
+      sended_data: req.body,
+    });
+  }
+);
 
 // +---------------------------------------------------------+
 
 // Rota para finalizar uma sessão de uso de laboratório no banco de dados:
+router.put(
+  "/lab/session/end",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id /*
+  sessionCtrllrs.endSession */,
+  (req, res) => {
+    res.status(200).json({
+      message: "Rota em desenvolvimento.",
+      sended_data: req.body,
+    });
+  }
+);
 
 // +---------------------------------------------------------+
 
