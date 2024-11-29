@@ -340,6 +340,8 @@ router.post(
     "lab_capacity": <capacity>
   }
 
+  ============================================================
+
   - [] Gerar relatório de acesso ao laboratório;
   Route: /lab/report/access
   Body: 
@@ -358,6 +360,8 @@ router.post(
     "date_end": <end_date>  
   }
 
+  ============================================================
+
   - [V] Editar sala (nome) do laboratório;
   Route: /lab/edit/name
   Body:
@@ -373,37 +377,20 @@ router.post(
     "lab_capacity": <capacity>,
     "lab_id": <id>
   }
+  
+  ============================================================
 
   - [] Marcar uma sessão de uso de laboratório no banco de dados;
   Route: /lab/session/register
   Body:
   {
+    "session_labId": <lab_id>,
     "session_start_at": <start_time>,
     "session_end_at": <end_time>,
-    "session_labId": <lab_id>,
-    "session_equipment_list": [
-      {
-        "equipment_id": <id>,
-        "equipment_quantity": <quantity>
-      },
-      {
-        "equipment_id": <id>,
-        "equipment_quantity": <quantity>
-      }
-        ...
-    ],
-    "session_element_list": [
-      {
-        "element_id": <id>,
-        "element_quantity": <quantity>
-      },
-      {
-        "element_id": <id>,
-        "element_quantity": <quantity>
-      }
-        ...
-    ]
+
   }
+
+  ------------------------------------------------------------
   
   - [] Listar sessões de uso de laboratório;
   Route: /lab/session/list
@@ -412,12 +399,44 @@ router.post(
     "session_labId": <lab_id>
   }
 
+  ------------------------------------------------------------
+
+  - [] Relacionar um equipamento a uma sessão de uso de laboratório;
+  Route: /lab/session/equipment/add
+  Body:
+  {
+    "session_id": <id>,
+    "session_equipment": 
+    {
+      "id": <id>,
+      "quantity": <quantity>
+    }
+  }
+
+  ------------------------------------------------------------
+
+  - [] Relacionar um elemento a uma sessão de uso de laboratório;
+  Route: /lab/session/element/add
+  Body:
+  {
+    "session_id": <id>,
+    "session_element": 
+    {
+      "id": <id>,
+      "quantity": <quantity>
+    }
+  }
+
+  ------------------------------------------------------------
+
   - [] Iniciar uma sessão de uso de laboratório no banco de dados;
   Route: /lab/session/start
   Body:
   {
     "session_id": <id>
   }
+
+  ------------------------------------------------------------
   
   - [] Finalizar uma sessão de uso de laboratório no banco de dados;
   Route: /lab/session/end
@@ -425,6 +444,8 @@ router.post(
   {
     "session_id": <id>
   }
+
+  ============================================================
 */
 
 // O========================================================================================O
@@ -485,48 +506,67 @@ router.put(
 
 // +---------------------------------------------------------+
 
-// Rota para marcar uma sessão de uso de laboratório no banco de dados:
+// Rota de marcação de sessão de uso de laboratório:
 router.post(
   "/lab/session/register",
   userMiddlewares.checkToken,
+  sessionMiddlewares.session_labId,
   sessionMiddlewares.session_start_at,
   sessionMiddlewares.session_end_at,
-  sessionMiddlewares.session_labId,
-  sessionMiddlewares.session_equipment_list,
-  sessionMiddlewares.session_element_list,
   sessionCtrllrs.createSession
 );
+
 // +---------------------------------------------------------+
 
-// Rota para listar sessões de uso de laboratório:
+// Rota de listagem de sessões de uso de laboratório:
 router.get(
   "/lab/session/list",
   userMiddlewares.checkToken,
   sessionMiddlewares.session_labId,
-  sessionCtrllrs.GetSessionsByLabId
+  sessionCtrllrs.getSessionsByLabId
 );
 
 // +---------------------------------------------------------+
 
-// Rota para iniciar uma sessão de uso de laboratório no banco de dados:
+// Rota de relacionamento de equipamento a sessão de uso de laboratório:
+router.post(
+  "/lab/session/equipment/add",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionMiddlewares.session_equipment,
+  sessionCtrllrs.addEquipmentToSession
+);
+
+// +---------------------------------------------------------+
+
+// Rota de relacionamento de elemento a sessão de uso de laboratório:
+router.post(
+  "/lab/session/element/add",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionMiddlewares.session_element,
+  sessionCtrllrs.addElementToSession
+);
+
+// +---------------------------------------------------------+
+
+// Rota de início de sessão de uso de laboratório:
 router.put(
   "/lab/session/start",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_id,
-  sessionCtrllrs.startSession
+  sessionMiddlewares.session_id /* ,
+  sessionCtrllrs.startSession */
 );
 
 // +---------------------------------------------------------+
 
-// Rota para finalizar uma sessão de uso de laboratório no banco de dados:
+// Rota de finalização de sessão de uso de laboratório:
 router.put(
   "/lab/session/end",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_id,
-  sessionCtrllrs.endSession,
+  sessionMiddlewares.session_id /* ,
+  sessionCtrllrs.endSession */
 );
-
-// +---------------------------------------------------------+
 
 // O========================================================================================O
 

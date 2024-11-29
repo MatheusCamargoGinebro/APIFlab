@@ -19,8 +19,11 @@
 |    - [x] GetLabsByUserLevel
 |    - [x] GetLabUserRelation
 |    - Schedule:
+|    - [x] CheckDateDisponibility
 |    - [x] GetSchedulesByLab
 |    - [x] GetScheduleByID
+|    - [x] GetScheduleElements
+|    - [x] GetScheduleEquipments
 |    - Inventory:
 |    - [x] GetElementsByLab
 |    - [x] GetElementByID
@@ -258,10 +261,36 @@ END $$ DELIMITER;
 |   |    Schedule    |
 |   O================O
 #
+|   - CheckDateDisponibility
 |   - GetSchedulesByLab
 |   - GetScheduleByID
+|   - GetScheduleElements
+|   - GetScheduleEquipments
 #
  */
+-- O==============================================================O --
+-- Verificar disponibilidade de data:
+DROP PROCEDURE IF EXISTS CheckDateDisponibility;
+
+DELIMITER $$
+CREATE PROCEDURE CheckDateDisponibility (IN p_ID_lab INT, IN p_startDate TIMESTAMP, IN p_endDate TIMESTAMP) BEGIN
+SELECT
+    horarios.ID_hor AS scheduleId,
+    horarios.Inicio AS sessionStartsAt,
+    horarios.Fim AS sessionEndsAt,
+    horarios.Started AS sessionStarted,
+    horarios.Finished AS sessionFinished
+FROM
+    horarios
+WHERE
+    horarios.ID_lab = p_ID_lab
+    AND (
+        (horarios.Inicio BETWEEN p_startDate AND p_endDate)
+        OR (horarios.Fim BETWEEN p_startDate AND p_endDate)
+    );
+
+END $$ DELIMITER;
+
 -- O==============================================================O --
 -- Ler todas os horários de um laboratório:
 DROP PROCEDURE IF EXISTS GetSchedulesByLab;
@@ -269,7 +298,7 @@ DROP PROCEDURE IF EXISTS GetSchedulesByLab;
 DELIMITER $$
 CREATE PROCEDURE GetSchedulesByLab (IN p_ID_lab INT) BEGIN
 SELECT
-    horarios.ID_hor AS scheduleID,
+    horarios.ID_hor AS scheduleId,
     horarios.Inicio AS sessionStartsAt,
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
@@ -288,7 +317,7 @@ DROP PROCEDURE IF EXISTS GetScheduleByID;
 DELIMITER $$
 CREATE PROCEDURE GetScheduleByID (IN p_ID_hor INT) BEGIN
 SELECT
-    horarios.ID_hor AS scheduleID,
+    horarios.ID_hor AS scheduleId,
     horarios.Inicio AS sessionStartsAt,
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
@@ -297,6 +326,55 @@ FROM
     horarios
 WHERE
     horarios.ID_hor = p_ID_hor;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler elementos de um horário:
+DROP PROCEDURE IF EXISTS GetScheduleElements;
+
+DELIMITER $$
+CREATE PROCEDURE GetScheduleElements (IN p_ID_hor INT) BEGIN
+SELECT
+    elementos.ID_elem AS elementId,
+    elementos.Nome AS elementName,
+    elementos.Quantidade AS Quantity,
+    elementos.Descricao AS description,
+    elementos.Peso_molecular AS molecularWeight,
+    elementos.Num_cas AS CASNumber,
+    elementos.Num_ec AS ECNumber,
+    elementos.EstadoFisico AS physicalState,
+    elementos.Imagem AS image,
+    elementos.Validade AS expirationDate,
+    elementos.SupervisorLevel AS supervisorLevel
+FROM
+    elementos
+    JOIN horarioselementos ON elementos.ID_elem = horarioselementos.ID_elem
+WHERE
+    horarioselementos.ID_hor = p_ID_hor;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler equipamentos de um horário:
+DROP PROCEDURE IF EXISTS GetScheduleEquipments;
+
+DELIMITER $$
+CREATE PROCEDURE GetScheduleEquipments (IN p_ID_hor INT) BEGIN
+SELECT
+    equipamentos.ID_equip AS equipmentId,
+    equipamentos.Nome AS equipmentName,
+    equipamentos.Descricao AS description,
+    equipamentos.QuantidadeTotal AS totalQuantity,
+    equipamentos.QuantidadeDisponivel AS availableQuantity,
+    equipamentos.Qualidade AS quality,
+    equipamentos.Imagem AS image,
+    equipamentos.SupervisorLevel AS supervisorLevel
+FROM
+    equipamentos
+    JOIN horariosequipamentos ON equipamentos.ID_equip = horariosequipamentos.ID_equip
+WHERE
+    horariosequipamentos.ID_hor = p_ID_hor;
 
 END $$ DELIMITER;
 

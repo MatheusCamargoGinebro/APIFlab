@@ -535,11 +535,20 @@ DROP PROCEDURE IF EXISTS FinishSchedule;
 
 DELIMITER $$
 CREATE PROCEDURE FinishSchedule (IN p_ID_hor INT) BEGIN
-UPDATE horarios
+-- Marcar a sessão como finalizada
+UPDATE Horarios
 SET
     Finished = 1
 WHERE
     ID_hor = p_ID_hor;
+
+-- Atualizar quantidade de equipamentos disponíveis (devolve o que foi reservado)
+UPDATE Equipamentos e
+INNER JOIN Reserva_equipamento re ON e.ID_equip = re.ID_equip
+SET
+    e.QuantidadeDisponivel = e.QuantidadeDisponivel + re.Quantidade
+WHERE
+    re.ID_hor = p_ID_hor;
 
 END $$ DELIMITER;
 

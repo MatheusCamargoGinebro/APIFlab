@@ -232,17 +232,85 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS DeleteSchedule;
 
 DELIMITER $$
-CREATE PROCEDURE DeleteSchedule (IN p_ID_hor INT) BEGIN
-DELETE FROM reserva_elemento
-WHERE
-    ID_hor = p_ID_hor;
 
-DELETE FROM reserva_equipamento
-WHERE
-    ID_hor = p_ID_hor;
+CREATE PROCEDURE DeleteSchedule (IN p_ID_hor INT)
+BEGIN
+    DECLARE v_Started BOOLEAN;
+    DECLARE v_Quantidade DECIMAL(10, 3);
+    DECLARE v_ID_elem INT;
+    DECLARE v_ID_equip INT;
 
-DELETE FROM horarios
-WHERE
-    ID_hor = p_ID_hor;
+    DECLARE done INT DEFAULT 0;
 
-END $$ DELIMITER;
+    DECLARE cur1 CURSOR FOR
+        SELECT Quantidade, ID_elem
+        FROM Reserva_elemento
+        WHERE ID_hor = p_ID_hor;
+
+    DECLARE cur2 CURSOR FOR
+        SELECT Quantidade, ID_equip
+        FROM Reserva_equipamento
+        WHERE ID_hor = p_ID_hor;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    -- Verifica se a sessão foi iniciada
+    SELECT Started INTO v_Started
+    FROM Horarios
+    WHERE ID_hor = p_ID_hor;
+
+    IF v_Started = FALSE THEN
+        -- Manipulação de Reservas de Elementos
+        OPEN cur1;
+
+        read_loop: LOOP
+            FETCH cur1 INTO v_Quantidade, v_ID_elem;
+            IF done THEN
+                LEAVE read_loop;
+            END IF;
+
+            UPDATE Elementos
+            SET Quantidade = Quantidade + v_Quantidade
+            WHERE ID_elem = v_ID_elem;
+        END LOOP;
+
+        CLOSE cur1;
+
+        -- Manipulação de Reservas de Equipamentos
+        SET done = 0;  -- Reset handler flag
+        OPEN cur2;
+
+        read_loop2: LOOP
+            FETCH cur2 INTO v_Quantidade, v_ID_equip;
+            IF done THEN
+                LEAVE read_loop2;
+            END IF;
+
+            UPDATE Equipamentos
+            SET QuantidadeDisponivel = QuantidadeDisponivel + v_Quantidade
+            WHERE ID_equip = v_ID_equip;
+        END LOOP;
+
+        CLOSE cur2;
+
+        -- Deletar as reservas
+        DELETE FROM Reserva_elemento
+        WHERE ID_hor = p_ID_hor;
+
+        DELETE FROM Reserva_equipamento
+        WHERE ID_hor = p_ID_hor;
+
+        -- Deletar a sessão
+        DELETE FROM Horarios
+        WHERE ID_hor = p_ID_hor;
+
+        SELECT TRUE AS result;
+
+    ELSE -- Sessão já iniciada, não deleta
+        SELECT FALSE AS result;
+
+    END IF;
+
+END $$
+
+DELIMITER ;

@@ -6,10 +6,12 @@
   O======================================================O
 
   Lista de funções de controle de sessões em laboratórios:
-    - [X] createSession;
-    - [X] GetSessionsByLabId;
-    - [X] startSession;
-    - [X] endSession;
+  - [X] createSession;
+  - [X] getSessionsByLabId;
+  - [X] startSession;
+  - [X] endSession;
+  - [X] addElementToSession;
+  - [X] addEquipmentToSession;
 */
 
 // O========================================================================================O
@@ -39,13 +41,7 @@ const createSession = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // Informações da nova sessão:
-  const {
-    session_start_at,
-    session_end_at,
-    session_labId,
-    session_equipment_list,
-    session_element_list,
-  } = req.body;
+  const { session_start_at, session_end_at, session_labId } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -67,7 +63,7 @@ const createSession = async (req, res) => {
   /*-----------------------------------------------------*/
 
   // Verificando se há alguma sessão no horário solicitado:
-  const checkSession = await sessionRead.checkSession(
+  const checkSession = await sessionRead.checkDateDisponibility(
     session_labId,
     session_start_at,
     session_end_at
@@ -76,21 +72,26 @@ const createSession = async (req, res) => {
   if (checkSession.status === true) {
     return res.status(401).json({
       status: false,
-      message: "Já existe uma sessão neste horário!",
+      message: "Já existe uma sessão neste horário neste horário!",
     });
   }
 
   /*-----------------------------------------------------*/
 
-  // Verificando se há equipamentos o suficiente disponíveis para a sessão:
-
-  /*-----------------------------------------------------*/
-
-  // Verificando se há elementos o suficiente disponíveis para a sessão:
-
-  /*-----------------------------------------------------*/
-
   // Criando a nova sessão:
+  const newSession = await sessionWrite.createSession(
+    session_start_at,
+    session_end_at,
+    session_labId,
+    userId
+  );
+
+  if (newSession.status === false) {
+    return res.status(500).json({
+      status: false,
+      message: "Erro ao criar a sessão!",
+    });
+  }
 
   /*-----------------------------------------------------*/
 
@@ -103,7 +104,7 @@ const createSession = async (req, res) => {
 // O========================================================================================O
 
 // Função para recuperar todas as sessões de um laboratório:
-const GetSessionsByLabId = async (req, res) => {};
+const getSessionsByLabId = async (req, res) => {};
 
 // O========================================================================================O
 
@@ -117,12 +118,24 @@ const endSession = async (req, res) => {};
 
 // O========================================================================================O
 
+// Função para adicionar um elemento a uma sessão em um laboratório:
+const addElementToSession = async (req, res) => {};
+
+// O========================================================================================O
+
+// Função para adicionar um equipamento a uma sessão em um laboratório:
+const addEquipmentToSession = async (req, res) => {};
+
+// O========================================================================================O
+
 // Exportando funções de controle de sessões em laboratórios:
 module.exports = {
   createSession,
-  GetSessionsByLabId,
+  getSessionsByLabId,
   startSession,
   endSession,
+  addElementToSession,
+  addEquipmentToSession,
 };
 
 // O========================================================================================O
