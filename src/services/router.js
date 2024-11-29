@@ -554,8 +554,8 @@ router.post(
 router.put(
   "/lab/session/start",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_id /* ,
-  sessionCtrllrs.startSession */
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.startSession
 );
 
 // +---------------------------------------------------------+
@@ -564,8 +564,8 @@ router.put(
 router.put(
   "/lab/session/end",
   userMiddlewares.checkToken,
-  sessionMiddlewares.session_id /* ,
-  sessionCtrllrs.endSession */
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.endSession
 );
 
 // O========================================================================================O
