@@ -21,20 +21,20 @@ const connection = require("../../utils/connection");
 // O========================================================================================O
 
 // Função para verificar se há alguma sessão no horário solicitado:
-const checkDateDisponibility = async (
+const GetDateBetween = async (
   session_labId,
   session_start_at,
   session_end_at
 ) => {
-  const query = "CALL CheckDateDisponibility(?, ?, ?);";
+  const query = "CALL GetDateBetween(?, ?, ?);";
   const data = [session_labId, session_start_at, session_end_at];
 
   const [result] = await connection.execute(query, data);
 
   if (result[0].length > 0) {
-    return { status: false, message: "Já existe uma sessão neste horário!" };
+    return { status: true, data: result[0] };
   } else {
-    return { status: true };
+    return { status: false, message: "Nenhuma sessão encontrada!" };
   }
 };
 
@@ -42,7 +42,7 @@ const checkDateDisponibility = async (
 
 // Função para buscar todas as sessões de um laboratório:
 const getSessionsByLabId = async (labId) => {
-  const query = "CALL GetSchedulesByLab(?);";
+  const query = "CALL GetSessionsByLab(?);";
   const data = [labId];
 
   const [result] = await connection.execute(query, data);
@@ -58,7 +58,7 @@ const getSessionsByLabId = async (labId) => {
 
 // Função para buscar uma sessão pelo Id:
 const getSessionById = async (sessionId) => {
-  const query = "CALL GetScheduleByID(?);";
+  const query = "CALL GetSessionByID(?);";
   const data = [sessionId];
 
   const [result] = await connection.execute(query, data);
@@ -74,7 +74,7 @@ const getSessionById = async (sessionId) => {
 
 // Função para buscar os elementos de uma sessão:
 const getSessionElements = async (sessionId) => {
-  const query = "CALL GetScheduleElements(?);";
+  const query = "CALL GetSessionElements(?);";
   const data = [sessionId];
 
   const [result] = await connection.execute(query, data);
@@ -90,7 +90,7 @@ const getSessionElements = async (sessionId) => {
 
 // Função para buscar os equipamentos de uma sessão:
 const getSessionEquipments = async (sessionId) => {
-  const query = "CALL GetScheduleEquipments(?);";
+  const query = "CALL GetSessionEquipments(?);";
   const data = [sessionId];
 
   const [result] = await connection.execute(query, data);
@@ -106,7 +106,7 @@ const getSessionEquipments = async (sessionId) => {
 
 // Exportação dos módulos:
 module.exports = {
-  checkDateDisponibility,
+  GetDateBetween,
   getSessionsByLabId,
   getSessionById,
   getSessionElements,

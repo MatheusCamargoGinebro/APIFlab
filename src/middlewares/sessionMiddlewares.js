@@ -17,24 +17,24 @@
 // O============================================================================================O
 
 // Função de validação de data:
-function validateDate(dateString) {
+function validateDate(date) {
   // Verifica se o valor informado é um timestamp:
-  if (isNaN(dateString)) {
+  if (isNaN(date)) {
     return false;
   }
 
   // Verifica se o valor informado é um número inteiro:
-  if (!Number.isInteger(dateString)) {
+  if (!Number.isInteger(date)) {
     return false;
   }
 
   // Verifica se o valor informado é um número inteiro positivo:
-  if (dateString < 0) {
+  if (date < 0) {
     return false;
   }
 
   // Verifica se o valor informado é um número inteiro positivo maior que zero:
-  if (dateString <= 0) {
+  if (date <= 0) {
     return false;
   }
 
@@ -61,6 +61,14 @@ const session_start_at = (req, res, next) => {
     return res.status(400).json({
       status: false,
       message: "Data de início da sessão inválida.",
+      error_at: "session_start_at",
+    });
+  }
+
+  if (typeof req.body.session_start_at !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "Data de início da sessão precisa ser um número.",
       error_at: "session_start_at",
     });
   }
@@ -92,6 +100,14 @@ const session_end_at = (req, res, next) => {
     });
   }
 
+  if (typeof req.body.session_end_at !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "Data de término da sessão precisa ser um número.",
+      error_at: "session_end_at",
+    });
+  }
+
   return next();
 };
 
@@ -102,7 +118,7 @@ const session_labId = (req, res, next) => {
   if (
     req.body.session_labId === undefined ||
     req.body.session_labId === null ||
-    req.body.session_labId === ""
+    !req.body.session_labId
   ) {
     return res.status(400).json({
       status: false,
@@ -119,6 +135,14 @@ const session_labId = (req, res, next) => {
     });
   }
 
+  if (typeof req.body.session_labId !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "ID do laboratório precisa ser um número.",
+      error_at: "session_labId",
+    });
+  }
+
   return next();
 };
 
@@ -128,43 +152,59 @@ const session_labId = (req, res, next) => {
 const session_element = (req, res, next) => {
   // Testando ID do elemento químico:
   if (
-    req.body.element.id === undefined ||
-    req.body.element.id === null ||
-    !req.body.element.id
+    req.body.session_element.id === undefined ||
+    req.body.session_element.id === null ||
+    !req.body.session_element.id
   ) {
     return res.status(400).json({
       status: false,
       message: "ID do elemento químico não informado.",
-      error_at: "element.id",
+      error_at: "session_element.id",
     });
   }
 
-  if (isNaN(req.body.element.id)) {
+  if (isNaN(req.body.session_element.id)) {
     return res.status(400).json({
       status: false,
       message: "ID do elemento químico inválido.",
-      error_at: "element.id",
+      error_at: "session_element.id",
+    });
+  }
+
+  if (typeof req.body.session_element.id !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "ID do elemento químico precisa ser um número.",
+      error_at: "session_element.id",
     });
   }
 
   // Testando quantidade do elemento químico:
   if (
-    req.body.element.quantity === undefined ||
-    req.body.element.quantity === null ||
-    !req.body.element.quantity
+    req.body.session_element.quantity === undefined ||
+    req.body.session_element.quantity === null ||
+    !req.body.session_element.quantity
   ) {
     return res.status(400).json({
       status: false,
       message: "Quantidade do elemento químico não informada.",
-      error_at: "element.quantity",
+      error_at: "session_element.quantity",
     });
   }
 
-  if (isNaN(req.body.element.quantity)) {
+  if (isNaN(req.body.session_element.quantity)) {
     return res.status(400).json({
       status: false,
       message: "Quantidade do elemento químico inválida.",
-      error_at: "element.quantity",
+      error_at: "session_element.quantity",
+    });
+  }
+
+  if (typeof req.body.session_element.quantity !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "Quantidade do elemento químico precisa ser um número.",
+      error_at: "session_element.quantity",
     });
   }
 
@@ -177,43 +217,59 @@ const session_element = (req, res, next) => {
 const session_equipment = (req, res, next) => {
   // Testando ID do equipamento:
   if (
-    req.body.equipment.id === undefined ||
-    req.body.equipment.id === null ||
-    !req.body.equipment.id
+    req.body.session_equipment.id === undefined ||
+    req.body.session_equipment.id === null ||
+    !req.body.session_equipment.id
   ) {
     return res.status(400).json({
       status: false,
       message: "ID do equipamento não informado.",
-      error_at: "equipment.id",
+      error_at: "session_equipment.id",
     });
   }
 
-  if (isNaN(req.body.equipment.id)) {
+  if (isNaN(req.body.session_equipment.id)) {
     return res.status(400).json({
       status: false,
       message: "ID do equipamento inválido.",
-      error_at: "equipment.id",
+      error_at: "session_equipment.id",
+    });
+  }
+
+  if (typeof req.body.session_equipment.id !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "ID do equipamento precisa ser um número.",
+      error_at: "session_equipment.id",
     });
   }
 
   // Testando quantidade do equipamento:
   if (
-    req.body.equipment.quantity === undefined ||
-    req.body.equipment.quantity === null ||
-    !req.body.equipment.quantity
+    req.body.session_equipment.quantity === undefined ||
+    req.body.session_equipment.quantity === null ||
+    !req.body.session_equipment.quantity
   ) {
     return res.status(400).json({
       status: false,
       message: "Quantidade do equipamento não informada.",
-      error_at: "equipment.quantity",
+      error_at: "session_equipment.quantity",
     });
   }
 
-  if (isNaN(req.body.equipment.quantity)) {
+  if (isNaN(req.body.session_equipment.quantity)) {
     return res.status(400).json({
       status: false,
       message: "Quantidade do equipamento inválida.",
-      error_at: "equipment.quantity",
+      error_at: "session_equipment.quantity",
+    });
+  }
+
+  if (typeof req.body.session_equipment.quantity !== "number") {
+    return res.status(400).json({
+      status: false,
+      message: "Quantidade do equipamento precisa ser um número.",
+      error_at: "session_equipment.quantity",
     });
   }
 

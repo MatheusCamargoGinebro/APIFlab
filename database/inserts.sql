@@ -77,29 +77,3 @@ VALUES
     ('Bureta', 'Bureta é um equipamento de laboratório utilizado para medir volumes de líquidos com precisão. É um tubo de vidro graduado, com uma torneira na parte inferior, que permite a liberação controlada do líquido.', 10, 10, 5, 0, 1),
     ('Mufla', 'Mufla é um equipamento de laboratório utilizado para aquecer substâncias a altas temperaturas. É um forno elétrico, com resistências internas, que permite a queima de materiais em altas temperaturas.', 10, 10, 5, 0, 1),
     ('Estufa', 'Estufa é um equipamento de laboratório utilizado para secar e esterilizar materiais. É um forno elétrico, com resistências internas, que permite a secagem de materiais a baixas temperaturas.', 10, 10, 5, 0, 1);
-
-INSERT INTO
-    horarios (Inicio, Fim, Finished, Started, ID_lab, ID_usuario)
-VALUES
-    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 1, 1),
-    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 1, 2),
-    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 1, 3),
-    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 2, 1),
-    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 2, 2),
-    ('2022-12-31 08:00:00', '2022-12-31 12:00:00', 0, 0, 2, 3);
-
-INSERT INTO
-    reserva_elemento (Quantidade, ID_elem, ID_hor)
-VALUES
-    (100, 1, 1),
-    (100, 2, 2),
-    (100, 3, 3),
-    (100, 4, 4);
-
-INSERT INTO
-    reserva_equipamento (Quantidade, ID_equip, ID_hor)
-VALUES
-    (1, 1, 1),
-    (1, 2, 2),
-    (1, 3, 3),
-    (1, 4, 4);

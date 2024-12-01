@@ -6,24 +6,41 @@
 |   O===========================O    
 #
 #    Procedures:
-|    - [x] CreateCampus
-|    - [x] CreateUser
+|    - Campus:
+|     - [x] CreateCampus
+|    - Users:
+|     - [x] CreateUser
 |    - Lab:
-|    - [x] CreateLab
-|    - [x] RelateUserLab
-|    - [x] UnrelateUserLab
+|     - [x] CreateLab
+|     - [x] RelateUserLab
+|     - [x] UnrelateUserLab
 |    - Inventory:
-|    - [x] CreateElement
-|    - [x] DeleteElement
-|    - [x] CreateEquipment
-|    - [x] DeleteEquipment
-|    - Schedule:
-|    - [x] CreateSchedule
-|    - [x] ReserveElement
-|    - [x] ReserveEquipment
+|     - [x] CreateElement
+|     - [x] DeleteElement
+|     - [x] CreateEquipment
+|     - [x] DeleteEquipment
+|    - Session:
+|     - [x] CreateSession
+|     - [x] ReserveElement
+|     - [x] ReserveEquipment
+|     - [x] DeleteSession
+|     - [x] UnreserveElement
+|     - [x] UnreserveEquipment
 #    
  */
 -- O==============================================================O --
+-- O===============================O
+/* 
+#
+|   O======================O
+|   |    Write - Campus    |
+|   O======================O
+#
+#    Procedures:
+|    - [x] CreateCampus
+#    
+ */
+-- O===============================O
 -- Criar campus
 DROP PROCEDURE IF EXISTS CreateCampus;
 
@@ -37,6 +54,18 @@ VALUES
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O
+/*
+#
+|   O=====================O
+|   |    Write - Users    |
+|   O=====================O
+#
+#    Procedures:
+|    - [x] CreateUser
+#    
+ */
+-- O===============================O
 -- Criar usuário
 DROP PROCEDURE IF EXISTS CreateUser;
 
@@ -50,6 +79,20 @@ VALUES
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O
+/*
+#
+|   O====================O
+|   |    Write - Lab    |
+|   O====================O
+#
+#    Procedures:
+|    - [x] CreateLab
+|    - [x] RelateUserLab
+|    - [x] UnrelateUserLab
+#    
+ */
+-- O===============================O
 -- Criar laboratório
 DROP PROCEDURE IF EXISTS CreateLab;
 
@@ -94,6 +137,21 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O
+/*
+#
+|   O=========================O
+|   |    Write - Inventory    |
+|   O=========================O
+#
+#    Procedures:
+|    - [x] CreateElement
+|    - [x] DeleteElement
+|    - [x] CreateEquipment
+|    - [x] DeleteEquipment
+#    
+ */
+-- O===============================O
 -- Criar elemento
 DROP PROCEDURE IF EXISTS CreateElement;
 
@@ -164,15 +222,32 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O
+/*
+#
+|   O=======================O
+|   |    Write - Session    |
+|   O=======================O
+#
+#    Procedures:
+|    - [x] CreateSession
+|    - [x] ReserveElement
+|    - [x] ReserveEquipment
+|    - [x] DeleteSession
+|    - [x] UnreserveElement
+|    - [x] UnreserveEquipment
+#    
+ */
+-- O===============================O
 -- Criar horário
-DROP PROCEDURE IF EXISTS CreateSchedule;
+DROP PROCEDURE IF EXISTS CreateSession;
 
 DELIMITER $$
-CREATE PROCEDURE CreateSchedule (IN p_Inicio TIMESTAMP, IN p_Fim TIMESTAMP, IN p_ID_lab INT, IN p_ID_usuario INT) BEGIN
+CREATE PROCEDURE CreateSession (IN p_Inicio BIGINT, IN p_Fim BIGINT, IN p_ID_lab INT, IN p_ID_usuario INT) BEGIN
 INSERT INTO
     horarios (Inicio, Fim, Finished, Started, ID_lab, ID_usuario)
 VALUES
-    (p_Inicio, p_Fim, 0, 0, p_ID_lab, p_ID_usuario);
+    (FROM_UNIXTIME(p_Inicio), FROM_UNIXTIME(p_Fim), FALSE, FALSE, p_ID_lab, p_ID_usuario);
 
 END $$ DELIMITER;
 
@@ -217,100 +292,96 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
-/*
-#
-|   O============================O    
-|   |    Procedures - Deleção    |    
-|   O============================O    
-#
-#    Procedures:
-|    - [x] DeleteSchedule
-#    
- */
--- O==============================================================O --
 -- Deletar Horário
-DROP PROCEDURE IF EXISTS DeleteSchedule;
+DROP PROCEDURE IF EXISTS DeleteSession;
 
 DELIMITER $$
+CREATE PROCEDURE DeleteSession (IN p_ID_hor INT) BEGIN
+-- Atualizar quantidade disponível:
+-- Elementos
+UPDATE elementos e
+JOIN reserva_elemento re ON e.ID_elem = re.ID_elem
+SET
+    e.Quantidade = e.Quantidade + re.Quantidade
+WHERE
+    re.ID_hor = p_ID_hor;
 
-CREATE PROCEDURE DeleteSchedule (IN p_ID_hor INT)
-BEGIN
-    DECLARE v_Started BOOLEAN;
-    DECLARE v_Quantidade DECIMAL(10, 3);
-    DECLARE v_ID_elem INT;
-    DECLARE v_ID_equip INT;
+-- Equipamentos
+UPDATE equipamentos eq
+JOIN reserva_equipamento rq ON eq.ID_equip = rq.ID_equip
+SET
+    eq.QuantidadeDisponivel = eq.QuantidadeDisponivel + rq.Quantidade
+WHERE
+    rq.ID_hor = p_ID_hor;
 
-    DECLARE done INT DEFAULT 0;
+DELETE FROM reserva_elemento
+WHERE
+    ID_hor = p_ID_hor;
 
-    DECLARE cur1 CURSOR FOR
-        SELECT Quantidade, ID_elem
-        FROM Reserva_elemento
-        WHERE ID_hor = p_ID_hor;
+DELETE FROM reserva_equipamento
+WHERE
+    ID_hor = p_ID_hor;
 
-    DECLARE cur2 CURSOR FOR
-        SELECT Quantidade, ID_equip
-        FROM Reserva_equipamento
-        WHERE ID_hor = p_ID_hor;
+DELETE FROM horarios
+WHERE
+    ID_hor = p_ID_hor;
 
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+END $$ DELIMITER;
 
-    -- Verifica se a sessão foi iniciada
-    SELECT Started INTO v_Started
-    FROM Horarios
-    WHERE ID_hor = p_ID_hor;
+-- O==============================================================O --
+-- Desreservar elemento
+DROP PROCEDURE IF EXISTS UnreserveElement;
 
-    IF v_Started = FALSE THEN
-        -- Manipulação de Reservas de Elementos
-        OPEN cur1;
+DELIMITER $$
+CREATE PROCEDURE UnreserveElement (IN p_ID_elem INT, IN p_ID_hor INT) BEGIN
+-- Atualizar quantidade disponível
+UPDATE elementos
+SET
+    Quantidade = Quantidade + (
+        SELECT
+            Quantidade
+        FROM
+            reserva_elemento
+        WHERE
+            ID_elem = p_ID_elem
+            AND ID_hor = p_ID_hor
+    )
+WHERE
+    ID_elem = p_ID_elem;
 
-        read_loop: LOOP
-            FETCH cur1 INTO v_Quantidade, v_ID_elem;
-            IF done THEN
-                LEAVE read_loop;
-            END IF;
+DELETE FROM reserva_elemento
+WHERE
+    ID_elem = p_ID_elem
+    AND ID_hor = p_ID_hor;
 
-            UPDATE Elementos
-            SET Quantidade = Quantidade + v_Quantidade
-            WHERE ID_elem = v_ID_elem;
-        END LOOP;
+END $$ DELIMITER;
 
-        CLOSE cur1;
+-- O==============================================================O --
+-- Desreservar equipamento
+DROP PROCEDURE IF EXISTS UnreserveEquipment;
 
-        -- Manipulação de Reservas de Equipamentos
-        SET done = 0;  -- Reset handler flag
-        OPEN cur2;
+DELIMITER $$
+CREATE PROCEDURE UnreserveEquipment (IN p_ID_equip INT, IN p_ID_hor INT) BEGIN
+-- Atualizar quantidade disponível
+UPDATE equipamentos
+SET
+    QuantidadeDisponivel = QuantidadeDisponivel + (
+        SELECT
+            Quantidade
+        FROM
+            reserva_equipamento
+        WHERE
+            ID_equip = p_ID_equip
+            AND ID_hor = p_ID_hor
+    )
+WHERE
+    ID_equip = p_ID_equip;
 
-        read_loop2: LOOP
-            FETCH cur2 INTO v_Quantidade, v_ID_equip;
-            IF done THEN
-                LEAVE read_loop2;
-            END IF;
+DELETE FROM reserva_equipamento
+WHERE
+    ID_equip = p_ID_equip
+    AND ID_hor = p_ID_hor;
 
-            UPDATE Equipamentos
-            SET QuantidadeDisponivel = QuantidadeDisponivel + v_Quantidade
-            WHERE ID_equip = v_ID_equip;
-        END LOOP;
+END $$ DELIMITER;
 
-        CLOSE cur2;
-
-        -- Deletar as reservas
-        DELETE FROM Reserva_elemento
-        WHERE ID_hor = p_ID_hor;
-
-        DELETE FROM Reserva_equipamento
-        WHERE ID_hor = p_ID_hor;
-
-        -- Deletar a sessão
-        DELETE FROM Horarios
-        WHERE ID_hor = p_ID_hor;
-
-        SELECT TRUE AS result;
-
-    ELSE -- Sessão já iniciada, não deleta
-        SELECT FALSE AS result;
-
-    END IF;
-
-END $$
-
-DELIMITER ;
+-- O==============================================================O --

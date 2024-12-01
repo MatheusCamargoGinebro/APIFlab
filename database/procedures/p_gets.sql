@@ -7,38 +7,39 @@
 #
 #    Procedures:
 |    - Campus:
-|    - [x] GetAllCampus
-|    - [x] GetCampusByID
-|    - [x] GetCampusByName
-|    - Labs:
-|    - [x] GetLabsByUser
-|    - [x] GetLabByID
-|    - [x] GetLabByName
-|    - [x] GetAllLabUsers
-|    - [x] GetLabUsersByLevel
-|    - [x] GetLabsByUserLevel
-|    - [x] GetLabUserRelation
-|    - Schedule:
-|    - [x] CheckDateDisponibility
-|    - [x] GetSchedulesByLab
-|    - [x] GetScheduleByID
-|    - [x] GetScheduleElements
-|    - [x] GetScheduleEquipments
+|     - [x] GetAllCampus;
+|     - [x] GetCampusByID;
+|     - [x] GetCampusByName;
+|    - Lab:
+|     - [x] GetLabsByUser;
+|     - [x] GetLabByID;
+|     - [x] GetLabByName;
+|     - [x] GetAllLabUsers;
+|     - [x] GetLabUsersByLevel;
+|     - [x] GetLabUserRelation;
+|     - [x] GetLabsByUserLevel;
+|    - Session:
+|     - [x] GetDateBetween;
+|     - [x] GetSessionsByLab;
+|     - [x] GetSessionByID;
+|     - [x] GetSessionElements;
+|     - [x] GetSessionEquipments;
 |    - Inventory:
-|    - [x] GetElementsByLab
-|    - [x] GetElementByID
-|    - [x] GetEquipmentsByLab
-|    - [x] GetEquipmentByID
+|     - [x] GetElementsByLab;
+|     - [x] GetElementByID;
+|     - [x] GetEquipmentsByLab;
+|     - [x] GetEquipmentByID;
 |    - Users:
-|    - [x] GetUsersByLab
-|    - [x] GetUsersByCampus
-|    - [x] GetUserByID
-|    - [x] GetUserByEmail
-|    - [x] GetUserByName
-|    - [x] Login
+|     - [x] GetUsersByLab;
+|     - [x] GetUsersByCampus;
+|     - [x] GetUserByID;
+|     - [x] GetUserByEmail;
+|     - [x] GetUserByName;
+|     - [x] Login;
 #    
  */
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O==============O
@@ -50,7 +51,7 @@
 |   - GetCampusByName
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Ler todos os campus:
 DROP PROCEDURE IF EXISTS GetAllCampus;
 
@@ -94,6 +95,7 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O===========O
@@ -109,7 +111,7 @@ END $$ DELIMITER;
 |   - GetLabsByUserLevel
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Ler todos os laboratórios em que um usuário tenha relação:
 DROP PROCEDURE IF EXISTS GetLabsByUser;
 
@@ -257,25 +259,25 @@ END $$ DELIMITER;
 -- O==============================================================O --
 /*
 #
-|   O================O
-|   |    Schedule    |
-|   O================O
+|   O===============O
+|   |    Session    |
+|   O===============O
 #
-|   - CheckDateDisponibility
-|   - GetSchedulesByLab
-|   - GetScheduleByID
-|   - GetScheduleElements
-|   - GetScheduleEquipments
+|   - GetDateBetween
+|   - GetSessionsByLab
+|   - GetSessionByID
+|   - GetSessionElements
+|   - GetSessionEquipments
 #
  */
 -- O==============================================================O --
 -- Verificar disponibilidade de data:
-DROP PROCEDURE IF EXISTS CheckDateDisponibility;
+DROP PROCEDURE IF EXISTS GetDateBetween;
 
 DELIMITER $$
-CREATE PROCEDURE CheckDateDisponibility (IN p_ID_lab INT, IN p_startDate TIMESTAMP, IN p_endDate TIMESTAMP) BEGIN
+CREATE PROCEDURE GetDateBetween (IN p_ID_lab INT, IN p_startTime BIGINT, IN p_endTime BIGINT) BEGIN
 SELECT
-    horarios.ID_hor AS scheduleId,
+    horarios.ID_hor AS sessionId,
     horarios.Inicio AS sessionStartsAt,
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
@@ -285,20 +287,20 @@ FROM
 WHERE
     horarios.ID_lab = p_ID_lab
     AND (
-        (horarios.Inicio BETWEEN p_startDate AND p_endDate)
-        OR (horarios.Fim BETWEEN p_startDate AND p_endDate)
+        (horarios.Inicio BETWEEN FROM_UNIXTIME(p_startTime) AND FROM_UNIXTIME(p_endTime))
+        OR (horarios.Fim BETWEEN FROM_UNIXTIME(p_startTime) AND FROM_UNIXTIME(p_endTime))
     );
 
 END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler todas os horários de um laboratório:
-DROP PROCEDURE IF EXISTS GetSchedulesByLab;
+DROP PROCEDURE IF EXISTS GetSessionsByLab;
 
 DELIMITER $$
-CREATE PROCEDURE GetSchedulesByLab (IN p_ID_lab INT) BEGIN
+CREATE PROCEDURE GetSessionsByLab (IN p_ID_lab INT) BEGIN
 SELECT
-    horarios.ID_hor AS scheduleId,
+    horarios.ID_hor AS sessionId,
     horarios.Inicio AS sessionStartsAt,
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
@@ -312,16 +314,18 @@ END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler horário por ID:
-DROP PROCEDURE IF EXISTS GetScheduleByID;
+DROP PROCEDURE IF EXISTS GetSessionByID;
 
 DELIMITER $$
-CREATE PROCEDURE GetScheduleByID (IN p_ID_hor INT) BEGIN
+CREATE PROCEDURE GetSessionByID (IN p_ID_hor INT) BEGIN
 SELECT
-    horarios.ID_hor AS scheduleId,
+    horarios.ID_hor AS sessionId,
     horarios.Inicio AS sessionStartsAt,
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
-    horarios.Finished AS sessionFinished
+    horarios.Finished AS sessionFinished,
+    horarios.ID_lab AS labId,
+    horarios.ID_usuario AS userId
 FROM
     horarios
 WHERE
@@ -331,10 +335,10 @@ END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler elementos de um horário:
-DROP PROCEDURE IF EXISTS GetScheduleElements;
+DROP PROCEDURE IF EXISTS GetSessionElements;
 
 DELIMITER $$
-CREATE PROCEDURE GetScheduleElements (IN p_ID_hor INT) BEGIN
+CREATE PROCEDURE GetSessionElements (IN p_ID_hor INT) BEGIN
 SELECT
     elementos.ID_elem AS elementId,
     elementos.Nome AS elementName,
@@ -357,10 +361,10 @@ END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler equipamentos de um horário:
-DROP PROCEDURE IF EXISTS GetScheduleEquipments;
+DROP PROCEDURE IF EXISTS GetSessionEquipments;
 
 DELIMITER $$
-CREATE PROCEDURE GetScheduleEquipments (IN p_ID_hor INT) BEGIN
+CREATE PROCEDURE GetSessionEquipments (IN p_ID_hor INT) BEGIN
 SELECT
     equipamentos.ID_equip AS equipmentId,
     equipamentos.Nome AS equipmentName,
@@ -372,9 +376,9 @@ SELECT
     equipamentos.SupervisorLevel AS supervisorLevel
 FROM
     equipamentos
-    JOIN horariosequipamentos ON equipamentos.ID_equip = horariosequipamentos.ID_equip
+    JOIN Reserva_equipamento ON equipamentos.ID_equip = Reserva_equipamento.ID_equip
 WHERE
-    horariosequipamentos.ID_hor = p_ID_hor;
+    Reserva_equipamento.ID_hor = p_ID_hor;
 
 END $$ DELIMITER;
 
@@ -488,6 +492,7 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O=============O
@@ -502,7 +507,7 @@ END $$ DELIMITER;
 |   - Login
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Ler todos os usuários de um laboratório:
 DROP PROCEDURE IF EXISTS GetUsersByLab;
 

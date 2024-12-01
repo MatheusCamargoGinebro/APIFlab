@@ -7,44 +7,45 @@
 #
 #    Procedures:
 |    - Campus:
-|    - [x] EditCampusName
-|    - [x] EditCampusState
+|     - [x] EditCampusName
+|     - [x] EditCampusState
 |    - User:
-|    - [x] EditUserName
-|    - [x] EditUserEmail
-|    - [x] EditUserPassword
-|    - [x] EditUserPic
-|    - [x] EditUserType
-|    - [x] EditUserCampusAdminLevel
+|     - [x] EditUserName
+|     - [x] EditUserEmail
+|     - [x] EditUserPassword
+|     - [x] EditUserPic
+|     - [x] EditUserType
+|     - [x] EditUserCampusAdminLevel
 |    - Lab:
-|    - [x] EditUserLabLevel
-|    - [x] EditLabName
-|    - [x] EditLabCapacity
-|    - Inventory:
-|    - - Element:
-|    - [x] EditElementName
-|    - [x] EditElementQuantity
-|    - [x] EditElementDescription
-|    - [x] EditElementMolWeight
-|    - [x] EditElementCAS
-|    - [x] EditElementEC
-|    - [x] EditElementPhysicalState
-|    - [x] EditElementImage
-|    - [x] EditElementExpiration
-|    - [x] EditElementSupervisorLevel
-|    - - Equipment:
-|    - [x] EditEquipmentName
-|    - [x] EditEquipmentDescription
-|    - [x] EditEquipmentTotalQuantity
-|    - [x] EditEquipmentQuality
-|    - [x] EditEquipmentImage
-|    - [x] EditEquipmentSupervisorLevel
-|    - Schedule:
-|    - [x] StartSchedule
-|    - [x] FinishSchedule
+|     - [x] EditUserLabLevel
+|     - [x] EditLabName
+|     - [x] EditLabCapacity
+|    - Element:
+|     - [x] EditElementName
+|     - [x] EditElementQuantity
+|     - [x] EditElementDescription
+|     - [x] EditElementMolWeight
+|     - [x] EditElementCAS
+|     - [x] EditElementEC
+|     - [x] EditElementPhysicalState
+|     - [x] EditElementImage
+|     - [x] EditElementExpiration
+|     - [x] EditElementSupervisorLevel
+|    - Equipment:
+|     - [x] EditEquipmentName
+|     - [x] EditEquipmentDescription
+|     - [x] EditEquipmentTotalQuantity
+|     - [x] EditEquipmentAvailableQuantity
+|     - [x] EditEquipmentQuality
+|     - [x] EditEquipmentImage
+|     - [x] EditEquipmentSupervisorLevel
+|    - Session:
+|     - [x] StartSession
+|     - [x] FinishSession
 #    
  */
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O==============O
@@ -55,7 +56,7 @@
 |   - EditCampusState
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Editar nome do campus
 DROP PROCEDURE IF EXISTS EditCampusName;
 
@@ -84,6 +85,7 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O===============O
@@ -98,7 +100,7 @@ END $$ DELIMITER;
 |   - EditUserCampusAdminLevel
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Editar nome do usuário
 DROP PROCEDURE IF EXISTS EditUserName;
 
@@ -184,6 +186,7 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O===========O
@@ -195,7 +198,7 @@ END $$ DELIMITER;
 |   - EditLabCapacity
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Editar nível do usuário
 DROP PROCEDURE IF EXISTS EditUserLabLevel;
 
@@ -239,6 +242,7 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O===============O
@@ -257,7 +261,7 @@ END $$ DELIMITER;
 |   - EditElementSupervisorLevel
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Editar nome do elemento
 DROP PROCEDURE IF EXISTS EditElementName;
 
@@ -398,6 +402,7 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
 |   O=================O
@@ -413,7 +418,7 @@ END $$ DELIMITER;
 |   - EditEquipmentSupervisorLevel
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Editar nome do equipamento
 DROP PROCEDURE IF EXISTS EditEquipmentName;
 
@@ -505,22 +510,23 @@ WHERE
 END $$ DELIMITER;
 
 -- O==============================================================O --
+-- O===============================O --
 /*
 #
-|   O================O
-|   |    Schedule    |
-|   O================O
+|   O===============O
+|   |    Session    |
+|   O===============O
 #
-|   - StartSchedule
-|   - FinishSchedule
+|   - StartSession
+|   - FinishSession
 #
  */
--- O==============================================================O --
+-- O===============================O --
 -- Iniciar horário
-DROP PROCEDURE IF EXISTS StartSchedule;
+DROP PROCEDURE IF EXISTS StartSession;
 
 DELIMITER $$
-CREATE PROCEDURE StartSchedule (IN p_ID_hor INT) BEGIN
+CREATE PROCEDURE StartSession (IN p_ID_hor INT) BEGIN
 UPDATE horarios
 SET
     Started = 1
@@ -531,10 +537,10 @@ END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Finalizar horário
-DROP PROCEDURE IF EXISTS FinishSchedule;
+DROP PROCEDURE IF EXISTS FinishSession;
 
 DELIMITER $$
-CREATE PROCEDURE FinishSchedule (IN p_ID_hor INT) BEGIN
+CREATE PROCEDURE FinishSession (IN p_ID_hor INT) BEGIN
 -- Marcar a sessão como finalizada
 UPDATE Horarios
 SET
