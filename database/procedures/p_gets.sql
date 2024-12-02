@@ -353,9 +353,9 @@ SELECT
     elementos.SupervisorLevel AS supervisorLevel
 FROM
     elementos
-    JOIN horarioselementos ON elementos.ID_elem = horarioselementos.ID_elem
+    JOIN Reserva_elemento ON elementos.ID_elem = Reserva_elemento.ID_elem
 WHERE
-    horarioselementos.ID_hor = p_ID_hor;
+    Reserva_elemento.ID_hor = p_ID_hor;
 
 END $$ DELIMITER;
 

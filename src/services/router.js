@@ -559,6 +559,16 @@ router.post(
 
 // +---------------------------------------------------------+
 
+// Rota de listagem de equipamentos de sessão de uso de laboratório:
+router.get(
+  "/lab/session/equipment/list",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.getEquipmentsbySession
+);
+
+// +---------------------------------------------------------+
+
 // Rota para desrelacionar equipamento de sessão de uso de laboratório:
 /* router.delete(
   "/lab/session/equipment/remove",
@@ -569,6 +579,14 @@ router.post(
 ); */
 
 // -------------- //
+
+router.delete(
+  "/lab/session/equipment/remove",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionMiddlewares.session_equipment,
+  sessionCtrllrs.removeEquipmentFromSession
+);
 
 /*
 - Desrelacionar um equipamento de uma sessão de uso de laboratório;
@@ -583,11 +601,17 @@ router.post(
     }
 */
 
-
 // +---------------------------------------------------------+
 
 // Rota de relacionamento de elemento a sessão de uso de laboratório:
 
+router.post(
+  "/lab/session/element/add",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionMiddlewares.session_element,
+  sessionCtrllrs.addElementToSession
+);
 
 // -------------- //
 
@@ -607,8 +631,46 @@ router.post(
 
 // +---------------------------------------------------------+
 
+// Rota de listagem de elementos de sessão de uso de laboratório:
+router.get(
+  "/lab/session/element/list",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.getElementsbySession
+);
+
+// -------------- //
+
+/*
+- Listar elementos de sessão de uso de laboratório;
+    Route: /lab/session/element/list
+    Body:
+    {
+      "session_id": <id>
+    }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota para desrelacionar elemento de sessão de uso de laboratório:
+router.delete(
+  "/lab/session/element/remove",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionMiddlewares.session_element,
+  sessionCtrllrs.removeElementFromSession
+);
+
+// +---------------------------------------------------------+
+
 // Rota de início de sessão de uso de laboratório:
 
+router.put(
+  "/lab/session/start",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.startSession
+);
 
 // -------------- //
 
@@ -625,12 +687,39 @@ router.post(
 
 // Rota de finalização de sessão de uso de laboratório:
 
+router.put(
+  "/lab/session/end",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.endSession
+);
 
 // -------------- //
 
 /* 
 - Finalizar uma sessão de uso de laboratório no banco de dados;
     Route: /lab/session/end
+    Body:
+    {
+      "session_id": <id>
+    }
+*/
+
+// +---------------------------------------------------------+
+
+// Rota para cancelar sessão de uso de laboratório:
+router.delete(
+  "/lab/session/cancel",
+  userMiddlewares.checkToken,
+  sessionMiddlewares.session_id,
+  sessionCtrllrs.cancelSession
+);
+
+// -------------- //
+
+/*
+- Cancelar uma sessão de uso de laboratório no banco de dados;
+    Route: /lab/session/cancel
     Body:
     {
       "session_id": <id>

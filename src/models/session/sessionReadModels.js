@@ -18,6 +18,8 @@
 // Importação de módulos:
 const connection = require("../../utils/connection");
 
+const moment = require("moment");
+
 // O========================================================================================O
 
 // Função para verificar se há alguma sessão no horário solicitado:
@@ -47,6 +49,20 @@ const getSessionsByLabId = async (labId) => {
 
   const [result] = await connection.execute(query, data);
 
+  // Convertendo sessionStarted e sessionFinished para boolean:
+  result[0] = result[0].map((session) => {
+    session.sessionStarted = Boolean(session.sessionStarted);
+    session.sessionFinished = Boolean(session.sessionFinished);
+    return session;
+  });
+
+  // Convertendo sessionStartsAt e sessionEndsAt para UNIX:
+  result[0] = result[0].map((session) => {
+    session.sessionStartsAt = moment(session.sessionStartsAt).unix();
+    session.sessionEndsAt = moment(session.sessionEndsAt).unix();
+    return session;
+  });
+
   if (result[0].length > 0) {
     return { status: true, data: result[0] };
   } else {
@@ -62,6 +78,14 @@ const getSessionById = async (sessionId) => {
   const data = [sessionId];
 
   const [result] = await connection.execute(query, data);
+
+  // Convertendo sessionStarted e sessionFinished para boolean:
+  result[0][0].sessionStarted = Boolean(result[0][0].sessionStarted);
+  result[0][0].sessionFinished = Boolean(result[0][0].sessionFinished);
+
+  // Convertendo sessionStartsAt e sessionEndsAt para UNIX:
+  result[0][0].sessionStartsAt = moment(result[0][0].sessionStartsAt).unix();
+  result[0][0].sessionEndsAt = moment(result[0][0].sessionEndsAt).unix();
 
   if (result[0].length > 0) {
     return { status: true, data: result[0][0] };

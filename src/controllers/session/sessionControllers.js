@@ -10,10 +10,13 @@
   - [X] getSessionsByLabId;
   - [X] startSession;
   - [X] endSession;
+  - [X] cancelSession;
   - [X] addElementToSession;
   - [X] removeElementFromSession;
   - [X] addEquipmentToSession;
   - [X] removeEquipmentFromSession;
+  - [X] getElementsbySession;
+  - [X] getEquipmentsbySession;
 */
 
 // O========================================================================================O
@@ -181,22 +184,6 @@ const getSessionsByLabId = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  // convertendo sessionStarted e sessionFinished para boolean:
-  sessions.data = sessions.data.map((session) => {
-    session.sessionStarted = Boolean(session.sessionStarted);
-    session.sessionFinished = Boolean(session.sessionFinished);
-    return session;
-  });
-
-  // Convertendo sessionStartsAt e sessionEndsAt para UNIX:
-  sessions.data = sessions.data.map((session) => {
-    session.sessionStartsAt = moment(session.sessionStartsAt).unix();
-    session.sessionEndsAt = moment(session.sessionEndsAt).unix();
-    return session;
-  });
-
-  /*-----------------------------------------------------*/
-
   return res.status(200).json({
     status: true,
     data: sessions.data,
@@ -206,22 +193,411 @@ const getSessionsByLabId = async (req, res) => {
 // O========================================================================================O
 
 // Função para iniciar uma sessão em um laboratório:
-const startSession = async (req, res) => {};
+const startSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para iniciar uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  if (session.data.userId !== userId) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem autorização para iniciar essa sessão!",
+    });
+  }
+
+  if (session.data.sessionStarted === true) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão já iniciada!",
+    });
+  }
+
+  if (session.data.sessionFinished === true) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão já encerrada!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Iniciando a sessão:
+  const result = await sessionWrite.startSession(session_id);
+
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao iniciar a sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Sessão iniciada com sucesso!",
+  });
+};
 
 // O========================================================================================O
 
 // Função para encerrar uma sessão em um laboratório:
-const endSession = async (req, res) => {};
+const endSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para encerrar uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  const permission = await labPermission.checkUserToManipulate(
+    userId,
+    session.data.labId,
+    3
+  );
+
+  if (session.data.userId !== userId && permission.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem autorização para encerrar essa sessão!",
+    });
+  }
+
+  if (session.data.sessionStarted === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não iniciada!",
+    });
+  }
+
+  if (session.data.sessionFinished === true) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão já encerrada!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Encerrando a sessão:
+  const result = await sessionWrite.endSession(session_id);
+
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao encerrar a sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Sessão encerrada com sucesso!",
+  });
+};
+
+// O========================================================================================O
+
+// Função para cancelar uma sessão em um laboratório:
+const cancelSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para cancelar uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  if (
+    session.data.sessionStarted === true ||
+    session.data.sessionFinished === true
+  ) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão já iniciada e/ou encerrada!",
+    });
+  }
+
+  const permission = await labPermission.checkUserToManipulate(
+    userId,
+    session.data.labId,
+    3
+  );
+
+  if (session.data.userId !== userId && permission.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem autorização para cancelar essa sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Cancelando a sessão:
+  const result = await sessionWrite.cancelSession(session_id);
+
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao cancelar a sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+};
 
 // O========================================================================================O
 
 // Função para adicionar um elemento a uma sessão em um laboratório:
-const addElementToSession = async (req, res) => {};
+const addElementToSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id, session_element } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para adicionar um elemento a uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  if (
+    session.data.userId !== userId ||
+    session.data.sessionStarted === 1 ||
+    session.data.sessionFinished === 1
+  ) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem autorização para modificar essa sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o elemento existe:
+  const element = await elementRead.getElementById(session_element.id);
+
+  if (element.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Elemento químico não encontrado!",
+    });
+  }
+
+  if (element.data.labId !== session.data.labId) {
+    return res.status(400).json({
+      status: false,
+      message: "Elemento químico não pertence ao laboratório da sessão!",
+    });
+  }
+
+  // Verificando se o elemento já está na sessão:
+  const sessionElements = await sessionRead.getSessionElements(session_id);
+
+  if (sessionElements.status === true) {
+    const checkElement = sessionElements.data.find(
+      (element) => element.elementId === session_element.id
+    );
+
+    if (checkElement) {
+      return res.status(400).json({
+        status: false,
+        message: "Elemento químico já adicionado à sessão!",
+      });
+    }
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Adicionando o elemento à sessão:
+  const result = await sessionWrite.reserveElement(session_id, session_element);
+
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao adicionar elemento à sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Elemento adicionado à sessão com sucesso!",
+  });
+};
 
 // O========================================================================================O
 
 // Função para remover um elemento de uma sessão em um laboratório:
-const removeElementFromSession = async (req, res) => {};
+const removeElementFromSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id, session_element } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para remover um elemento de uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  if (
+    session.data.userId !== userId ||
+    session.data.sessionStarted === 1 ||
+    session.data.sessionFinished === 1
+  ) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem autorização para modificar essa sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o elemento existe:
+  const element = await elementRead.getElementById(session_element.id);
+
+  if (element.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Elemento químico não encontrado!",
+    });
+  }
+
+  if (element.data.labId !== session.data.labId) {
+    return res.status(400).json({
+      status: false,
+      message: "Elemento químico não pertence ao laboratório da sessão!",
+    });
+  }
+
+  // Verificando se o elemento já está na sessão:
+  const sessionElements = await sessionRead.getSessionElements(session_id);
+
+  if (sessionElements.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Elemento químico não encontrado na sessão!",
+    });
+  }
+
+  const checkElement = sessionElements.data.find(
+    (element) => element.elementId === session_element.id
+  );
+
+  if (!checkElement) {
+    return res.status(400).json({
+      status: false,
+      message: "Elemento químico não encontrado na sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se a sessão já foi iniciada:
+  if (session.data.sessionStarted === true) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão já iniciada!",
+    });
+  }
+
+  // Verificando se a sessão já foi encerrada:
+  if (session.data.sessionFinished === true) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão já encerrada!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Removendo o elemento da sessão:
+  const result = await sessionWrite.unreserveElement(
+    session_id,
+    session_element.id
+  );
+
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao remover elemento da sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Elemento removido da sessão com sucesso!",
+  });
+};
 
 // O========================================================================================O
 
@@ -327,7 +703,218 @@ const addEquipmentToSession = async (req, res) => {
 // O========================================================================================O
 
 // Função para remover um equipamento de uma sessão em um laboratório:
-const removeEquipmentFromSession = async (req, res) => {};
+const removeEquipmentFromSession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id, session_equipment } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para remover um equipamento de uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  if (
+    session.data.userId !== userId ||
+    session.data.sessionStarted === 1 ||
+    session.data.sessionFinished === 1
+  ) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem autorização para modificar essa sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o equipamento existe:
+  const equipment = await equipmentRead.getEquipmentById(session_equipment.id);
+
+  if (equipment.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Equipamento não encontrado!",
+    });
+  }
+
+  if (equipment.data.labId !== session.data.labId) {
+    return res.status(400).json({
+      status: false,
+      message: "Equipamento não pertence ao laboratório da sessão!",
+    });
+  }
+
+  // Verificando se o equipamento já está na sessão:
+  const sessionEquipments = await sessionRead.getSessionEquipments(session_id);
+
+  if (sessionEquipments.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Equipamento não encontrado na sessão!",
+    });
+  }
+
+  const checkEquipment = sessionEquipments.data.find(
+    (equipment) => equipment.equipmentId === session_equipment.id
+  );
+
+  if (!checkEquipment) {
+    return res.status(400).json({
+      status: false,
+      message: "Equipamento não encontrado na sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Removendo o equipamento da sessão:
+  const result = await sessionWrite.unreserveEquipment(
+    session_id,
+    session_equipment.id
+  );
+
+  if (result.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao remover equipamento da sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Equipamento removido da sessão com sucesso!",
+  });
+};
+
+// O========================================================================================O
+
+// Função para recuperar os elementos de uma sessão em um laboratório:
+const getElementsbySession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para visualizar os elementos de uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  const permission = await labPermission.checkUserToManipulate(
+    userId,
+    session.data.labId,
+    1
+  );
+
+  if (permission.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário sem permissão para visualizar os elementos da sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando os elementos da sessão:
+  const elements = await sessionRead.getSessionElements(session_id);
+
+  if (elements.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Nenhum elemento encontrado na sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    data: elements.data,
+  });
+};
+
+// O========================================================================================O
+
+// Função para recuperar os equipamentos de uma sessão em um laboratório:
+const getEquipmentsbySession = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  // Recuperando informações da requisição:
+  const { session_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para visualizar os equipamentos de uma sessão:
+  const session = await sessionRead.getSessionById(session_id);
+
+  if (session.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Sessão não encontrada!",
+    });
+  }
+
+  const permission = await labPermission.checkUserToManipulate(
+    userId,
+    session.data.labId,
+    1
+  );
+
+  if (permission.status === false) {
+    return res.status(400).json({
+      status: false,
+      message:
+        "Usuário sem permissão para visualizar os equipamentos da sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando os equipamentos da sessão:
+  const equipments = await sessionRead.getSessionEquipments(session_id);
+
+  if (equipments.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Nenhum equipamento encontrado na sessão!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    data: equipments.data,
+  });
+};
 
 // O========================================================================================O
 
@@ -337,10 +924,13 @@ module.exports = {
   getSessionsByLabId,
   startSession,
   endSession,
+  cancelSession,
   addElementToSession,
   removeElementFromSession,
   addEquipmentToSession,
   removeEquipmentFromSession,
+  getElementsbySession,
+  getEquipmentsbySession,
 };
 
 // O========================================================================================O

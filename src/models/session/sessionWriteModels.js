@@ -72,30 +72,23 @@ const startSession = async (sessionId) => {
 
 // Função para encerrar uma sessão em um laboratório:
 const endSession = async (sessionId) => {
-  const query = "CALL StartSession(?);";
-  const [results] = await connection.execute(query, [sessionId]);
+  const query = "CALL FinishSession(?);";
+  await connection.execute(query, [sessionId]);
 
-  if (results.affectedRows > 0) {
-    return {
-      status: true,
-      message: "Sessão encerrada com sucesso!",
-    };
-  } else {
-    return {
-      status: false,
-      message: "Erro ao encerrar a sessão!",
-    };
-  }
+  return {
+    status: true,
+    message: "Sessão encerrada com sucesso!",
+  };
 };
 
 // O========================================================================================O
 
 // Função para adicionar um elemento a uma sessão em um laboratório:
 const reserveElement = async (sessionId, elementToAdd) => {
-  const { elementId, elementQuantity } = elementToAdd;
+  const { id, quantity } = elementToAdd;
 
   const query = "CALL ReserveElement(?, ?, ?);";
-  await connection.execute(query, [elementQuantity, elementId, sessionId]);
+  await connection.execute(query, [quantity, id, sessionId]);
 
   return {
     status: true,
@@ -106,9 +99,7 @@ const reserveElement = async (sessionId, elementToAdd) => {
 // O========================================================================================O
 
 // Função para remover um elemento de uma sessão em um laboratório:
-const unreserveElement = async (sessionId, elementToRemove) => {
-  const { elementId } = elementToRemove;
-
+const unreserveElement = async (sessionId, elementId) => {
   const query = "CALL UnreserveElement(?, ?);";
   await connection.execute(query, [elementId, sessionId]);
 
@@ -136,9 +127,7 @@ const ReserveEquipment = async (sessionId, equipmentToAdd) => {
 // O========================================================================================O
 
 // Função para remover um equipamento de uma sessão em um laboratório:
-const unreserveEquipment = async (sessionId, equipmentToRemove) => {
-  const { equipmentId } = equipmentToRemove;
-
+const unreserveEquipment = async (sessionId, equipmentId) => {
   const query = "CALL UnreserveEquipment(?, ?);";
   await connection.execute(query, [equipmentId, sessionId]);
 
