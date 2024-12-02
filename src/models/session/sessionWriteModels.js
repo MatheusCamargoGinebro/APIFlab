@@ -144,7 +144,7 @@ const cancelSession = async (sessionId) => {
   const query = "CALL DeleteSession(?);";
   const [result] = await connection.execute(query, [sessionId]);
 
-  if (result[0].result === TRUE) {
+  if (result[0].result === true) {
     return {
       status: true,
       message: "Sessão cancelada com sucesso!",

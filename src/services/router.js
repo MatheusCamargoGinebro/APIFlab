@@ -1439,4 +1439,11 @@ router.put(
 
 // +---------------------------------------------------------+
 
+// Rota para listar todos os usuários do campus do usuário logado:
+router.get(
+  "/campus/users",
+  userMiddlewares.checkToken,
+  accountCtrllrs.getUsersFromCampus
+);
+
 // O========================================================================================O

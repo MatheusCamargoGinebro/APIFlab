@@ -79,15 +79,15 @@ const getSessionById = async (sessionId) => {
 
   const [result] = await connection.execute(query, data);
 
-  // Convertendo sessionStarted e sessionFinished para boolean:
-  result[0][0].sessionStarted = Boolean(result[0][0].sessionStarted);
-  result[0][0].sessionFinished = Boolean(result[0][0].sessionFinished);
-
-  // Convertendo sessionStartsAt e sessionEndsAt para UNIX:
-  result[0][0].sessionStartsAt = moment(result[0][0].sessionStartsAt).unix();
-  result[0][0].sessionEndsAt = moment(result[0][0].sessionEndsAt).unix();
-
   if (result[0].length > 0) {
+    // Convertendo sessionStarted e sessionFinished para boolean:
+    result[0][0].sessionStarted = Boolean(result[0][0].sessionStarted);
+    result[0][0].sessionFinished = Boolean(result[0][0].sessionFinished);
+
+    // Convertendo sessionStartsAt e sessionEndsAt para UNIX:
+    result[0][0].sessionStartsAt = moment(result[0][0].sessionStartsAt).unix();
+    result[0][0].sessionEndsAt = moment(result[0][0].sessionEndsAt).unix();
+
     return { status: true, data: result[0][0] };
   } else {
     return { status: false, message: "Sessão não encontrada!" };

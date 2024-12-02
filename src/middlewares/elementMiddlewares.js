@@ -383,7 +383,7 @@ const element_supervisorLevel = (request, response, next) => {
   ) {
     return response.status(400).send({
       message:
-        "Nível de supervisão do elemento deve ser 1 (baixo), 2 (médio) ou 3 (alto)",
+        "Nível de supervisão do elemento deve ser 0 (baixo), 1 (médio) ou 2 (alto)",
       error_at: "element_supervisorLevel",
     });
   }

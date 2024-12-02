@@ -10,6 +10,7 @@
     - [X] UserLogout;
     - [X] ClearBlackList;
     - [X] ClearMailCodeList;
+    - [X] getUsersFromCampus;
 */
 
 // O========================================================================================O
@@ -223,6 +224,64 @@ const getUsersFromLab = async (req, res) => {
 
 // O========================================================================================O
 
+// Função para obter os usuários de um campus:
+const getUsersFromCampus = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando ID do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando informações do usuário:
+  const userInfo = await UserRead.getUserById(userId);
+
+  if (userInfo.status === false) {
+    return res.status(404).json({
+      status: false,
+      message: "Usuário não encontrado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se o usuário tem permissão para acessar os usuários do campus:
+  const userCheck = await labPermission.checkUserToManipulate(
+    userId,
+    userInfo.userData[0].campusId,
+    2
+  );
+
+  if (userCheck.status === false) {
+    return res.status(401).json({
+      status: false,
+      message: "Usuário não autorizado.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando usuários do campus:
+  const result = await UserRead.getUsersByCampus(userInfo.userData[0].campusId);
+
+  if (result.status === false) {
+    return res.status(404).json({
+      status: false,
+      message: "Não há usuários no campus.",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    users: result.userData[0],
+  });
+};
+
+// O========================================================================================O
+
 // Exportando módulos:
 module.exports = {
   userLogin,
@@ -231,6 +290,7 @@ module.exports = {
   clearMailCodeList,
   getUserData,
   getUsersFromLab,
+  getUsersFromCampus,
 };
 
 // O========================================================================================O
