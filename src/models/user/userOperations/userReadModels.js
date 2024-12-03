@@ -68,7 +68,9 @@ const getUsersByCampus = async (ID_campus) => {
   const query = "CALL GetUsersByCampus(?);";
   const [result] = await connection.execute(query, [ID_campus]);
 
-  if (result.length > 0) {
+  console.log(result[0]);
+
+  if (result[0].length > 0) {
     return { status: true, userData: result };
   } else {
     return { status: false, userData: null };
