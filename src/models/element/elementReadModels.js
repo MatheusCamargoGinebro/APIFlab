@@ -15,6 +15,8 @@
 // Importando conexão com o banco de dados:
 const connection = require("../../utils/connection");
 
+const moment = require("moment");
+
 // O========================================================================================O
 
 // Função para buscar elementos químicos pelo ID do laboratório:
@@ -25,6 +27,12 @@ const getElementsByLab = async (ID_lab) => {
   const [result] = await connection.execute(query, data);
 
   if (result[0].length > 0) {
+    // Convertendo as datas de validade para timestamp:
+    result[0] = result[0].map((element) => {
+      element.expirationDate = moment(element.expirationDate).unix();
+      return element;
+    });
+
     return { status: true, data: result[0] };
   } else {
     return { status: false, message: "Elementos químicos não encontrados!" };

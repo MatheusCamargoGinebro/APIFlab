@@ -378,10 +378,10 @@ END $$ DELIMITER;
 DROP PROCEDURE IF EXISTS EditElementExpiration;
 
 DELIMITER $$
-CREATE PROCEDURE EditElementExpiration (IN p_ID_elem INT, IN p_Validade DATE) BEGIN
+CREATE PROCEDURE EditElementExpiration (IN p_ID_elem INT, IN p_Validade BIGINT) BEGIN
 UPDATE elementos
 SET
-    Validade = p_Validade
+    Validade = FROM_UNIXTIME(p_Validade)
 WHERE
     ID_elem = p_ID_elem;
 

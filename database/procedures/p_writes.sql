@@ -165,14 +165,14 @@ CREATE PROCEDURE CreateElement (
     IN p_Num_ec VARCHAR(32),
     IN p_EstadoFisico INT,
     IN p_Imagem LONGTEXT,
-    IN p_Validade DATE,
+    IN p_Validade BIGINT,
     IN p_SupervisorLevel INT,
     IN p_ID_lab INT
 ) BEGIN
 INSERT INTO
     elementos (Nome, Quantidade, Descricao, Peso_molecular, Num_cas, Num_ec, EstadoFisico, Imagem, Validade, SupervisorLevel, ID_lab)
 VALUES
-    (p_Nome, p_Quantidade, p_Descricao, p_Peso_molecular, p_Num_cas, p_Num_ec, p_EstadoFisico, p_Imagem, p_Validade, p_SupervisorLevel, p_ID_lab);
+    (p_Nome, p_Quantidade, p_Descricao, p_Peso_molecular, p_Num_cas, p_Num_ec, p_EstadoFisico, p_Imagem, FROM_UNIXTIME(p_Validade), p_SupervisorLevel, p_ID_lab);
 
 END $$ DELIMITER;
 

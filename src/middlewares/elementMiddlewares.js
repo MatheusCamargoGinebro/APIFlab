@@ -313,34 +313,9 @@ const element_validity = (request, response, next) => {
     });
   }
 
-  const regex = /^\d{4}-\d{2}-\d{2}$/;
-  if (!regex.test(request.body.element_validity)) {
+  if (typeof request.body.element_validity !== "number") {
     return response.status(400).send({
-      message:
-        "Validade do elemento deve ser uma data válida no formato YYYY-MM-DD",
-      error_at: "element_validity",
-    });
-  }
-
-  const [year, month, day] = request.body.element_validity
-    .split("-")
-    .map(Number);
-  const date = new Date(year, month - 1, day);
-  if (
-    date.getFullYear() !== year ||
-    date.getMonth() + 1 !== month ||
-    date.getDate() !== day
-  ) {
-    return response.status(400).send({
-      message: "Data inválida",
-      error_at: "element_validity",
-    });
-  }
-
-  if (isNaN(date.getTime())) {
-    return response.status(400).send({
-      message:
-        "Validade do elemento deve ser uma data válida no formato YYYY-MM-DD",
+      message: "Validade do elemento deve ser um timestamp",
       error_at: "element_validity",
     });
   }

@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS
         Num_ec VARCHAR(32) NOT NULL,
         EstadoFisico INT CHECK (EstadoFisico IN (1, 2, 3)),
         Imagem LONGTEXT,
-        Validade DATE NOT NULL,
+        Validade TIMESTAMP NOT NULL,
         --
         -- Valores de controle:
         SupervisorLevel INT CHECK (SupervisorLevel IN (0, 1, 2)) NOT NULL,

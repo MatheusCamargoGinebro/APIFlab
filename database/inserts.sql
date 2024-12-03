@@ -29,46 +29,57 @@ VALUES
     (1, 1, 1) /* Aluno é usuário membro do lab1 */,
     (1, 1, 2) /* Aluno é usuário membro do lab2 */;
 
+/* Validade é um timestamp */
+/* estado físico varia de 1 a 3 */
+/* supervisorlevel varia de 0 a 2 */
 INSERT INTO
     elementos (Nome, Quantidade, Descricao, Peso_molecular, Num_cas, Num_ec, EstadoFisico, Validade, SupervisorLevel, ID_lab)
 VALUES
     (
         'Ácido Clorídrico',
-        1000,
-        'Ácido Clorídrico é uma solução aquosa de cloreto de hidrogênio (HCl). É um líquido incolor, altamente corrosivo e tóxico, que pode ser encontrado em concentrações variadas. É um dos ácidos mais fortes que existem, sendo capaz de corroer metais e tecidos vivos.',
+        100,
+        'Ácido clorídrico é uma solução aquosa de cloreto de hidrogênio (HCl). É um ácido forte, corrosivo e tóxico, utilizado em laboratórios de química para reações de neutralização e limpeza de vidrarias.',
         36.46,
         '7647-01-0',
         '231-595-7',
         1,
-        '2022-12-31',
-        1,
+        '2022-12-31 00:00:00',
+        0,
         1
     ),
     (
         'Ácido Sulfúrico',
-        1000,
-        'Ácido Sulfúrico é um ácido mineral forte. É solúvel em água em todas as concentrações. É um líquido viscoso, incolor, inodoro e altamente corrosivo. É um ácido forte, capaz de corroer metais, tecidos vivos e muitos outros materiais.',
+        100,
+        'Ácido sulfúrico é um ácido forte, corrosivo e tóxico, utilizado em laboratórios de química para reações de neutralização e síntese de compostos orgânicos e inorgânicos.',
         98.08,
         '7664-93-9',
         '231-639-5',
         1,
-        '2022-12-31',
-        1,
+        '2022-12-31 00:00:00',
+        0,
         1
     ),
+    ('Água Destilada', 100, 'Água destilada é uma água purificada, livre de sais minerais e impurezas, utilizada em laboratórios de química para preparo de soluções e limpeza de vidrarias.', 18.02, '7732-18-5', '231-791-2', 1, '2022-12-31 00:00:00', 0, 1),
+    ('Álcool Etílico', 100, 'Álcool etílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 46.07, '64-17-5', '200-578-6', 1, '2022-12-31 00:00:00', 0, 1),
+    ('Álcool Isopropílico', 100, 'Álcool isopropílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 60.10, '67-63-0', '200-661-7', 1, '2022-12-31 00:00:00', 0, 1),
+    ('Álcool Metílico', 100, 'Álcool metílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 32.04, '67-56-1', '200-659-6', 1, '2022-12-31 00:00:00', 0, 1),
+    ('Álcool Benzílico', 100, 'Álcool benzílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 108.14, '100-51-6', '202-859-9', 1, '2022-12-31 00:00:00', 0, 2),
     (
-        'Ácido Nítrico',
-        1000,
-        'Ácido Nítrico é um ácido mineral forte. É um líquido incolor, altamente corrosivo e tóxico. É um ácido forte, capaz de corroer metais, tecidos vivos e muitos outros materiais.',
-        63.01,
-        '7697-37-2',
-        '231-714-2',
+        'Álcool Ciclohexílico',
+        100,
+        'Álcool ciclohexílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.',
+        100.16,
+        '108-93-0',
+        '203-631-1',
         1,
-        '2022-12-31',
-        1,
-        1
+        '2022-12-31 00:00:00',
+        0,
+        2
     ),
-    ('Ácido Fórmico', 1000, 'Ácido Fórmico é um ácido orgânico fraco. É um líquido incolor, altamente corrosivo e tóxico. É um ácido fraco, capaz de corroer metais, tecidos vivos e muitos outros materiais.', 46.03, '64-18-6', '200-579-1', 1, '2022-12-31', 1, 1);
+    ('Álcool Fenílico', 100, 'Álcool fenílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 94.11, '108-95-2', '203-633-2', 1, '2022-12-31 00:00:00', 0, 2),
+    ('Álcool Glicólico', 100, 'Álcool glicólico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 76.05, '79-14-1', '201-180-5', 1, '2022-12-31 00:00:00', 0, 2),
+    ('Álcool Propílico', 100, 'Álcool propílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 60.10, '67-63-0', '200-661-7', 1, '2022-12-31 00:00:00', 0, 2),
+    ('Álcool Terbútílico', 100, 'Álcool terbútílico é um líquido incolor, inflamável e volátil, utilizado em laboratórios de química para limpeza de vidrarias e extração de compostos orgânicos.', 74.12, '75-65-0', '200-882-4', 1, '2022-12-31 00:00:00', 0, 2);
 
 INSERT INTO
     equipamentos (Nome, Descricao, QuantidadeTotal, QuantidadeDisponivel, Qualidade, SupervisorLevel, ID_lab)
