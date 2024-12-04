@@ -14,6 +14,13 @@ const express = require("express");
 const router = express.Router();
 module.exports = router;
 
+router.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://localhost:5173");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 // O========================================================================================O
 
 // Importando Middlewares:
@@ -137,11 +144,7 @@ router.get("/campus/list", campusReadCtrllrs.getAllCampus);
 // +---------------------------------------------------------+
 
 // Rota de registro de código de verificação de email:
-router.post(
-  "/user/sendmailcode",
-  userMiddlewares.user_email,
-  userRegisterCtrllrs.sendMailCode
-);
+router.post("/user/sendmailcode", userMiddlewares.user_email, userRegisterCtrllrs.sendMailCode);
 
 // -------------- //
 
@@ -222,11 +225,7 @@ router.post(
 // +---------------------------------------------------------+
 
 // Rota de recuperação de dados do usuário a partir do token:
-router.get(
-  "/user/data",
-  userMiddlewares.checkToken,
-  accountCtrllrs.getUserData
-);
+router.get("/user/data", userMiddlewares.checkToken, accountCtrllrs.getUserData);
 
 // -------------- //
 
@@ -346,11 +345,7 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota de logout de usuário:
-router.post(
-  "/user/logout",
-  userMiddlewares.checkToken,
-  accountCtrllrs.userLogout
-);
+router.post("/user/logout", userMiddlewares.checkToken, accountCtrllrs.userLogout);
 
 // -------------- //
 
@@ -1440,10 +1435,6 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota para listar todos os usuários do campus do usuário logado:
-router.get(
-  "/campus/users",
-  userMiddlewares.checkToken,
-  accountCtrllrs.getUsersFromCampus
-);
+router.get("/campus/users", userMiddlewares.checkToken, accountCtrllrs.getUsersFromCampus);
 
 // O========================================================================================O
