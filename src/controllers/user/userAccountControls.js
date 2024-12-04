@@ -136,12 +136,7 @@ const clearBlackList = async () => {
 // Função para limpar a lista de códigos de email:
 const clearMailCodeList = async (__req, res) => {
   console.log("Limpando lista de códigos de email...");
-  const mailCodes = await mailCodesModels.clearMailCodeList();
-
-  return res.status(200).json({
-    status: true,
-    message: "Lista de códigos de email limpa.",
-  });
+  await mailCodesModels.clearMailCodeList();
 };
 
 // O========================================================================================O
