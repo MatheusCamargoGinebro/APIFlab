@@ -25,30 +25,34 @@ const equipment_name = (request, response, next) => {
     request.body.equipment_name === null ||
     !request.body.equipment_name
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nome do equipamento é obrigatório",
       error_at: "equipment_name",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_name !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nome do equipamento deve ser uma string",
       error_at: "equipment_name",
+      status: false
     });
   }
 
   if (request.body.equipment_name.length < 1) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nome do equipamento deve ter pelo menos 1 caracter",
       error_at: "equipment_name",
+      status: false
     });
   }
 
   if (request.body.equipment_name.length > 128) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nome do equipamento deve ter no máximo 128 caracteres",
       error_at: "equipment_name",
+      status: false
     });
   }
 
@@ -64,16 +68,18 @@ const equipment_description = (request, response, next) => {
     request.body.equipment_description === null ||
     !request.body.equipment_description
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Descrição do equipamento é obrigatória",
       error_at: "equipment_description",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_description !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Descrição do equipamento deve ser uma string",
       error_at: "equipment_description",
+      status: false
     });
   }
 
@@ -89,23 +95,26 @@ const equipment_totalQuantity = (request, response, next) => {
     request.body.equipment_totalQuantity === null ||
     !request.body.equipment_totalQuantity
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Quantidade total do equipamento é obrigatória",
       error_at: "equipment_totalQuantity",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_totalQuantity !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Quantidade total do equipamento deve ser um número",
       error_at: "equipment_totalQuantity",
+      status: false
     });
   }
 
   if (request.body.equipment_totalQuantity < 0) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Quantidade total do equipamento não pode ser negativa",
       error_at: "equipment_totalQuantity",
+      status: false
     });
   }
 
@@ -121,30 +130,34 @@ const equipment_quality = (request, response, next) => {
     request.body.equipment_quality === null ||
     !request.body.equipment_quality
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Qualidade do equipamento é obrigatória",
       error_at: "equipment_quality",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_quality !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Qualidade do equipamento deve ser um número",
       error_at: "equipment_quality",
+      status: false
     });
   }
 
   if (request.body.equipment_quality < 0) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Qualidade do equipamento não pode ser negativa",
       error_at: "equipment_quality",
+      status: false
     });
   }
 
   if (request.body.equipment_quality > 5) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Qualidade do equipamento não pode ser maior que 5",
       error_at: "equipment_quality",
+      status: false
     });
   }
 
@@ -164,9 +177,10 @@ const equipment_image = (request, response, next) => {
   }
 
   if (typeof request.body.equipment_image !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Imagem do equipamento deve ser uma string",
       error_at: "equipment_image",
+      status: false
     });
   }
 
@@ -181,30 +195,34 @@ const equipment_supervisorLevel = (request, response, next) => {
     request.body.equipment_supervisorLevel === undefined ||
     request.body.equipment_supervisorLevel === null
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de supervisão do equipamento é obrigatório",
       error_at: "equipment_supervisorLevel",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_supervisorLevel !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de supervisão do equipamento deve ser um número",
       error_at: "equipment_supervisorLevel",
+      status: false
     });
   }
 
   if (request.body.equipment_supervisorLevel < 0) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de supervisão do equipamento não pode ser negativo",
       error_at: "equipment_supervisorLevel",
+      status: false
     });
   }
 
   if (request.body.equipment_supervisorLevel > 2) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de supervisão do equipamento não pode ser maior que 2",
       error_at: "equipment_supervisorLevel",
+      status: false
     });
   }
 
@@ -220,16 +238,18 @@ const equipment_labId = (request, response, next) => {
     request.body.equipment_labId === null ||
     !request.body.equipment_labId
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do laboratório do equipamento é obrigatório",
       error_at: "equipment_labId",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_labId !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do laboratório do equipamento deve ser um número",
       error_at: "equipment_labId",
+      status: false
     });
   }
 
@@ -245,16 +265,18 @@ const equipment_id = (request, response, next) => {
     request.body.equipment_id === null ||
     !request.body.equipment_id
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do equipamento é obrigatório",
       error_at: "equipment_id",
+      status: false
     });
   }
 
   if (typeof request.body.equipment_id !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do equipamento deve ser um número",
       error_at: "equipment_id",
+      status: false
     });
   }
 

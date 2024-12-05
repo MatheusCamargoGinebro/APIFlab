@@ -21,30 +21,34 @@ const lab_name = (request, response, next) => {
     request.body.lab_name === null ||
     !request.body.lab_name
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nome do laboratório é obrigatório",
       error_at: "lab_name",
+      status: false
     });
   }
 
   if (typeof request.body.lab_name !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nome do laboratório deve ser uma string",
       error_at: "lab_name",
+      status: false
     });
   }
 
   if (request.body.lab_name.length < 1) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nome do laboratório deve ter pelo menos 1 caracteres",
       error_at: "lab_name",
+      status: false
     });
   }
 
   if (request.body.lab_name.length > 16) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nome do laboratório deve ter no máximo 16 caracteres",
       error_at: "lab_name",
+      status: false
     });
   }
 
@@ -60,23 +64,26 @@ const lab_capacity = (request, response, next) => {
     request.body.lab_capacity === null ||
     !request.body.lab_capacity
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Capacidade é obrigatória",
       error_at: "lab_capacity",
+      status: false
     });
   }
 
   if (typeof request.body.lab_capacity !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Capacidade deve ser um número",
       error_at: "lab_capacity",
+      status: false
     });
   }
 
   if (request.body.lab_capacity < 1) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A capacidade deve ser de pelo menos 1 pessoa",
       error_at: "lab_capacity",
+      status: false
     });
   }
 
@@ -93,16 +100,18 @@ const lab_id = (request, response, next) => {
     request.body.lab_id === "" ||
     !request.body.lab_id
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do laboratório é obrigatório",
       error_at: "lab_id",
+      status: false
     });
   }
 
   if (typeof request.body.lab_id !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do laboratório deve ser um número",
       error_at: "lab_id",
+      status: false
     });
   }
 
@@ -118,30 +127,34 @@ const lab_adminLevel = (request, response, next) => {
     request.body.lab_adminLevel === null ||
     !request.body.lab_adminLevel
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de administração é obrigatório",
       error_at: "lab_adminLevel",
+      status: false
     });
   }
 
   if (typeof request.body.lab_adminLevel !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de administração deve ser um número",
       error_at: "lab_adminLevel",
+      status: false
     });
   }
 
   if (request.body.lab_adminLevel < 1) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nível de administração deve ser de pelo menos 1",
       error_at: "lab_adminLevel",
+      status: false
     });
   }
 
   if (request.body.lab_adminLevel > 3) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nível de administração deve ser de no máximo 3",
       error_at: "lab_adminLevel",
+      status: false
     });
   }
 

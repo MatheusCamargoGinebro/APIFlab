@@ -38,45 +38,48 @@ const user_name = (request, response, next) => {
   ) {
     return response
       .status(400)
-      .send({ message: "Nome é obrigatório", error_at: "user_name" });
+      .json({ message: "Nome é obrigatório", error_at: "user_name", status: false });
   }
 
   if (typeof request.body.user_name !== "string") {
     return response
       .status(400)
-      .send({ message: "Nome deve ser uma string", error_at: "user_name" });
+      .json({ message: "Nome deve ser uma string", error_at: "user_name", status: false });
   }
 
   if (request.body.user_name.length < 3) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nome deve ter pelo menos 3 caracteres!",
       error_at: "user_name",
+      status: false,
     });
   }
 
   if (request.body.user_name.length > 128) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O nome deve ter no máximo 128 caracteres!",
       error_at: "user_name",
+      status: false,
     });
   }
 
   if (typeof request.body.user_name !== "string") {
     return response
       .status(400)
-      .send({ message: "Nome deve ser uma string!", error_at: "user_name" });
+      .json({ message: "Nome deve ser uma string!", error_at: "user_name", status: false });
   }
 
   if (request.body.user_name === "") {
     return response
       .status(400)
-      .send({ message: "Nome não pode ser vazio!", error_at: "user_name" });
+      .json({ message: "Nome não pode ser vazio!", error_at: "user_name", status: false });
   }
 
   if (!/^[A-Za-zÀ-ÖØ-öø-ÿ -]+$/.test(request.body.user_name)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nome deve conter apenas letras e espaços!",
       error_at: "user_name",
+      status: false,
     });
   }
 
@@ -94,48 +97,51 @@ const user_email = (request, response, next) => {
   ) {
     return response
       .status(400)
-      .send({ message: "Email é obrigatório!", error_at: "user_email" });
+      .json({ message: "Email é obrigatório!", error_at: "user_email", status: false });
   }
 
   if (typeof request.body.user_email !== "string") {
     return response
       .status(400)
-      .send({ message: "Email deve ser uma string!", error_at: "user_email" });
+      .json({ message: "Email deve ser uma string!", error_at: "user_email", status: false });
   }
 
   if (request.body.user_email.length < 3) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O email deve ter pelo menos 3 caracteres!",
       error_at: "user_email",
+      status: false,
     });
   }
 
   if (request.body.user_email.length > 256) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O email deve ter no máximo 256 caracteres!",
       error_at: "user_email",
+      status: false,
     });
   }
 
   if (typeof request.body.user_email !== "string") {
     return response
       .status(400)
-      .send({ message: "Email deve ser uma string!", error_at: "user_email" });
+      .json({ message: "Email deve ser uma string!", error_at: "user_email", status: false });
   }
 
   if (request.body.user_email === "") {
     return response
       .status(400)
-      .send({ message: "Email não pode ser vazio!", error_at: "user_email" });
+      .json({ message: "Email não pode ser vazio!", error_at: "user_email", status: false });
   }
 
   if (
     !/^[a-zA-Z0-9._-]+@aluno\.ifsp\.edu\.br$/.test(request.body.user_email) &&
     !/^[a-zA-Z0-9._-]+@ifsp\.edu\.br$/.test(request.body.user_email)
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Email deve ser um email vinculado à instituição!",
       error_at: "user_email",
+      status: false,
     });
   }
 
@@ -153,76 +159,86 @@ const user_password = (request, response, next) => {
   ) {
     return response
       .status(400)
-      .send({ message: "Senha é obrigatória!", error_at: "user_password" });
+      .json({ message: "Senha é obrigatória!", error_at: "user_password", status: false });
   }
 
   if (typeof request.body.user_password !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Senha deve ser uma string!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (request.body.user_password.length < 8) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve ter pelo menos 8 caracteres!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (request.body.user_password.length > 256) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve ter no máximo 256 caracteres!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (typeof request.body.user_password !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Senha deve ser uma string!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (request.body.user_password === "") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Senha não pode ser vazia!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (!/(?=.*[a-z])/.test(request.body.user_password)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve conter pelo menos uma letra minúscula!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (!/(?=.*[A-Z])/.test(request.body.user_password)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve conter pelo menos uma letra maiúscula!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (!/(?=.*[0-9])/.test(request.body.user_password)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve conter pelo menos um número!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (!/(?=.*[!@#\$%\^&\*])/.test(request.body.user_password)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve conter pelo menos um caracter especial!",
       error_at: "user_password",
+      status: false,
     });
   }
 
   if (!/(?=.{8,})/.test(request.body.user_password)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "A senha deve conter pelo menos 8 caracteres!",
       error_at: "user_password",
+      status: false,
     });
   }
 
@@ -234,9 +250,10 @@ const user_password = (request, response, next) => {
 // Função de verificação do campo Foto de Perfil:
 const user_profpic = (request, response, next) => {
   if (typeof request.body.user_profpic !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Foto de perfil deve ser uma string!",
       error_at: "user_profpic",
+      status: false,
     });
   }
 
@@ -252,15 +269,14 @@ const user_type = (request, response, next) => {
     request.body.user_type === null ||
     !request.body.user_type
   ) {
-    return response
-      .status(400)
-      .send({ message: "Tipo é obrigatório!", error_at: "user_type" });
+    return response.status(400).json({ message: "Tipo é obrigatório!", error_at: "user_type" });
   }
 
   if (typeof request.body.user_type !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Tipo deve ser um número!",
       error_at: "user_type",
+      status: false,
     });
   }
 
@@ -269,9 +285,10 @@ const user_type = (request, response, next) => {
     request.body.user_type !== 2 &&
     request.body.user_type !== 3
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "O usuário deve ser do tipo Aluno, Professor ou Outro!",
       error_at: "user_type",
+      status: false,
     });
   }
 
@@ -287,16 +304,18 @@ const user_campusId = (request, response, next) => {
     request.body.user_campusId === null ||
     !request.body.user_campusId
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do campus é obrigatório!",
       error_at: "user_campusId",
+      status: false,
     });
   }
 
   if (typeof request.body.user_campusId !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID do campus deve ser um número!",
       error_at: "user_campusId",
+      status: false,
     });
   }
 
@@ -312,23 +331,26 @@ const user_adminLevel = (request, response, next) => {
     request.body.user_adminLevel === null ||
     !request.body.user_adminLevel
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de administração é obrigatório!",
       error_at: "user_adminLevel",
+      status: false,
     });
   }
 
   if (typeof request.body.user_adminLevel !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de administrador deve ser um número!",
       error_at: "user_adminLevel",
+      status: false,
     });
   }
 
   if (request.body.user_adminLevel < 1 || request.body.user_adminLevel > 3) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Nível de administrador deve ser 1, 2 ou 3!",
       error_at: "user_adminLevel",
+      status: false,
     });
   }
 
@@ -344,30 +366,34 @@ const validationCode = (request, response, next) => {
     request.body.validationCode === null ||
     !request.body.validationCode
   ) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Código de confirmação é obrigatório!",
       error_at: "validationCode",
+      status: false,
     });
   }
 
   if (typeof request.body.validationCode !== "string") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Código de confirmação deve ser uma string!",
       error_at: "validationCode",
+      status: false,
     });
   }
 
   if (request.body.validationCode.length !== 5) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Código de confirmação deve ter 5 caracteres!",
       error_at: "validationCode",
+      status: false,
     });
   }
 
   if (!/^[0-9]*$/.test(request.body.validationCode)) {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "Código de confirmação deve conter apenas números!",
       error_at: "validationCode",
+      status: false,
     });
   }
 
@@ -385,13 +411,14 @@ const user_id = (request, response, next) => {
   ) {
     return response
       .status(400)
-      .send({ message: "ID é obrigatório", error_at: "user_id" });
+      .json({ message: "ID é obrigatório", error_at: "user_id", status: false });
   }
 
   if (typeof request.body.user_id !== "number") {
-    return response.status(400).send({
+    return response.status(400).json({
       message: "ID deve ser um número",
       error_at: "user_id",
+      status: false,
     });
   }
 
@@ -406,9 +433,10 @@ const checkToken = async (request, response, next) => {
 
   // Verifica se o token está presente no header da requisição:
   if (!token || token === null || token === undefined || token === "") {
-    return response.status(401).send({
+    return response.status(401).json({
       message: "Token não fornecido.",
       error_at: "token",
+      status: false,
     });
   }
 
@@ -416,18 +444,20 @@ const checkToken = async (request, response, next) => {
   const blackListedToken = await tokenBlacklistModels.getFromBlacklist(token);
 
   if (blackListedToken.status === true) {
-    return response.status(401).send({
+    return response.status(401).json({
       message: "Token descartado.",
       error_at: "token",
+      status: false,
     });
   }
 
   // Verifica se o token é válido:
   JWT.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      return response.status(401).send({
+      return response.status(401).json({
         message: "Token inválido ou expirado.",
         error_at: "token",
+        status: false,
       });
     }
 
