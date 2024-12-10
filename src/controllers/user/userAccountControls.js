@@ -50,7 +50,7 @@ const userLogin = async (req, res) => {
 
   if (userInfo.status === false) {
     return res.status(401).json({
-      auth: false,
+      status: false,
       message: "Email de suário ou senha inválidos",
     });
   }
@@ -66,7 +66,7 @@ const userLogin = async (req, res) => {
 
   if (result === false) {
     return res.status(401).json({
-      auth: false,
+      status: false,
       message: "Email de suário ou senha inválidos",
     });
   }
@@ -84,7 +84,7 @@ const userLogin = async (req, res) => {
   /*-----------------------------------------------------*/
 
   return res.status(200).json({
-    auth: true,
+    status: true,
     token: token,
     message: "Login efetuado com sucesso!",
   });
