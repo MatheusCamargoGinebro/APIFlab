@@ -8,7 +8,8 @@
     Lista de Funções:
     - [X] sendMailCode;
     - [X] registerUser;
-    - [X] ClearMailCodeList;
+    - [X] clearMailCodeList;
+    - [X] validateMailCode
 */
 
 // O========================================================================================O
@@ -245,9 +246,33 @@ const clearMailCodeList = async () => {
   return result;
 };
 
+const validateMailCode = async (req, res) => {
+  const { user_email, validationCode } = req.body;
+
+  const mailCodeCheck = await MailCodeModels.getMailCode(user_email);
+
+  if (mailCodeCheck.status === false || mailCodeCheck.code !== validationCode) {
+    return res.status(400).json({
+      status: false,
+      message: "Código de confirmação inválido",
+      error_at: "validationCode",
+    });
+  }
+
+  return res.status(200).json({
+    status: true,
+    message: "Código de confirmação válido",
+  });
+};
+
 // O========================================================================================O
 
 // Exportação do módulo:
-module.exports = { sendMailCode, userRegister, clearMailCodeList };
+module.exports = {
+  sendMailCode,
+  userRegister,
+  clearMailCodeList,
+  validateMailCode,
+};
 
 // O========================================================================================O

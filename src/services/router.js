@@ -164,6 +164,11 @@ router.post("/user/sendmailcode", userMiddlewares.user_email, userRegisterCtrllr
 
 // +---------------------------------------------------------+
 
+// Rota de validação de código de verificação de email:
+router.post("/user/validatemailcode", userMiddlewares.validationCode, userMiddlewares.user_email, userRegisterCtrllrs.validateMailCode);
+
+// +---------------------------------------------------------+
+
 // Rota de registro de usuário:
 router.post(
   "/user/register",
