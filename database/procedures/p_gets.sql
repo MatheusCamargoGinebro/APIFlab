@@ -604,6 +604,7 @@ SELECT
     usuarios.Email AS userEmail,
     usuarios.profilePic AS userImage,
     usuarios.Tipo AS userType,
+    usuarios.`ID_campus` AS campusId,
     usuarios.CampusAdminLevel AS campusAdminLevel
 FROM
     usuarios

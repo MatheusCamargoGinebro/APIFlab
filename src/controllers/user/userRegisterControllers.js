@@ -148,7 +148,7 @@ const userRegister = async (req, res) => {
   // Verificando se o nome de usuário já está cadastrado:
   const nameCheck = await UserRead.getUserByName(user_name);
 
-  if (nameCheck.status === true) {
+  if (nameCheck.status === true && nameCheck.userData[0].campusId === user_campusId) {
     return res.status(400).json({
       status: false,
       message: "Nome de usuário já cadastrado",

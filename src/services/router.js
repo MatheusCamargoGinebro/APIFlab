@@ -12,9 +12,8 @@
 // Importando o módulo de roteamento do express:
 const express = require("express");
 const router = express.Router();
-module.exports = router;
 
-// Configuração do CORS:
+// Configuração do CORS
 router.use((__req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:5173");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -25,6 +24,8 @@ router.use((__req, res, next) => {
 
   next();
 });
+
+module.exports = router;
 
 // O========================================================================================O
 
@@ -149,7 +150,11 @@ router.get("/campus/list", campusReadCtrllrs.getAllCampus);
 // +---------------------------------------------------------+
 
 // Rota de registro de código de verificação de email:
-router.post("/user/sendmailcode", userMiddlewares.user_email, userRegisterCtrllrs.sendMailCode);
+router.post(
+  "/user/sendmailcode",
+  userMiddlewares.user_email,
+  userRegisterCtrllrs.sendMailCode
+);
 
 // -------------- //
 
@@ -165,7 +170,12 @@ router.post("/user/sendmailcode", userMiddlewares.user_email, userRegisterCtrllr
 // +---------------------------------------------------------+
 
 // Rota de validação de código de verificação de email:
-router.post("/user/validatemailcode", userMiddlewares.validationCode, userMiddlewares.user_email, userRegisterCtrllrs.validateMailCode);
+router.post(
+  "/user/validatemailcode",
+  userMiddlewares.validationCode,
+  userMiddlewares.user_email,
+  userRegisterCtrllrs.validateMailCode
+);
 
 // +---------------------------------------------------------+
 
@@ -235,7 +245,11 @@ router.post(
 // +---------------------------------------------------------+
 
 // Rota de recuperação de dados do usuário a partir do token:
-router.get("/user/data", userMiddlewares.checkToken, accountCtrllrs.getUserData);
+router.get(
+  "/user/data",
+  userMiddlewares.checkToken,
+  accountCtrllrs.getUserData
+);
 
 // -------------- //
 
@@ -355,7 +369,11 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota de logout de usuário:
-router.post("/user/logout", userMiddlewares.checkToken, accountCtrllrs.userLogout);
+router.post(
+  "/user/logout",
+  userMiddlewares.checkToken,
+  accountCtrllrs.userLogout
+);
 
 // -------------- //
 
@@ -1445,6 +1463,10 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota para listar todos os usuários do campus do usuário logado:
-router.get("/campus/users", userMiddlewares.checkToken, accountCtrllrs.getUsersFromCampus);
+router.get(
+  "/campus/users",
+  userMiddlewares.checkToken,
+  accountCtrllrs.getUsersFromCampus
+);
 
 // O========================================================================================O
