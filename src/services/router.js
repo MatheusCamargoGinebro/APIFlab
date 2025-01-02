@@ -410,8 +410,26 @@ router.get("/lab/list/all", userMiddlewares.checkToken, labReadCtrllrs.getLabs);
 
 // +---------------------------------------------------------+
 
+// Rota de listagem de laboratório por ID:
+router.post(
+  "/lab/list/",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_id,
+  labReadCtrllrs.getLabById
+);
+
+// -------------- //
+/*
+- Listar laboratório pelo ID;
+    Route: /lab/list
+    Body:
+    {
+      "lab_id": <id>
+    }
+*/
+
 // Rota de listagem de laboratórios em que o usuário possui tal nível de acesso:
-router.get(
+router.post(
   "/lab/list/level",
   userMiddlewares.checkToken,
   labMiddlewares.lab_adminLevel,
@@ -535,7 +553,7 @@ router.post(
 // +---------------------------------------------------------+
 
 // Rota de listagem de sessões de uso de laboratório:
-router.get(
+router.post(
   "/lab/session/list",
   userMiddlewares.checkToken,
   sessionMiddlewares.session_labId,
@@ -583,7 +601,7 @@ router.post(
 // +---------------------------------------------------------+
 
 // Rota de listagem de equipamentos de sessão de uso de laboratório:
-router.get(
+router.post(
   "/lab/session/equipment/list",
   userMiddlewares.checkToken,
   sessionMiddlewares.session_id,
@@ -655,7 +673,7 @@ router.post(
 // +---------------------------------------------------------+
 
 // Rota de listagem de elementos de sessão de uso de laboratório:
-router.get(
+router.post(
   "/lab/session/element/list",
   userMiddlewares.checkToken,
   sessionMiddlewares.session_id,
@@ -804,7 +822,7 @@ router.delete(
 // +---------------------------------------------------------+
 
 // Rota de listagem de equipamentos do laboratório:
-router.get(
+router.post(
   "/equipment/list",
   userMiddlewares.checkToken,
   equipmentMiddlewares.equipment_labId,
@@ -1025,7 +1043,7 @@ router.delete(
 // O========================================================================================O
 
 // Rota de listagem de elementos do laboratório:
-router.get(
+router.post(
   "/element/list",
   userMiddlewares.checkToken,
   elementMiddlewares.element_labId,
@@ -1350,7 +1368,7 @@ router.delete(
 // +---------------------------------------------------------+
 
 // Rota de listagem de usuários de um laboratório:
-router.get(
+router.post(
   "/lab/users",
   userMiddlewares.checkToken,
   labMiddlewares.lab_id,
@@ -1463,7 +1481,7 @@ router.put(
 // +---------------------------------------------------------+
 
 // Rota para listar todos os usuários do campus do usuário logado:
-router.get(
+router.post(
   "/campus/users",
   userMiddlewares.checkToken,
   accountCtrllrs.getUsersFromCampus

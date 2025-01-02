@@ -13,6 +13,7 @@
     - [X] getLabUsersByLevel;
     - [X] getLabsByUserLevel;
     - [X] getLabUserRelation;
+    - [X] getLabInfo;
 */
 
 // O========================================================================================O

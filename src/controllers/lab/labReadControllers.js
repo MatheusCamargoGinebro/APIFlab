@@ -6,8 +6,10 @@
     O================================================================O
  
     Funções relacionadas a leitura de laboratórios:
+    - [X] getLabById;
     - [X] getLabs;
     - [X] getLabByUserLevel;
+    - [X] getLabInfo;
 */
 
 // O========================================================================================O
@@ -19,6 +21,36 @@ const JWT = require("jsonwebtoken");
 
 // Módulo dos Models Read de laboratório:
 const labRead = require("../../models/lab/labReadModels");
+
+// O========================================================================================O
+
+// Função para listar um laboratório pelo Id:
+const getLabById = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando Id do laboratório:
+  const { lab_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Listando o laboratório pelo Id:
+  const GetLabById = await labRead.getLabById(lab_id);
+
+  if (GetLabById.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Laboratório não encontrado!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Retornando o laboratório encontrado:
+  return res.status(200).json({
+    status: true,
+    lab: GetLabById.lab,
+  });
+};
 
 // O========================================================================================O
 
@@ -90,6 +122,6 @@ const getLabByUserLevel = async (req, res) => {
 // O========================================================================================O
 
 // Exportando funções:
-module.exports = { getLabs, getLabByUserLevel };
+module.exports = { getLabById, getLabs, getLabByUserLevel };
 
 // O========================================================================================O

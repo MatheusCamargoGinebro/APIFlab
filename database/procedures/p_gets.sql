@@ -118,22 +118,12 @@ DROP PROCEDURE IF EXISTS GetLabsByUser;
 DELIMITER $$
 CREATE PROCEDURE GetLabsByUser (IN p_ID_usuario INT) BEGIN
 SELECT DISTINCT
-    laboratorios.ID_lab AS labID,
-    laboratorios.Sala AS labName,
-    usuario.nome AS atualUser
-    /*,
-    horarios.Inicio AS sessionStartsAt, 
-    horarios.Fim AS sessionEndsAt,
-    horarios.Started AS sessionStarted,
-    horarios.Finished AS sessionFinished */
+    laboratorios.ID_lab AS labId
 FROM
     laboratorios
     JOIN userlab ON laboratorios.ID_lab = userlab.ID_lab
-    JOIN usuarios usuario ON userlab.ID_usuario = usuario.ID_usuario
-    /* 
-    JOIN horarios ON laboratorios.ID_lab = horarios.ID_lab */
 WHERE
-    usuario.ID_usuario = p_ID_usuario;
+    userlab.ID_usuario = p_ID_usuario;
 
 END $$ DELIMITER ;
 
@@ -275,7 +265,11 @@ END $$ DELIMITER ;
 DROP PROCEDURE IF EXISTS GetDateBetween;
 
 DELIMITER $$
-CREATE PROCEDURE GetDateBetween (IN p_ID_lab INT, IN p_startTime BIGINT, IN p_endTime BIGINT) BEGIN
+CREATE PROCEDURE GetDateBetween (
+    IN p_ID_lab INT,
+    IN p_startTime BIGINT,
+    IN p_endTime BIGINT
+) BEGIN
 SELECT
     horarios.ID_hor AS sessionId,
     horarios.Inicio AS sessionStartsAt,
@@ -287,8 +281,12 @@ FROM
 WHERE
     horarios.ID_lab = p_ID_lab
     AND (
-        (horarios.Inicio BETWEEN FROM_UNIXTIME(p_startTime) AND FROM_UNIXTIME(p_endTime))
-        OR (horarios.Fim BETWEEN FROM_UNIXTIME(p_startTime) AND FROM_UNIXTIME(p_endTime))
+        (
+            horarios.Inicio BETWEEN FROM_UNIXTIME(p_startTime) AND FROM_UNIXTIME(p_endTime)
+        )
+        OR (
+            horarios.Fim BETWEEN FROM_UNIXTIME(p_startTime) AND FROM_UNIXTIME(p_endTime)
+        )
     );
 
 END $$ DELIMITER ;
@@ -304,9 +302,11 @@ SELECT
     horarios.Inicio AS sessionStartsAt,
     horarios.Fim AS sessionEndsAt,
     horarios.Started AS sessionStarted,
-    horarios.Finished AS sessionFinished
+    horarios.Finished AS sessionFinished,
+    usuarios.Nome AS userName
 FROM
     horarios
+    JOIN usuarios ON horarios.ID_usuario = usuarios.ID_usuario
 WHERE
     horarios.ID_lab = p_ID_lab;
 
