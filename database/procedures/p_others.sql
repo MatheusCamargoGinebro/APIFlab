@@ -23,7 +23,7 @@ INSERT INTO
 VALUES
     (p_Email, p_Checkcode);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Ler código de e-mail
@@ -38,7 +38,7 @@ FROM
 WHERE
     Email = p_Email;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Deletar código de e-mail
@@ -50,7 +50,7 @@ DELETE FROM email_codes
 WHERE
     Email = p_Email;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Limpar tabela de códigos de e-mail:
@@ -60,7 +60,7 @@ DELIMITER $$
 CREATE PROCEDURE ClearMailCodes () BEGIN
 DELETE FROM email_codes;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -89,7 +89,7 @@ INSERT INTO
 VALUES
     (p_token);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Ler token da lista negra:
@@ -104,7 +104,7 @@ FROM
 WHERE
     Token = p_token;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Ler todos os tokens da lista negra:
@@ -117,7 +117,7 @@ SELECT
 FROM
     blacklist;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Remover token da lista negra:
@@ -129,7 +129,7 @@ DELETE FROM blacklist
 WHERE
     Token = p_token;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Remover todos os tokens da lista negra:
@@ -139,6 +139,6 @@ DELIMITER $$
 CREATE PROCEDURE RemoveAllBlacklist () BEGIN
 DELETE FROM blacklist;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --

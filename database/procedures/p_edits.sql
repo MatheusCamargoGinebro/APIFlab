@@ -68,7 +68,7 @@ SET
 WHERE
     ID_campus = p_ID_campus;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar estado do campus
@@ -82,7 +82,7 @@ SET
 WHERE
     ID_campus = p_ID_campus;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -112,7 +112,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar email do usuário
@@ -126,7 +126,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar senha do usuário
@@ -141,7 +141,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar foto do usuário
@@ -155,7 +155,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar tipo do usuário
@@ -169,7 +169,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar nível de administração do campus do usuário
@@ -183,7 +183,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -211,7 +211,7 @@ WHERE
     ID_usuario = p_ID_user
     AND ID_lab = p_ID_lab;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar nome do laboratório
@@ -225,7 +225,7 @@ SET
 WHERE
     ID_lab = p_ID_lab;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar capacidade do laboratório
@@ -239,7 +239,7 @@ SET
 WHERE
     ID_lab = p_ID_lab;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -273,7 +273,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar quantidade do elemento
@@ -287,7 +287,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar descrição do elemento
@@ -301,7 +301,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar peso molecular do elemento
@@ -315,7 +315,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar CAS do elemento
@@ -329,7 +329,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar EC do elemento
@@ -343,7 +343,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar estado físico do elemento
@@ -357,7 +357,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar imagem do elemento
@@ -371,7 +371,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar validade do elemento
@@ -385,7 +385,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar nível de supervisão do elemento
@@ -399,7 +399,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -430,7 +430,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar descrição do equipamento
@@ -444,7 +444,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar quantidade total do equipamento
@@ -465,7 +465,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar qualidade do equipamento
@@ -479,7 +479,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar imagem do equipamento
@@ -493,7 +493,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Editar nível de supervisão do equipamento
@@ -507,7 +507,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -533,7 +533,7 @@ SET
 WHERE
     ID_hor = p_ID_hor;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Finalizar horário
@@ -556,6 +556,6 @@ SET
 WHERE
     re.ID_hor = p_ID_hor;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --

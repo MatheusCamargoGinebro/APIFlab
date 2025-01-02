@@ -51,7 +51,7 @@ INSERT INTO
 VALUES
     (p_Nome, p_Estado);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O
@@ -84,7 +84,7 @@ INSERT INTO
 VALUES
     (p_Nome, p_Email, p_Senha, p_Salt, p_Tipo, p_CampusAdminLevel, p_ID_campus);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O
@@ -116,7 +116,7 @@ INSERT INTO
 VALUES
     (3, p_ID_usuario, LAST_INSERT_ID());
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Relacionar usuário com laboratório
@@ -129,7 +129,7 @@ INSERT INTO
 VALUES
     (p_AdminLevel, p_ID_usuario, p_ID_lab);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Desrelacionar usuário com laboratório
@@ -142,7 +142,7 @@ WHERE
     ID_usuario = p_ID_usuario
     AND ID_lab = p_ID_lab;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O
@@ -182,7 +182,7 @@ INSERT INTO
 VALUES
     (p_Nome, p_Quantidade, p_Descricao, p_Peso_molecular, p_Num_cas, p_Num_ec, p_EstadoFisico, p_Imagem, FROM_UNIXTIME(p_Validade), p_SupervisorLevel, p_ID_lab);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Deletar elemento
@@ -198,7 +198,7 @@ DELETE FROM elementos
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Criar equipamento
@@ -211,7 +211,7 @@ INSERT INTO
 VALUES
     (p_Nome, p_Descricao, p_QuantidadeTotal, p_QuantidadeDisponivel, p_Qualidade, p_Imagem, p_SupervisorLevel, p_ID_lab);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Deletar equipamento
@@ -227,7 +227,7 @@ DELETE FROM equipamentos
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- O===============================O
@@ -257,7 +257,7 @@ INSERT INTO
 VALUES
     (FROM_UNIXTIME(p_Inicio), FROM_UNIXTIME(p_Fim), FALSE, FALSE, p_ID_lab, p_ID_usuario);
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Reservar elemento
@@ -277,7 +277,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Reservar equipamento
@@ -297,7 +297,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Deletar Horário
@@ -334,7 +334,7 @@ DELETE FROM horarios
 WHERE
     ID_hor = p_ID_hor;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Desreservar elemento
@@ -362,7 +362,7 @@ WHERE
     ID_elem = p_ID_elem
     AND ID_hor = p_ID_hor;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
 -- Desreservar equipamento
@@ -390,6 +390,6 @@ WHERE
     ID_equip = p_ID_equip
     AND ID_hor = p_ID_hor;
 
-END $$ DELIMITER;
+END $$ DELIMITER ;
 
 -- O==============================================================O --
