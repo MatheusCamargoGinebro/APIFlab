@@ -62,7 +62,7 @@ SELECT
 FROM
     campus;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler campus por ID:
@@ -77,7 +77,7 @@ FROM
 WHERE
     campus.ID_campus = p_ID_campus;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler campus por nome:
@@ -92,7 +92,7 @@ FROM
 WHERE
     campus.Nome = p_campusName;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -118,14 +118,15 @@ DROP PROCEDURE IF EXISTS GetLabsByUser;
 DELIMITER $$
 CREATE PROCEDURE GetLabsByUser (IN p_ID_usuario INT) BEGIN
 SELECT DISTINCT
-    laboratorios.ID_lab AS labId
+    laboratorios.ID_lab AS labId,
+    userlab.AdminLevel AS userLevel
 FROM
     laboratorios
     JOIN userlab ON laboratorios.ID_lab = userlab.ID_lab
 WHERE
     userlab.ID_usuario = p_ID_usuario;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler laboratório por ID:
@@ -143,7 +144,7 @@ FROM
 WHERE
     laboratorios.ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler laboratório por nome:
@@ -162,7 +163,7 @@ WHERE
     laboratorios.Sala = p_labName
     AND laboratorios.ID_campus = p_ID_campus;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler todos os usuários de um laboratório:
@@ -184,7 +185,7 @@ FROM
 WHERE
     userlab.ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler usuários de um laboratório por nível:
@@ -206,7 +207,7 @@ WHERE
     userlab.ID_lab = p_ID_lab
     AND userlab.AdminLevel = p_level;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler laboratórios de um usuário por nível:
@@ -226,7 +227,7 @@ WHERE
     userlab.ID_usuario = p_ID_usuario
     AND userlab.AdminLevel = p_level;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler relação entre usuário e laboratório:
@@ -244,7 +245,7 @@ WHERE
     userlab.ID_lab = p_ID_lab
     AND userlab.ID_usuario = p_ID_usuario;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 /*
@@ -289,7 +290,7 @@ WHERE
         )
     );
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler todas os horários de um laboratório:
@@ -310,7 +311,7 @@ FROM
 WHERE
     horarios.ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler horário por ID:
@@ -331,7 +332,7 @@ FROM
 WHERE
     horarios.ID_hor = p_ID_hor;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler elementos de um horário:
@@ -357,7 +358,7 @@ FROM
 WHERE
     Reserva_elemento.ID_hor = p_ID_hor;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler equipamentos de um horário:
@@ -380,7 +381,7 @@ FROM
 WHERE
     Reserva_equipamento.ID_hor = p_ID_hor;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 /*
@@ -418,7 +419,7 @@ FROM
 WHERE
     elementos.ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler elemento por ID:
@@ -444,7 +445,7 @@ FROM
 WHERE
     elementos.ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler todos os equipamentos de um laboratório:
@@ -466,7 +467,7 @@ FROM
 WHERE
     equipamentos.ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler equipamento por ID:
@@ -489,7 +490,7 @@ FROM
 WHERE
     equipamentos.ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -527,7 +528,7 @@ FROM
 WHERE
     userlab.ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler todos os usuários de um campus:
@@ -547,7 +548,7 @@ FROM
 WHERE
     usuarios.ID_campus = p_ID_campus;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler usuário por ID:
@@ -568,7 +569,7 @@ FROM
 WHERE
     usuarios.ID_usuario = p_ID_usuario;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler usuário por email:
@@ -590,7 +591,7 @@ FROM
 WHERE
     usuarios.Email = p_Email;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Ler usuário por nome:
@@ -611,7 +612,7 @@ FROM
 WHERE
     usuarios.Nome = p_Name;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Verificar se login é válido:
@@ -632,6 +633,6 @@ WHERE
     usuarios.Email = p_Email
     AND usuarios.Senha = p_Senha;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
