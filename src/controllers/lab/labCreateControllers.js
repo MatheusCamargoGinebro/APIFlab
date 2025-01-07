@@ -7,6 +7,7 @@
 
     Funções relacionadas a inserção de laboratórios:
     - [X] createLab;
+    - [X] deleteLab;
     - [X] createLabUser;
     - [X] removeLabUser;
 */
@@ -93,6 +94,54 @@ const createLab = async (req, res) => {
   return res.status(200).json({
     status: true,
     message: "Laboratório criado com sucesso!",
+  });
+};
+
+// O========================================================================================O
+
+// Função para deletar um laboratório:
+const deleteLab = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  const { lab_id } = req.body;
+
+  // Recuperando Id do usuário:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  /*-----------------------------------------------------*/
+
+  // Verificando permissões do usuário com o laboratório:
+  const checkUserToManipulate = await labPermissionChecks.checkUserToManipulate(
+    userId,
+    lab_id,
+    3
+  );
+
+  if (checkUserToManipulate.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Usuário não tem permissão para deletar laboratório!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Deletando o laboratório:
+  const DeleteLab = await labWrite.deleteLab(lab_id);
+
+  if (DeleteLab.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Erro ao deletar laboratório!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  return res.status(200).json({
+    status: true,
+    message: "Laboratório deletado com sucesso!",
   });
 };
 
@@ -249,6 +298,6 @@ const removeLabUser = async (req, res) => {
 
 // O========================================================================================O
 
-module.exports = { createLab, createLabUser, removeLabUser };
+module.exports = { createLab, deleteLab, createLabUser, removeLabUser };
 
 // O========================================================================================O

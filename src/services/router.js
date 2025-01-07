@@ -124,6 +124,9 @@ setInterval(accountCtrllrs.clearBlackList, 86400000);
 // A cada 8h, limpar os códigos de verificação de email:
 setInterval(accountCtrllrs.clearMailCodeList, 28800000);
 
+// A cada 1min, inicia e finaliza sessões de uso de laboratório:
+setInterval(sessionCtrllrs.checkSessions, 60000);
+
 // O========================================================================================O
 
 /* 
@@ -468,6 +471,27 @@ router.post(
       "lab_name": <name>,
       "lab_capacity": <capacity>
     } 
+*/
+
+// +---------------------------------------------------------+
+
+// Rota de remoção de laboratório:
+router.delete(
+  "/lab/remove",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_id,
+  labCreateCtrllrs.deleteLab
+);
+
+// -------------- //
+
+/*
+- Deletar um laboratório do banco de dados;
+    Route: /lab/remove
+    Body:
+    {
+      "lab_id": <id>
+    }
 */
 
 // +---------------------------------------------------------+

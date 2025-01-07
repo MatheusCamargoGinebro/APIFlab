@@ -24,6 +24,7 @@
 |     - [x] GetSessionByID;
 |     - [x] GetSessionElements;
 |     - [x] GetSessionEquipments;
+|     - [x] GetAllSessions;
 |    - Inventory:
 |     - [x] GetElementsByLab;
 |     - [x] GetElementByID;
@@ -380,6 +381,23 @@ FROM
     JOIN Reserva_equipamento ON equipamentos.ID_equip = Reserva_equipamento.ID_equip
 WHERE
     Reserva_equipamento.ID_hor = p_ID_hor;
+
+END $$ DELIMITER;
+
+-- O==============================================================O --
+-- Ler todos os horários:
+DROP PROCEDURE IF EXISTS GetAllSessions;
+
+DELIMITER $$
+CREATE PROCEDURE GetAllSessions () BEGIN
+SELECT
+    horarios.ID_hor AS sessionId,
+    horarios.Inicio AS sessionStartsAt,
+    horarios.Fim AS sessionEndsAt,
+    horarios.Started AS sessionStarted,
+    horarios.Finished AS sessionFinished
+FROM
+    horarios;
 
 END $$ DELIMITER;
 

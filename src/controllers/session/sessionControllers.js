@@ -17,6 +17,7 @@
   - [X] removeEquipmentFromSession;
   - [X] getElementsbySession;
   - [X] getEquipmentsbySession;
+  - [X] checkSessions;
 */
 
 // O========================================================================================O
@@ -918,6 +919,44 @@ const getEquipmentsbySession = async (req, res) => {
 
 // O========================================================================================O
 
+// Função para verificar se há sessões a serem iniciadas ou encerradas:
+const checkSessions = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando todas as sessões:
+  const sessions = await sessionRead.getAllSessions();
+
+  if (sessions.status === false) {
+    return false;
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Verificando se há sessões a serem iniciadas ou encerradas:
+  const now = moment().unix();
+
+  for (let i = 0; i < sessions.data.length; i++) {
+    const session = sessions.data[i];
+
+    if (session.sessionStarted === false && session.sessionStartsAt <= now) {
+      console.log("Iniciando sessão: ", session);
+      await sessionWrite.startSession(session.sessionId);
+    }
+
+    if (session.sessionFinished === false && session.sessionEndsAt <= now) {
+      console.log("Encerrando sessão: ", session);
+      await sessionWrite.endSession(session.sessionId);
+    }
+  }
+
+  /*-----------------------------------------------------*/
+  console.log("Sessões verificadas!");
+
+  return true;
+};
+
+// O========================================================================================O
+
 // Exportando funções de controle de sessões em laboratórios:
 module.exports = {
   createSession,
@@ -931,6 +970,7 @@ module.exports = {
   removeEquipmentFromSession,
   getElementsbySession,
   getEquipmentsbySession,
+  checkSessions,
 };
 
 // O========================================================================================O

@@ -7,6 +7,7 @@
 
     Funções de inserção de laboratórios no banco de dados:
     - [X] createLab;
+    - [X] deleteLab;
     - [X] relateUserLab;
     - [X] unrelateUserLab;
     - [X] editLabName;
@@ -42,6 +43,26 @@ const createLab = async (newLab, userId) => {
     return {
       status: false,
       message: "Erro ao cadastrar laboratório!",
+    };
+  }
+};
+
+// O========================================================================================O
+
+// Função para deletar um laboratório no banco de dados:
+const deleteLab = async (ID_lab) => {
+  const query = "CALL DeleteLab(?)";
+  const [results] = await connection.execute(query, [ID_lab]);
+
+  if (results.affectedRows > 0) {
+    return {
+      status: true,
+      message: "Laboratório deletado com sucesso!",
+    };
+  } else {
+    return {
+      status: false,
+      message: "Erro ao deletar laboratório!",
     };
   }
 };
@@ -95,10 +116,7 @@ const unrelateUserLab = async (ID_lab, ID_usuario) => {
 // Função de edição do nome do laboratório no banco de dados:
 const editLabName = async (ID_lab, NewName) => {
   const query = "CALL EditLabName(?, ?)";
-  const [results] = await connection.execute(query, [
-    ID_lab,
-    NewName,
-  ]);
+  const [results] = await connection.execute(query, [ID_lab, NewName]);
 
   if (results.affectedRows > 0) {
     return {
@@ -113,10 +131,7 @@ const editLabName = async (ID_lab, NewName) => {
 // Função de edição da capacidade do laboratório no banco de dados:
 const editLabCapacity = async (ID_lab, newCapacity) => {
   const query = "CALL EditLabCapacity(?, ?);";
-  const [results] = await connection.execute(query, [
-    ID_lab,
-    newCapacity,
-  ]);
+  const [results] = await connection.execute(query, [ID_lab, newCapacity]);
 
   if (results.affectedRows > 0) {
     return {
@@ -160,6 +175,7 @@ const editUserLabLevel = async (ID_usuario, ID_lab, AdminLevel) => {
 // Exportando funções:
 module.exports = {
   createLab,
+  deleteLab,
   relateUserLab,
   unrelateUserLab,
   editLabName,

@@ -11,6 +11,7 @@
     - [X] getSessionById;
     - [X] getSessionElements;
     - [X] getSessionEquipments;
+    - [X] getAllSessions;
 */
 
 // O========================================================================================O
@@ -128,6 +129,35 @@ const getSessionEquipments = async (sessionId) => {
 
 // O========================================================================================O
 
+// Função para buscar todas as sessões:
+const getAllSessions = async () => {
+  const query = "CALL GetAllSessions();";
+
+  const [result] = await connection.execute(query);
+
+  // Convertendo sessionStarted e sessionFinished para boolean:
+  result[0] = result[0].map((session) => {
+    session.sessionStarted = Boolean(session.sessionStarted);
+    session.sessionFinished = Boolean(session.sessionFinished);
+    return session;
+  });
+
+  // Convertendo sessionStartsAt e sessionEndsAt para UNIX:
+  result[0] = result[0].map((session) => {
+    session.sessionStartsAt = moment(session.sessionStartsAt).unix();
+    session.sessionEndsAt = moment(session.sessionEndsAt).unix();
+    return session;
+  });
+
+  if (result[0].length > 0) {
+    return { status: true, data: result[0] };
+  } else {
+    return { status: false, message: "Nenhuma sessão encontrada!" };
+  }
+};
+
+// O========================================================================================O
+
 // Exportação dos módulos:
 module.exports = {
   GetDateBetween,
@@ -135,6 +165,7 @@ module.exports = {
   getSessionById,
   getSessionElements,
   getSessionEquipments,
+  getAllSessions,
 };
 
 // O========================================================================================O
