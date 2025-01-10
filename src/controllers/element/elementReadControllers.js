@@ -105,7 +105,7 @@ const getElementsByLabId = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  return res.status(200).json({ status: true, elements: elements.data });
+  return res.status(200).json({ status: true, data: elements.data });
 };
 
 // O========================================================================================O
