@@ -404,6 +404,9 @@ VALUES
         p_ID_usuario
     );
 
+    -- retorna o ID do horário criado
+    SELECT LAST_INSERT_ID() AS ID_hor;
+
 END $$ DELIMITER;
 
 -- O==============================================================O --

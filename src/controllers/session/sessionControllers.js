@@ -138,6 +138,7 @@ const createSession = async (req, res) => {
 
   return res.status(200).json({
     status: true,
+    newSessionId: result.newSessionId,
     message: "Sessão criada com sucesso!",
   });
 };

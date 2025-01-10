@@ -35,17 +35,11 @@ const createSession = async (newSession, userId) => {
     userId,
   ]);
 
-  if (results.affectedRows > 0) {
-    return {
-      status: true,
-      message: "Sessão criada com sucesso!",
-    };
-  } else {
-    return {
-      status: false,
-      message: "Erro ao criar a sessão!",
-    };
-  }
+  return {
+    status: true,
+    message: "Sessão criada com sucesso!",
+    newSessionId: results[0][0].ID_hor,
+  };
 };
 
 // O========================================================================================O
