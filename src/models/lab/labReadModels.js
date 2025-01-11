@@ -28,7 +28,7 @@ const getLabById = async (ID_lab) => {
   const query = "CALL GetLabByID(?)";
   const [results] = await connection.execute(query, [ID_lab]);
 
-  if (results.length > 0) {
+  if (results[0].length > 0) {
     return {
       status: true,
       lab: results[0],

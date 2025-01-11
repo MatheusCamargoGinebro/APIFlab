@@ -1,19 +1,22 @@
 -- =========================================== INSERTS PARA TESTES ===========================================
+-- Limpando todas as tabelas:
+DELETE FROM Reserva_equipamento;
 
-/* 
-    Limpando todas as tabelas:
+DELETE FROM Equipamentos;
 
-    DELETE FROM Reserva_equipamento;
-    DELETE FROM Equipamentos;
-    DELETE FROM Reserva_elemento;
-    DELETE FROM Elementos;
-    DELETE FROM Horarios;
-    DELETE FROM userlab;
-    DELETE FROM laboratorios;
-    DELETE FROM usuarios;
-    DELETE FROM campus;
+DELETE FROM Reserva_elemento;
 
- */
+DELETE FROM Elementos;
+
+DELETE FROM Horarios;
+
+DELETE FROM userlab;
+
+DELETE FROM laboratorios;
+
+DELETE FROM usuarios;
+
+DELETE FROM campus;
 
 INSERT INTO
     campus (Nome, Estado)
