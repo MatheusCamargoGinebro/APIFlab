@@ -352,7 +352,8 @@ SELECT
     elementos.EstadoFisico AS physicalState,
     elementos.Imagem AS image,
     elementos.Validade AS expirationDate,
-    elementos.SupervisorLevel AS supervisorLevel
+    elementos.SupervisorLevel AS supervisorLevel,
+    Reserva_elemento.Quantidade AS reservedQuantity
 FROM
     elementos
     JOIN Reserva_elemento ON elementos.ID_elem = Reserva_elemento.ID_elem
@@ -375,7 +376,8 @@ SELECT
     equipamentos.QuantidadeDisponivel AS availableQuantity,
     equipamentos.Qualidade AS quality,
     equipamentos.Imagem AS image,
-    equipamentos.SupervisorLevel AS supervisorLevel
+    equipamentos.SupervisorLevel AS supervisorLevel,
+    Reserva_equipamento.Quantidade AS reservedQuantity
 FROM
     equipamentos
     JOIN Reserva_equipamento ON equipamentos.ID_equip = Reserva_equipamento.ID_equip
