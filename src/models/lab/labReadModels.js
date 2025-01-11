@@ -31,7 +31,7 @@ const getLabById = async (ID_lab) => {
   if (results[0].length > 0) {
     return {
       status: true,
-      lab: results[0],
+      lab: results[0][0],
     };
   } else {
     return {
