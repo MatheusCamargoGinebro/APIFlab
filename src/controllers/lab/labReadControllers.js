@@ -10,6 +10,7 @@
     - [X] getLabs;
     - [X] getLabByUserLevel;
     - [X] getLabInfo;
+    - [X] getLabUserRelation;
 */
 
 // O========================================================================================O
@@ -121,7 +122,40 @@ const getLabByUserLevel = async (req, res) => {
 
 // O========================================================================================O
 
+// Função para recuperar relação entre usuário e laboratório:
+const getLabUserRelation = async (req, res) => {
+  /*-----------------------------------------------------*/
+
+  // Recuperando Id do usuário e do laboratório:
+  const token = req.headers["x-access-token"];
+  const userId = JWT.decode(token).userId;
+
+  const { lab_id } = req.body;
+
+  /*-----------------------------------------------------*/
+
+  // Recuperando relação entre usuário e laboratório:
+  const GetLabUserRelation = await labRead.getLabUserRelation(lab_id, userId);
+
+  if (GetLabUserRelation.status === false) {
+    return res.status(400).json({
+      status: false,
+      message: "Relação não encontrada!",
+    });
+  }
+
+  /*-----------------------------------------------------*/
+
+  // Retornando a relação encontrada:
+  return res.status(200).json({
+    status: true,
+    data: GetLabUserRelation.relation[0],
+  });
+};
+
+// O========================================================================================O
+
 // Exportando funções:
-module.exports = { getLabById, getLabs, getLabByUserLevel };
+module.exports = { getLabById, getLabs, getLabByUserLevel, getLabUserRelation };
 
 // O========================================================================================O

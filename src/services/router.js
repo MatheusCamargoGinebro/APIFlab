@@ -1466,6 +1466,27 @@ router.post(
 
 // +---------------------------------------------------------+
 
+// Rota de leitura de relação entre usuário e laboratório:
+router.post(
+  "/lab/user/relation",
+  userMiddlewares.checkToken,
+  labMiddlewares.lab_id,
+  labReadCtrllrs.getLabUserRelation
+);
+
+// -------------- //
+
+/*
+- Listar relação entre usuário e laboratório;
+    Route: /lab/user/relation
+    Body:
+    {
+      "lab_id": <lab_id>
+    }
+*/
+
+// +---------------------------------------------------------+
+
 // Rota de desrelacionamento de usuário de um laboratório:
 router.delete(
   "/lab/removeuser",

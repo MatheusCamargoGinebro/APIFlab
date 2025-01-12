@@ -51,7 +51,7 @@ const getEquipmentById = async (req, res) => {
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
     equipment.data.labId,
-    2
+    1
   );
 
   if (userCheck.status === false) {
@@ -91,7 +91,7 @@ const getEquipmentsByLabId = async (req, res) => {
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
     equipment_labId,
-    2
+    1
   );
 
   if (userCheck.status === false) {
