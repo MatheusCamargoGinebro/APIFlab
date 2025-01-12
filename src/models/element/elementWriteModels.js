@@ -29,7 +29,6 @@ const connection = require("../../utils/connection");
 
 // Função para criar um elemento químico:
 const createElement = async (newElement) => {
-  console.log(newElement)
   const {
     nome,
     quantidade,
