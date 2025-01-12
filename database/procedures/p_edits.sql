@@ -68,7 +68,7 @@ SET
 WHERE
     ID_campus = p_ID_campus;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar estado do campus
@@ -82,7 +82,7 @@ SET
 WHERE
     ID_campus = p_ID_campus;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -112,7 +112,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar email do usuário
@@ -126,14 +126,18 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar senha do usuário
 DROP PROCEDURE IF EXISTS EditUserPassword;
 
 DELIMITER $$
-CREATE PROCEDURE EditUserPassword (IN p_ID_user INT, IN p_Senha VARCHAR(60), p_Salt VARCHAR(60)) BEGIN
+CREATE PROCEDURE EditUserPassword (
+    IN p_ID_user INT,
+    IN p_Senha VARCHAR(60),
+    p_Salt VARCHAR(60)
+) BEGIN
 UPDATE usuarios
 SET
     Senha = p_Senha,
@@ -141,7 +145,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar foto do usuário
@@ -155,7 +159,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar tipo do usuário
@@ -169,7 +173,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar nível de administração do campus do usuário
@@ -183,7 +187,7 @@ SET
 WHERE
     ID_usuario = p_ID_user;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -203,7 +207,11 @@ END $$ DELIMITER ;
 DROP PROCEDURE IF EXISTS EditUserLabLevel;
 
 DELIMITER $$
-CREATE PROCEDURE EditUserLabLevel (IN p_ID_user INT, IN p_ID_lab INT, IN p_AdminLevel INT) BEGIN
+CREATE PROCEDURE EditUserLabLevel (
+    IN p_ID_user INT,
+    IN p_ID_lab INT,
+    IN p_AdminLevel INT
+) BEGIN
 UPDATE userlab
 SET
     AdminLevel = p_AdminLevel
@@ -211,7 +219,7 @@ WHERE
     ID_usuario = p_ID_user
     AND ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar nome do laboratório
@@ -225,7 +233,7 @@ SET
 WHERE
     ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar capacidade do laboratório
@@ -239,7 +247,7 @@ SET
 WHERE
     ID_lab = p_ID_lab;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -273,7 +281,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar quantidade do elemento
@@ -287,7 +295,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar descrição do elemento
@@ -301,21 +309,24 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar peso molecular do elemento
 DROP PROCEDURE IF EXISTS EditElementMolWeight;
 
 DELIMITER $$
-CREATE PROCEDURE EditElementMolWeight (IN p_ID_elem INT, IN p_Peso_molecular DECIMAL(10, 3)) BEGIN
+CREATE PROCEDURE EditElementMolWeight (
+    IN p_ID_elem INT,
+    IN p_Peso_molecular DECIMAL(10, 3)
+) BEGIN
 UPDATE elementos
 SET
     Peso_molecular = p_Peso_molecular
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar CAS do elemento
@@ -329,7 +340,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar EC do elemento
@@ -343,7 +354,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar estado físico do elemento
@@ -357,7 +368,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar imagem do elemento
@@ -371,7 +382,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar validade do elemento
@@ -385,7 +396,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar nível de supervisão do elemento
@@ -399,7 +410,7 @@ SET
 WHERE
     ID_elem = p_ID_elem;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -430,7 +441,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar descrição do equipamento
@@ -444,7 +455,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar quantidade total do equipamento
@@ -454,18 +465,12 @@ DELIMITER $$
 CREATE PROCEDURE EditEquipmentTotalQuantity (IN p_ID_equip INT, IN p_QuantidadeTotal INT) BEGIN
 UPDATE equipamentos
 SET
-    QuantidadeDisponivel = p_QuantidadeTotal
-WHERE
-    ID_equip = p_ID_equip
-    AND QuantidadeDisponivel > p_QuantidadeTotal;
-
-UPDATE equipamentos
-SET
+    QuantidadeDisponivel = QuantidadeDisponivel + (p_QuantidadeTotal - QuantidadeTotal),
     QuantidadeTotal = p_QuantidadeTotal
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar qualidade do equipamento
@@ -479,7 +484,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar imagem do equipamento
@@ -493,7 +498,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Editar nível de supervisão do equipamento
@@ -507,7 +512,7 @@ SET
 WHERE
     ID_equip = p_ID_equip;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- O===============================O --
@@ -533,7 +538,7 @@ SET
 WHERE
     ID_hor = p_ID_hor;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --
 -- Finalizar horário
@@ -556,6 +561,6 @@ SET
 WHERE
     re.ID_hor = p_ID_hor;
 
-END $$ DELIMITER ;
+END $$ DELIMITER;
 
 -- O==============================================================O --

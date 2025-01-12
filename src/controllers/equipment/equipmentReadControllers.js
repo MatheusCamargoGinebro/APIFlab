@@ -50,7 +50,7 @@ const getEquipmentById = async (req, res) => {
   // Verificando se o usuário tem permissão para acessar o equipamento químico:
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    equipment.data.id_lab,
+    equipment.data.labId,
     2
   );
 
