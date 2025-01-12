@@ -34,7 +34,7 @@ const getElementById = async (req, res) => {
   const userId = JWT.decode(token).userId;
 
   // ID do elemento químico:
-  const { element_id } = req.body;
+  const { element_id  } = req.body;
 
   /*-----------------------------------------------------*/
 
@@ -50,7 +50,7 @@ const getElementById = async (req, res) => {
   // Verificando se o usuário tem permissão para acessar o elemento químico:
   const userCheck = await labPermission.checkUserToManipulate(
     userId,
-    element.element.id_lab,
+    element.data.labId,
     1
   );
 
@@ -63,7 +63,7 @@ const getElementById = async (req, res) => {
 
   /*-----------------------------------------------------*/
 
-  return res.status(200).json({ status: true, element: element.element });
+  return res.status(200).json({ status: true, element: element.data });
 };
 
 // O========================================================================================O

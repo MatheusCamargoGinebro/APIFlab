@@ -717,6 +717,27 @@ router.post(
 
 // +---------------------------------------------------------+
 
+// Rota para ler elemento pela sua ID:
+router.post(
+  "/element/list/specific",
+  userMiddlewares.checkToken,
+  elementMiddlewares.element_id,
+  elementReadCtrllrs.getElementById
+);
+
+// -------------- //
+
+/*
+- Listar elemento pelo ID;
+    Route: /element/list
+    Body:
+    {
+      "element_id": <id>
+    }
+*/
+
+// +---------------------------------------------------------+
+
 // Rota para desrelacionar elemento de sessão de uso de laboratório:
 router.delete(
   "/lab/session/element/remove",
@@ -863,6 +884,16 @@ router.post(
       "equipment_labId": <lab_id>
     }
 */
+
+// +---------------------------------------------------------+
+
+// Rota de listagem de equipamento por ID:
+router.post(
+  "/equipment/list/specific",
+  userMiddlewares.checkToken,
+  equipmentMiddlewares.equipment_id,
+  equipmentReadCtrllrs.getEquipmentById
+);
 
 // +---------------------------------------------------------+
 
