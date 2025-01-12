@@ -60,7 +60,7 @@ const checkUserToManipulate = async (userId, labId, allowedLevel) => {
   return {
     status: true,
     userData: user.userData[0],
-    labData: lab.lab[0],
+    labData: lab,
     relation: userLab.relation[0],
   };
 };

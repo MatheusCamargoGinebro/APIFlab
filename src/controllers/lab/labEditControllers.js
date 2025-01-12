@@ -60,7 +60,7 @@ const editLabName = async (req, res) => {
   // Verificando se o laboratório já existe:
   const GetLabByName = await labRead.getLabByName(
     lab_name,
-    checkUserToManipulate.labData.campusID
+    checkUserToManipulate.labData.lab.campusID
   );
 
   if (GetLabByName.status === true) {
